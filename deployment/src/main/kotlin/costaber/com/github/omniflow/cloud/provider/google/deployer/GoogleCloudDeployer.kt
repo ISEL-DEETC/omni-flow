@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.google.deployer
 
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleBranchRenderer
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
 import costaber.com.github.omniflow.cloud.provider.google.strategy.*
@@ -47,7 +48,7 @@ class GoogleCloudDeployer internal constructor(
             googleWorkflowService = GoogleWorkflowService(),
         )
 
-        private fun createNodeRendererStrategyDecider(): NodeRendererStrategyDecider {
+        fun createNodeRendererStrategyDecider(): NodeRendererStrategyDecider {
             return DefaultNodeRendererStrategyDecider.Builder()
                 .addRendererStrategy(GoogleAssignStrategyFactory())
                 .addRendererStrategy(GoogleCallStrategyFactory())
@@ -62,6 +63,9 @@ class GoogleCloudDeployer internal constructor(
                 .addRendererStrategy(GoogleSwitchStrategyFactory())
                 .addRendererStrategy(GoogleVariableStrategyFactory())
                 .addRendererStrategy(GoogleWorkflowStrategyFactory())
+                .addRendererStrategy(GoogleParallelStrategyFactory())
+                .addRendererStrategy(GoogleBranchStrategyFactory())
+                .addRendererStrategy(GoogleIterationStrategyFactory())
                 .build()
         }
     }
