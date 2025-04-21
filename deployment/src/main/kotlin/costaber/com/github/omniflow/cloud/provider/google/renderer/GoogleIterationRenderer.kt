@@ -19,7 +19,7 @@ class GoogleIterationRenderer(private val iterationContext: IterationContext) : 
                 addLine("value: ${iterationContext.value}")
                 when (iterationContext) {
                     is IterationRangeContext -> addLine("range: [${iterationContext.range.min}, ${iterationContext.range.max}]")
-                    is IterationForEachContext -> addLine("in: \${keys${iterationContext.forEachVariable.name}}")
+                    is IterationForEachContext -> addLine("in: \${${iterationContext.forEachVariable.name}}")
                 }
                 add("steps:")
             }
