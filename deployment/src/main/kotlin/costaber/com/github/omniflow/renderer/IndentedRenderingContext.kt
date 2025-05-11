@@ -44,4 +44,6 @@ open class IndentedRenderingContext(
     fun getString() = stringBuilder.toString().also {
         stringBuilder.clear()
     }
+
+    fun getIndentationLevel() = indentationLevel
 }

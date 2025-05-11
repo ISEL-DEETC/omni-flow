@@ -11,7 +11,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonGreaterThanExpressionRenderer(
     private val greaterThanExpression: GreaterThanExpression<*>,
-) : IndentedNodeRenderer() {
+) : AmazonRenderer() {
 
     override val element: Node = greaterThanExpression
 

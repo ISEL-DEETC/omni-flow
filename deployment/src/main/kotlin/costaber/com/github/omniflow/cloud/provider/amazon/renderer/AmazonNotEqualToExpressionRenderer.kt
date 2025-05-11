@@ -11,7 +11,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonNotEqualToExpressionRenderer(
     private val notEqualToExpression: NotEqualToExpression<*>,
-) : IndentedNodeRenderer() {
+) : AmazonRenderer() {
 
     override val element: Node = notEqualToExpression
 
@@ -29,7 +29,7 @@ class AmazonNotEqualToExpressionRenderer(
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
-            add(AMAZON_CLOSE_OBJECT)
+            add(AMAZON_CLOSE_OBJECT_WITH_COMMA)
         }
 
     private fun IndentedRenderingContext.renderValue(value: Value<*>) {

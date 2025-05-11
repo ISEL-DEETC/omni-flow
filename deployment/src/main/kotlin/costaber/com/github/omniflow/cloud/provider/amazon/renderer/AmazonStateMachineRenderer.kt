@@ -9,7 +9,7 @@ import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class AmazonStateMachineRenderer(private val workflow: Workflow) : IndentedNodeRenderer() {
+class AmazonStateMachineRenderer(private val workflow: Workflow) : AmazonRenderer() {
 
     override val element: Node = workflow
 

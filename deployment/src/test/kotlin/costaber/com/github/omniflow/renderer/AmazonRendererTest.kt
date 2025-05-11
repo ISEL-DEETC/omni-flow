@@ -3,8 +3,7 @@ package costaber.com.github.omniflow.renderer
 import costaber.com.github.omniflow.builder.StepBuilder
 import costaber.com.github.omniflow.cloud.provider.amazon.deployer.AmazonCloudDeployer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
-import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
-import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
+import costaber.com.github.omniflow.cloud.provider.amazon.traversor.AmazonTraversor
 import costaber.com.github.omniflow.dsl.assign
 import costaber.com.github.omniflow.dsl.branch
 import costaber.com.github.omniflow.dsl.call
@@ -26,7 +25,7 @@ import kotlin.test.Test
 
 internal class AmazonRendererTest {
 
-    private val nodeTraversor = DepthFirstNodeVisitorTraversor()
+    private val nodeTraversor = AmazonTraversor()
     private val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
     private val renderingContext = AmazonRenderingContext()
 
@@ -237,6 +236,75 @@ internal class AmazonRendererTest {
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
         val expected = """
+        {
+            "Comment": "Description",
+            "StartAt": "For",
+            "States": {
+                "For": {
+                    "Comment": "For example",
+                    "Type": "Parallel",
+                    "Branches": [
+                        {
+                            "StartAt": "ForInitializeCounter",
+                            "States": {
+                            "ForInitializeCounter": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                    "key.$": 0
+                                },
+                                "Next": "ForIncrementCounter"
+                            },
+                            "ForIncrementCounter": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                    "key.$": "States.MathAdd($.key, 1)"
+                                },
+                                "Next": "AssignIteration1"
+                            },
+                            "AssignIteration1": {
+                                "Comment": "Initialize variables",
+                                "Type": "Pass",
+                                "Result": {
+                                    "number": "$.key"
+                                },
+                                "Next": "AssignIteration2"
+                            },
+                            "AssignIteration2": {
+                                "Comment": "Initialize variables",
+                                "Type": "Pass",
+                                "Result": {
+                                    "number": "$.key"
+                                },
+                                "Next": "ForLoop?"
+                            },
+                            "ForLoop?": {
+                                "Comment": "Auto generated",
+                                "Type": "Choice",
+                                "Choices": [
+                                    {
+                                        "Variable": "$.key",
+                                        "NumericLessThan": 9,
+                                        "Next": "ForIncrementCounter"
+                                    }
+                                ],
+                                "Default": "ForEndLoop"
+                            },
+                            "ForEndLoop": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                },
+                                "End": true
+                            }
+                        }
+                    }
+                    ],
+                    "End": true
+                }
+            }
+        }
         """.trimIndent()
 
         expectThat(content)
@@ -282,6 +350,76 @@ internal class AmazonRendererTest {
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
         val expected = """
+        {
+            "Comment": "Description",
+            "StartAt": "For",
+            "States": {
+                "For": {
+                    "Comment": "For example",
+                    "Type": "Parallel",
+                    "Branches": [
+                        {
+                            "StartAt": "ForInitializeCounter",
+                            "States": {
+                            "ForInitializeCounter": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                    "Index": -1
+                                },
+                                "Next": "ForIncrementCounter"
+                            },
+                            "ForIncrementCounter": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                    "Index.$": "States.MathAdd($.Index, 1)",
+                                    "key.$": "States.ArrayGet($.listString, $.Index)"
+                                },
+                                "Next": "AssignIteration1"
+                            },
+                            "AssignIteration1": {
+                                "Comment": "Initialize variables",
+                                "Type": "Pass",
+                                "Result": {
+                                    "number": "$.key"
+                                },
+                                "Next": "AssignIteration2"
+                            },
+                            "AssignIteration2": {
+                                "Comment": "Initialize variables",
+                                "Type": "Pass",
+                                "Result": {
+                                    "number": "$.key"
+                                },
+                                "Next": "ForLoop?"
+                            },
+                            "ForLoop?": {
+                                "Comment": "Auto generated",
+                                "Type": "Choice",
+                                "Choices": [
+                                    {
+                                        "Variable": "$.Index",
+                                        "NumericLessThanPath": States.ArraySize($.listString),
+                                        "Next": "ForIncrementCounter"
+                                    }
+                                ],
+                                "Default": "ForEndLoop"
+                            },
+                            "ForEndLoop": {
+                                "Comment": "Auto generated",
+                                "Type": "Pass",
+                                "Result": {
+                                },
+                                "End": true
+                            }
+                        }
+                    }
+                    ],
+                    "End": true
+                }
+            }
+        }
         """.trimIndent()
 
         expectThat(content)
@@ -349,27 +487,29 @@ internal class AmazonRendererTest {
                             {
                                 "StartAt": "Assign step",
                                 "States": {
-                                "Assign step": {
-                                    "Comment": "Initialize variables",
-                                    "Type": "Pass",
-                                    "Result": {
-                                        "Hello": "Hello"
-                                    },
-                                    "End": true
-                                },
+                                    "Assign step": {
+                                        "Comment": "Initialize variables",
+                                        "Type": "Pass",
+                                        "Result": {
+                                            "Hello": "Hello"
+                                        },
+                                        "End": true
+                                    }
+                                }
                             },
                             {
                                 "StartAt": "Assign step 2",
                                 "States": {
-                                "Assign step 2": {
-                                    "Comment": "Initialize variables",
-                                    "Type": "Pass",
-                                    "Result": {
-                                        "Hello": "Hello"
-                                    },
-                                    "End": true
-                                },
-                            },
+                                    "Assign step 2": {
+                                        "Comment": "Initialize variables",
+                                        "Type": "Pass",
+                                        "Result": {
+                                            "Hello": "Hello"
+                                        },
+                                        "End": true
+                                    }
+                                }
+                            }
                         ],
                         "End": true
                     }
@@ -382,7 +522,7 @@ internal class AmazonRendererTest {
     }
 
     @Test
-    fun `test parallel with iteration step`(){
+    fun `test parallel with iteration step with forEach`(){
         val w = createWorkflow(
             step {
                 name("Parallel Iteration")
@@ -431,5 +571,155 @@ internal class AmazonRendererTest {
             .isEqualTo(expected)
     }
 
+
+    @Test
+    fun `test parallel with iteration step with range`(){
+        val w = createWorkflow(
+            step {
+                name("Parallel Iteration")
+                description("Initialize variables")
+                context(
+                    parallel {
+                        // for loop unrolling might be a solution for aws, gcp already supports suporta
+                        // loop unrolling
+                        iteration {
+                            value("key")
+                            range(1, 3)
+                            //loop listas e chaves de um hashmap // for map goes through keys
+                            steps(
+                                step {
+                                    name("AssignParallelIteration1")
+                                    description("Initialize variables")
+                                    context(
+                                        assign {
+                                            variable("d" equal variable("key"))
+                                        }
+                                    )
+                                },
+                                step {
+                                    name("AssignParallelIteration2")
+                                    description("Initialize variables")
+                                    context(
+                                        assign {
+                                            variable("d" equal variable("key"))
+                                        }
+                                    )
+                                }
+                            )
+                        }
+                    }
+                )
+            }
+        )
+
+        val content = nodeTraversor.traverse(contextVisitor, w, renderingContext)
+            .filterNot(String::isEmpty)
+            .joinToStringNewLines()
+        val expected = """
+        {
+            "Comment": "Description",
+            "StartAt": "Parallel Iteration",
+            "States": {
+                "Parallel Iteration": {
+                    "Comment": "Initialize variables",
+                    "Type": "Parallel",
+                    "Branches": [
+                        {
+                            "StartAt": "Parallel IterationInitializeCounter",
+                            "States": {
+                                "Parallel IterationInitializeCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "key.${'$'}": 1
+                                    },
+                                    "Next": "AssignParallelIteration1"
+                                },
+                                "AssignParallelIteration1": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "Next": "AssignParallelIteration2"
+                                },
+                                "AssignParallelIteration2": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "End": true
+                                }
+                            }
+                        },
+                        {
+                            "StartAt": "Parallel IterationInitializeCounter",
+                            "States": {
+                                "Parallel IterationInitializeCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "key.${'$'}": 2
+                                    },
+                                    "Next": "AssignParallelIteration1"
+                                },
+                                "AssignParallelIteration1": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "Next": "AssignParallelIteration2"
+                                },
+                                "AssignParallelIteration2": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "End": true
+                                }
+                            }
+                        },
+                        {
+                            "StartAt": "Parallel IterationInitializeCounter",
+                            "States": {
+                                "Parallel IterationInitializeCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "key.${'$'}": 3
+                                    },
+                                    "Next": "AssignParallelIteration1"
+                                },
+                                "AssignParallelIteration1": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "Next": "AssignParallelIteration2"
+                                },
+                                "AssignParallelIteration2": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "d": "$.key"
+                                    },
+                                    "End": true
+                                }
+                            }
+                        }
+                    ],
+                    "End": true
+                }
+            }
+        }
+        """.trimIndent()
+
+        expectThat(content)
+            .isEqualTo(expected)
+    }
 
 }

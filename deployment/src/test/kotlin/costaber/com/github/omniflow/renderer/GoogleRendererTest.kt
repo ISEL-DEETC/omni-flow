@@ -213,10 +213,10 @@ internal class GoogleRendererTest {
                             steps:
                                 - AssignIteration1:
                                     assign:
-                                        - number: Variable(name=key)
+                                        - number: ${"$"}{key}
                                 - AssignIteration2:
                                     assign:
-                                        - number: Variable(name=key)
+                                        - number: ${"$"}{key}
                     - return_output:
                         return: ${"$"}{result}
         """.trimIndent()
@@ -273,10 +273,10 @@ internal class GoogleRendererTest {
                             steps:
                                 - AssignIteration1:
                                     assign:
-                                        - number: Variable(name=key)
+                                        - number: ${"$"}{key}
                                 - AssignIteration2:
                                     assign:
-                                        - number: Variable(name=key)
+                                        - number: ${"$"}{key}
                     - return_output:
                         return: ${"$"}{result}
         """.trimIndent()
@@ -412,10 +412,10 @@ internal class GoogleRendererTest {
                                     steps:
                                         - AssignParallelIteration1:
                                             assign:
-                                                - d: Variable(name=key)
+                                                - d: ${"$"}{key}
                                         - AssignParallelIteration2:
                                             assign:
-                                                - d: Variable(name=key)
+                                                - d: ${"$"}{key}
                     - return_output:
                         return: ${"$"}{result}
         """.trimIndent()

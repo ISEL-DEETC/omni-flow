@@ -11,7 +11,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonEqualToExpressionRenderer(
     private val equalToExpression: EqualToExpression<*>
-) : IndentedNodeRenderer() {
+) : AmazonRenderer() {
 
     override val element: Node = equalToExpression
 

@@ -2,16 +2,22 @@ package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
 import costaber.com.github.omniflow.model.Condition
 import costaber.com.github.omniflow.model.Step
+import costaber.com.github.omniflow.model.StepContext
 import costaber.com.github.omniflow.model.VariableInitialization
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 
-class AmazonRenderingContext : IndentedRenderingContext(termContext = object : TermContext {}) {
+class AmazonRenderingContext(
+    indentationLevel: Int = 0,
+    stringBuilder: StringBuilder = StringBuilder(),
+    termContext: TermContext = object : TermContext {},
+) : IndentedRenderingContext(indentationLevel, stringBuilder, termContext) {
 
     private lateinit var stepsNames: MutableList<String>
     private var currentStepName: String? = null
     private var lastVariable: VariableInitialization<*>? = null
     private var lastCondition: Condition? = null
+    private var innerRenderingContext: MutableList<AmazonRenderingContext> = mutableListOf()
 
     fun setVariables(variables: Collection<VariableInitialization<*>>) {
         lastVariable = variables.lastOrNull()
@@ -32,6 +38,10 @@ class AmazonRenderingContext : IndentedRenderingContext(termContext = object : T
             .toMutableList()
     }
 
+    fun setSteps(stepsContext: List<StepContext>) {
+        stepsNames = stepsContext.map { "" }.toMutableList()
+    }
+
     fun getNextStepName(): String? =
         stepsNames.firstOrNull()
 
@@ -42,4 +52,23 @@ class AmazonRenderingContext : IndentedRenderingContext(termContext = object : T
 
     fun getCurrentStepName(): String? =
         currentStepName
+
+    fun appendInnerRenderingContext(innerContext: AmazonRenderingContext) {
+        innerRenderingContext.add(innerContext)
+    }
+
+    fun popLastRenderingContext(): AmazonRenderingContext {
+        return innerRenderingContext.removeLastOrNull() ?: this
+    }
+
+    fun getLastRenderingContext(): AmazonRenderingContext {
+        return innerRenderingContext.lastOrNull() ?: this
+    }
+
+    fun nestedLevel(): Int {
+        return innerRenderingContext.size
+    }
+
+
+
 }

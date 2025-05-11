@@ -9,7 +9,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonVariablesResolver(
     private val variableInitialization: VariableInitialization<*>
-) : IndentedNodeRenderer() {
+) : AmazonRenderer() {
 
     private val objectMapper = ObjectMapper()
 

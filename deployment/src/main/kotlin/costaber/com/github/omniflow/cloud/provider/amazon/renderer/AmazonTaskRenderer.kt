@@ -6,7 +6,6 @@ import costaber.com.github.omniflow.model.CallContext
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Term
 import costaber.com.github.omniflow.model.Value
-import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.resource.util.render
@@ -14,7 +13,7 @@ import costaber.com.github.omniflow.resource.util.render
 class AmazonTaskRenderer(
     private val callContext: CallContext,
     private val amazonTermResolver: AmazonTermResolver,
-) : IndentedNodeRenderer() {
+) : AmazonRenderer() {
 
     private val objectMapper = ObjectMapper()
 
@@ -36,7 +35,7 @@ class AmazonTaskRenderer(
                 renderAuth()
                 addEmptyLine()
             }
-            add(AMAZON_CLOSE_OBJECT)
+            add(AMAZON_CLOSE_OBJECT_WITH_COMMA)
         }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
@@ -52,9 +51,9 @@ class AmazonTaskRenderer(
             tab {
                 addLine("\"${callContext.result}.\$\": \"\$.${AMAZON_RESPONSE_BODY}\"")
             }
-            addLine(AMAZON_CLOSE_OBJECT)
+            addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
             addLine("$AMAZON_START_RESULT_PATH\"\$.${currentStepName}\",")
-            if (nextStepName == null) {
+            if (nextStepName == null || nextStepName.isBlank()) {
                 add(AMAZON_END)
             } else {
                 add("${AMAZON_NEXT}\"${nextStepName}\"")
