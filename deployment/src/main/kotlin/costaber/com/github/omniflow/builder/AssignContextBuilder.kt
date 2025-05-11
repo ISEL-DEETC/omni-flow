@@ -14,9 +14,17 @@ class AssignContextBuilder : ContextBuilder {
 
     override fun build() = AssignContext(
         variables = variables.map {
+            // This allows any Term<T> to be used in term without
+            // boxing it with a Value<T> type.
+            // Example having Variable instead of Value<Variable>
+            // Since both are Term there's no need to box one inside the other
+            @Suppress("UNCHECKED_CAST")
             VariableInitialization(
                 variable = Variable(it.first),
-                term = Value(it.second)
+                term = when (val second = it.second) {
+                    is Term<*> -> second as Term<Any>
+                    else -> Value(second)
+                }
             )
         }
     )
