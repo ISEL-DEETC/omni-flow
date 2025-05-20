@@ -574,6 +574,7 @@ internal class AmazonRendererTest {
 
     @Test
     fun `test parallel with iteration step with range`(){
+        "Map workflow state"
         val w = createWorkflow(
             step {
                 name("Parallel Iteration")

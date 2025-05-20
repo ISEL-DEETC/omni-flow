@@ -17,7 +17,7 @@ class AmazonLessThanExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
-            addLine("$AMAZON_VARIABLE\"\$.${renderingContext}\",")
+            addLine("$AMAZON_VARIABLE\"\$.${lessThanExpression.left.term()}\",")
             when (lessThanExpression.right) {
                 is Value<*> -> add("\"NumericLessThan\": ")
                 is Variable -> add("\"NumericLessThanPath\": ")
