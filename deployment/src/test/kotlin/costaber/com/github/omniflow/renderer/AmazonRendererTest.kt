@@ -565,6 +565,53 @@ internal class AmazonRendererTest {
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
         val expected = """
+            {
+                "Comment": "Description",
+                "StartAt": "Parallel Iteration",
+                "States": {
+                    "Parallel Iteration": {
+                        "Comment": "Initialize variables",
+                        "Type": "Map",
+                        "ItemsPath": "${'$'}.listString",
+                        "ItemSelector": {
+                            "key.${'$'}": "${'$'}${'$'}.Map.Item.Value"
+                        },
+                        "ItemProcessor": {
+                            "StartAt": "InnerMapParallel Iteration",
+                            "States": {
+                                "InnerMapParallel Iteration": {
+                                    "Type": "Parallel",
+                                    "Branches": [
+                                        {
+                                            "StartAt": "AssignParallelIteration1",
+                                            "States": {
+                                                "AssignParallelIteration1": {
+                                                    "Comment": "Initialize variables",
+                                                    "Type": "Pass",
+                                                    "Result": {
+                                                        "d": "${'$'}.key"
+                                                    },
+                                                    "Next": "AssignParallelIteration2"
+                                                },
+                                                "AssignParallelIteration2": {
+                                                    "Comment": "Initialize variables",
+                                                    "Type": "Pass",
+                                                    "Result": {
+                                                        "d": "${'$'}.key"
+                                                    },
+                                                    "End": true
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "End": true
+                                }
+                            }
+                        },
+                        "End": true
+                    }
+                }
+            }
         """.trimIndent()
 
         expectThat(content)

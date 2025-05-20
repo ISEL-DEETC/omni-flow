@@ -30,15 +30,16 @@ class AmazonTraversor: DepthFirstNodeVisitorTraversor() {
             is Step -> when(node.context) {
                 is IterationRangeContext -> node.copy(context = node.context.childNodes(node.name))
                 is IterationForEachContext -> node.copy(context = node.context.childNodes(node.name))
-                is ParallelIterationContext -> node.copy(context = node.context.toParallelBranchContext(node.name))
+                is ParallelIterationContext -> when(node.context.iterationContext) {
+                    is IterationRangeContext -> node.copy(context = node.context.toParallelBranchContext(node.name))
+                    else -> node
+                }
                 else -> node
 
             }
 
             else -> node
         }
-
-
         super.traverseNode(visitor, newNode, context, visitResults)
     }
 
@@ -61,21 +62,6 @@ private fun ParallelIterationContext.toParallelBranchContext(prefix: String): Pa
                 ).plus(this@toParallelBranchContext.iterationContext.steps)
             )
         }
-//        is IterationForEachContext -> (this.iterationContext.forEachVariable.name).map {
-//            BranchContext(
-//                prefix, null, listOf(
-//                    step {
-//                        name("${prefix}InitializeCounter")
-//                        description("Auto generated")
-//                        context(
-//                            assign {
-//                                variable("${this@toParallelBranchContext.iterationContext.value}.$" equal it)
-//                            }
-//                        )
-//                    }.build()
-//                ).plus(this@toParallelBranchContext.iterationContext.steps)
-//            )
-//        }
         else -> listOf(
             BranchContext(prefix, null, this.iterationContext.steps),
         )

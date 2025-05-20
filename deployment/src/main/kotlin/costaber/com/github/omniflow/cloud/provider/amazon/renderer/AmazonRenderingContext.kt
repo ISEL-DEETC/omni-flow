@@ -7,17 +7,21 @@ import costaber.com.github.omniflow.model.VariableInitialization
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 
+
+
 class AmazonRenderingContext(
     indentationLevel: Int = 0,
     stringBuilder: StringBuilder = StringBuilder(),
     termContext: TermContext = object : TermContext {},
 ) : IndentedRenderingContext(indentationLevel, stringBuilder, termContext) {
+    companion object {
+        private var innerRenderingContext: MutableList<AmazonRenderingContext> = mutableListOf()
+    }
 
     private lateinit var stepsNames: MutableList<String>
     private var currentStepName: String? = null
     private var lastVariable: VariableInitialization<*>? = null
     private var lastCondition: Condition? = null
-    private var innerRenderingContext: MutableList<AmazonRenderingContext> = mutableListOf()
 
     fun setVariables(variables: Collection<VariableInitialization<*>>) {
         lastVariable = variables.lastOrNull()
