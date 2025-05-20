@@ -101,7 +101,7 @@ private fun IterationForEachContext.childNodes(prefix: String): IterationForEach
             context(
                 assign {
                     variable("Index.$" equal "States.MathAdd($.Index, 1)")
-                    variable("${value}.$" equal "States.ArrayGet(${forEachVariable}, $.Index)")
+                    variable("${value}.$" equal "States.ArrayGet($.${forEachVariable.name}, $.Index)")
                 }
             )
         }).map { it.build() }
@@ -114,7 +114,7 @@ private fun IterationForEachContext.childNodes(prefix: String): IterationForEach
                     switch {
                         conditions(
                             condition {
-                                match(variable("Index") lessThan variable("States.ArraySize(${forEachVariable})"))
+                                match(variable("Index") lessThan variable("States.ArraySize($.${forEachVariable.name})"))
                                 jump("${prefix}IncrementCounter")
                             },
                         )
@@ -148,7 +148,7 @@ private fun IterationRangeContext.childNodes(prefix: String): IterationRangeCont
             description("Auto generated")
             context(
                 assign {
-                   variable( "${value}.$" equal "States.MathAdd(${Variable(value)}, 1)")
+                   variable( "${value}.$" equal "States.MathAdd($.${value}, 1)")
                 }
             )
         }).map { it.build() }
