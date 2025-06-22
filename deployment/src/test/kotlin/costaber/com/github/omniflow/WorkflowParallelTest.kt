@@ -79,7 +79,7 @@ internal class WorkflowParallelTest {
                         // for loop unrolling might be a solution for aws, gcp already supports suporta
                         // loop unrolling
                         iteration {
-                            value("key")
+                            key("key")
                             forEach(variable("listString")) // range(1, 9)
                             //loop listas e chaves de um hashmap // for map goes through keys
                             steps(
@@ -122,7 +122,7 @@ internal class WorkflowParallelTest {
                 description("For example")
                 context(
                     iteration {
-                        value("key")
+                        key("key")
                         range(1, 9) //|| forEach(variable("listString"))
                         // lists and keys of hashmap // forEach in hashmap goes through keys
                         // TODO default does what in iteration??

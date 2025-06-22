@@ -4,14 +4,14 @@ import costaber.com.github.omniflow.model.*
 
 class IterationContextBuilder : ContextBuilder {
 
-    private lateinit var value: String
+    private lateinit var key: String
     private var range: Range? = null
     private var forEachVariable: Variable? = null
     private val steps: MutableList<StepBuilder> = mutableListOf()
 
     override fun stepType() = StepType.ITERATION
 
-    fun value(value: String) = apply { this.value = value }
+    fun key(value: String) = apply { this.key = value }
 
     fun range(min: Int, max: Int) = apply {
         if (forEachVariable != null) {
@@ -31,9 +31,9 @@ class IterationContextBuilder : ContextBuilder {
 
     override fun build() : IterationContext {
         if (range != null)
-            return IterationRangeContext(value, steps.map { it.build() }, range!!)
+            return IterationRangeContext(key, steps.map { it.build() }, range!!)
         if (forEachVariable != null)
-            return IterationForEachContext(value, steps.map { it.build() }, forEachVariable!!)
+            return IterationForEachContext(key, steps.map { it.build() }, forEachVariable!!)
         throw IllegalStateException("Either ForEach or Range need to be set.")
     }
 }
