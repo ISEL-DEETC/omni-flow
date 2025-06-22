@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_VARIABLE
 import costaber.com.github.omniflow.model.LessThanOrEqualExpression
 import costaber.com.github.omniflow.model.Node
@@ -12,6 +13,7 @@ import costaber.com.github.omniflow.resource.util.render
 class AmazonLessThanOrEqualExpressionRenderer(
     private val lessThanOrEqualExpression: LessThanOrEqualExpression<*>
 ) : AmazonRenderer() {
+    private val objectMapper = ObjectMapper()
 
     override val element: Node = lessThanOrEqualExpression
 
@@ -22,7 +24,11 @@ class AmazonLessThanOrEqualExpressionRenderer(
                 is Value<*> -> add("\"NumericLessThanEquals\": ")
                 is Variable -> add("\"NumericLessThanEqualsPath\": ")
             }
-            append("${lessThanOrEqualExpression.right.term()},")
+            val term = when (lessThanOrEqualExpression.right) {
+                is Variable -> "\"$.${lessThanOrEqualExpression.right.term()}\""
+                else -> objectMapper.writeValueAsString(lessThanOrEqualExpression.right.term())
+            }
+            append("${term},")
         }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String = "" // nothing
