@@ -17,6 +17,9 @@ open class IndentedRenderingContext(
 
     fun decIndentationLevel() {
         indentationLevel -= 1
+        if (indentationLevel < 0) {
+            throw IllegalStateException("Indentation level cannot be negative")
+        }
     }
 
     fun addLine(value: String) {
@@ -46,4 +49,9 @@ open class IndentedRenderingContext(
     }
 
     fun getIndentationLevel() = indentationLevel
+
+    override fun toString(): String {
+        return "IndentedRenderingContext(indentationLevel=$indentationLevel, termContext=$termContext)"
+    }
+
 }

@@ -73,6 +73,7 @@ class AmazonRenderingContext(
         return innerRenderingContext.size
     }
 
-
-
+    override fun toString(): String {
+        return "AmazonRenderingContext(indentationLevel=${getIndentationLevel()},stepsNames=$stepsNames,currentStepName=$currentStepName,lastVariable=$lastVariable,lastCondition=$lastCondition,nestedLevel=${nestedLevel()})"
+    }
 }
