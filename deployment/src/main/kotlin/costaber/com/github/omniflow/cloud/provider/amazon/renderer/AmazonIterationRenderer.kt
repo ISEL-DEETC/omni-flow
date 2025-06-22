@@ -27,20 +27,20 @@ class AmazonIterationRenderer(private val iterationContext: IterationContext) : 
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-
-        val innerContext = AmazonRenderingContext(amazonContext.getIndentationLevel() + 2)
+        val context = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
         innerContext.setSteps(iterationContext.steps)
         amazonContext.appendInnerRenderingContext(innerContext)
-        return render(amazonContext) {
+        return render(context) {
             addLine(AMAZON_PARALLEL_TYPE)
             addLine(AMAZON_START_BRANCHES)
             incIndentationLevel()
+            innerContext.incIndentationLevel()
             addLine(AMAZON_OPEN_OBJECT)
-            tab {
-                addLine("${AMAZON_START_AT}\"${innerContext.getNextStepNameAndAdvance()}\",")
-                add(AMAZON_STATES)
-            }
-
+            incIndentationLevel()
+            innerContext.incIndentationLevel()
+            addLine("${AMAZON_START_AT}\"${innerContext.getNextStepNameAndAdvance()}\",")
+            add(AMAZON_STATES)
         }
     }
 
@@ -48,16 +48,19 @@ class AmazonIterationRenderer(private val iterationContext: IterationContext) : 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
         val nextStepName = amazonContext.getNextStepName()
-        amazonContext.popLastRenderingContext()
+        val innerContext = amazonContext.popLastRenderingContext()
         val context = amazonContext.getLastRenderingContext()
-        return render(amazonContext) {
+        return render(context) {
             addLine(AMAZON_CLOSE_OBJECT)
             decIndentationLevel()
+            innerContext.decIndentationLevel()
             if (context.getNextStepNameAndAdvance() != null) {
                 addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
             } else {
                 addLine(AMAZON_CLOSE_OBJECT)
             }
+            decIndentationLevel()
+            innerContext.decIndentationLevel()
             addLine(AMAZON_CLOSE_ARRAY_WITH_COMMA)
             if (nextStepName == null) {
                 add(AMAZON_END)

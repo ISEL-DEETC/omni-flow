@@ -17,15 +17,15 @@ import costaber.com.github.omniflow.dsl.variable
 import costaber.com.github.omniflow.dsl.workflow
 import costaber.com.github.omniflow.model.HttpMethod.GET
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
-import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
+import costaber.com.github.omniflow.traversor.VisitorObserver
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 internal class AmazonRendererTest {
-
-    private val nodeTraversor = AmazonTraversor()
+    private val observer = VisitorObserver()
+    private val nodeTraversor = AmazonTraversor().registerObserver(observer)
     private val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
     private val renderingContext = AmazonRenderingContext()
 
@@ -88,8 +88,8 @@ internal class AmazonRendererTest {
                 context(
                     call {
                         method(GET)
-                        host("r1ro8xa7y8.execute-api.us-east-1.amazonaws.com")
-                        path("/default/calculator")
+                        host("example.com")
+                        path("/calculator")
                         query(
                             "number1" to variable("a"),
                             "number2" to variable("b"),
@@ -115,9 +115,9 @@ internal class AmazonRendererTest {
                         "Resource": "arn:aws:states:::apigateway:invoke",
                         "InputPath": "${'$'}",
                         "Parameters": {
-                            "ApiEndpoint": "r1ro8xa7y8.execute-api.us-east-1.amazonaws.com",
+                            "ApiEndpoint": "example.com",
                             "Method": "GET",
-                            "Path": "/default/calculator",
+                            "Path": "/calculator",
                             "QueryParameters": {
                                 "number1.${'$'}": "States.Array(States.Format('{}', ${'$'}.a))",
                                 "number2.${'$'}": "States.Array(States.Format('{}', ${'$'}.b))",
@@ -205,7 +205,7 @@ internal class AmazonRendererTest {
                 description("For example")
                 context(
                     iteration {
-                        value("key")
+                        key("key")
                         range(1, 9)
                         steps(
                             step {
@@ -247,66 +247,65 @@ internal class AmazonRendererTest {
                         {
                             "StartAt": "ForInitializeCounter",
                             "States": {
-                            "ForInitializeCounter": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
-                                    "key.$": 0
+                                "ForInitializeCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "key.$": 0
+                                    },
+                                    "Next": "ForIncrementCounter"
                                 },
-                                "Next": "ForIncrementCounter"
-                            },
-                            "ForIncrementCounter": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
-                                    "key.$": "States.MathAdd($.key, 1)"
+                                "ForIncrementCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "key.$": "States.MathAdd($.key, 1)"
+                                    },
+                                    "Next": "AssignIteration1"
                                 },
-                                "Next": "AssignIteration1"
-                            },
-                            "AssignIteration1": {
-                                "Comment": "Initialize variables",
-                                "Type": "Pass",
-                                "Result": {
-                                    "number": "$.key"
+                                "AssignIteration1": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "number": "$.key"
+                                    },
+                                    "Next": "AssignIteration2"
                                 },
-                                "Next": "AssignIteration2"
-                            },
-                            "AssignIteration2": {
-                                "Comment": "Initialize variables",
-                                "Type": "Pass",
-                                "Result": {
-                                    "number": "$.key"
+                                "AssignIteration2": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "number": "$.key"
+                                    },
+                                    "Next": "ForLoop?"
                                 },
-                                "Next": "ForLoop?"
-                            },
-                            "ForLoop?": {
-                                "Comment": "Auto generated",
-                                "Type": "Choice",
-                                "Choices": [
-                                    {
-                                        "Variable": "$.key",
-                                        "NumericLessThan": 9,
-                                        "Next": "ForIncrementCounter"
-                                    }
-                                ],
-                                "Default": "ForEndLoop"
-                            },
-                            "ForEndLoop": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
+                                "ForLoop?": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Choice",
+                                    "Choices": [
+                                        {
+                                            "Variable": "$.key",
+                                            "NumericLessThan": 9,
+                                            "Next": "ForIncrementCounter"
+                                        }
+                                    ],
+                                    "Default": "ForEndLoop"
                                 },
-                                "End": true
+                                "ForEndLoop": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                    },
+                                    "End": true
+                                }
                             }
                         }
-                    }
                     ],
                     "End": true
                 }
             }
         }
         """.trimIndent()
-
         expectThat(content)
             .isEqualTo(expected)
     }
@@ -319,7 +318,7 @@ internal class AmazonRendererTest {
                 description("For example")
                 context(
                     iteration {
-                        value("key")
+                        key("key")
                         forEach(variable("listString"))
                         steps(
                             step {
@@ -361,67 +360,67 @@ internal class AmazonRendererTest {
                         {
                             "StartAt": "ForInitializeCounter",
                             "States": {
-                            "ForInitializeCounter": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
-                                    "Index": -1
+                                "ForInitializeCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "Index.$": -1,
+                                        "ArraySize.$": "$.States.ArraySize($.listString)"
+                                    },
+                                    "Next": "ForIncrementCounter"
                                 },
-                                "Next": "ForIncrementCounter"
-                            },
-                            "ForIncrementCounter": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
-                                    "Index.$": "States.MathAdd($.Index, 1)",
-                                    "key.$": "States.ArrayGet($.listString, $.Index)"
+                                "ForIncrementCounter": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "Index.$": "States.MathAdd($.Index, 1)",
+                                        "key.$": "States.ArrayGet($.listString, $.Index)"
+                                    },
+                                    "Next": "AssignIteration1"
                                 },
-                                "Next": "AssignIteration1"
-                            },
-                            "AssignIteration1": {
-                                "Comment": "Initialize variables",
-                                "Type": "Pass",
-                                "Result": {
-                                    "number": "$.key"
+                                "AssignIteration1": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "number": "$.key"
+                                    },
+                                    "Next": "AssignIteration2"
                                 },
-                                "Next": "AssignIteration2"
-                            },
-                            "AssignIteration2": {
-                                "Comment": "Initialize variables",
-                                "Type": "Pass",
-                                "Result": {
-                                    "number": "$.key"
+                                "AssignIteration2": {
+                                    "Comment": "Initialize variables",
+                                    "Type": "Pass",
+                                    "Result": {
+                                        "number": "$.key"
+                                    },
+                                    "Next": "ForLoop?"
                                 },
-                                "Next": "ForLoop?"
-                            },
-                            "ForLoop?": {
-                                "Comment": "Auto generated",
-                                "Type": "Choice",
-                                "Choices": [
-                                    {
-                                        "Variable": "$.Index",
-                                        "NumericLessThanPath": States.ArraySize($.listString),
-                                        "Next": "ForIncrementCounter"
-                                    }
-                                ],
-                                "Default": "ForEndLoop"
-                            },
-                            "ForEndLoop": {
-                                "Comment": "Auto generated",
-                                "Type": "Pass",
-                                "Result": {
+                                "ForLoop?": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Choice",
+                                    "Choices": [
+                                        {
+                                            "Variable": "$.Index",
+                                            "NumericLessThanPath": "$.ArraySize",
+                                            "Next": "ForIncrementCounter"
+                                        }
+                                    ],
+                                    "Default": "ForEndLoop"
                                 },
-                                "End": true
+                                "ForEndLoop": {
+                                    "Comment": "Auto generated",
+                                    "Type": "Pass",
+                                    "Result": {
+                                    },
+                                    "End": true
+                                }
                             }
                         }
-                    }
                     ],
                     "End": true
                 }
             }
         }
         """.trimIndent()
-
         expectThat(content)
             .isEqualTo(expected)
     }
@@ -532,7 +531,7 @@ internal class AmazonRendererTest {
                         // for loop unrolling might be a solution for aws, gcp already supports suporta
                         // loop unrolling
                         iteration {
-                            value("key")
+                            key("key")
                             forEach(variable("listString")) // range(1, 9)
                             //loop listas e chaves de um hashmap // for map goes through keys
                             steps(
@@ -565,53 +564,53 @@ internal class AmazonRendererTest {
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
         val expected = """
-            {
-                "Comment": "Description",
-                "StartAt": "Parallel Iteration",
-                "States": {
-                    "Parallel Iteration": {
-                        "Comment": "Initialize variables",
-                        "Type": "Map",
-                        "ItemsPath": "${'$'}.listString",
-                        "ItemSelector": {
-                            "key.${'$'}": "${'$'}${'$'}.Map.Item.Value"
-                        },
-                        "ItemProcessor": {
-                            "StartAt": "InnerMapParallel Iteration",
-                            "States": {
-                                "InnerMapParallel Iteration": {
-                                    "Type": "Parallel",
-                                    "Branches": [
-                                        {
-                                            "StartAt": "AssignParallelIteration1",
-                                            "States": {
-                                                "AssignParallelIteration1": {
-                                                    "Comment": "Initialize variables",
-                                                    "Type": "Pass",
-                                                    "Result": {
-                                                        "d": "${'$'}.key"
-                                                    },
-                                                    "Next": "AssignParallelIteration2"
+        {
+            "Comment": "Description",
+            "StartAt": "Parallel Iteration",
+            "States": {
+                "Parallel Iteration": {
+                    "Comment": "Initialize variables",
+                    "Type": "Map",
+                    "ItemsPath": "${'$'}.listString",
+                    "ItemSelector": {
+                        "key.${'$'}": "${'$'}${'$'}.Map.Item.Value"
+                    },
+                    "ItemProcessor": {
+                        "StartAt": "InnerMapParallel Iteration",
+                        "States": {
+                            "InnerMapParallel Iteration": {
+                                "Type": "Parallel",
+                                "Branches": [
+                                    {
+                                        "StartAt": "AssignParallelIteration1",
+                                        "States": {
+                                            "AssignParallelIteration1": {
+                                                "Comment": "Initialize variables",
+                                                "Type": "Pass",
+                                                "Result": {
+                                                    "d": "${'$'}.key"
                                                 },
-                                                "AssignParallelIteration2": {
-                                                    "Comment": "Initialize variables",
-                                                    "Type": "Pass",
-                                                    "Result": {
-                                                        "d": "${'$'}.key"
-                                                    },
-                                                    "End": true
-                                                }
+                                                "Next": "AssignParallelIteration2"
+                                            },
+                                            "AssignParallelIteration2": {
+                                                "Comment": "Initialize variables",
+                                                "Type": "Pass",
+                                                "Result": {
+                                                    "d": "${'$'}.key"
+                                                },
+                                                "End": true
                                             }
                                         }
-                                    ],
-                                    "End": true
-                                }
+                                    }
+                                ],
+                                "End": true
                             }
-                        },
-                        "End": true
-                    }
+                        }
+                    },
+                    "End": true
                 }
             }
+        }
         """.trimIndent()
 
         expectThat(content)
@@ -631,7 +630,7 @@ internal class AmazonRendererTest {
                         // for loop unrolling might be a solution for aws, gcp already supports suporta
                         // loop unrolling
                         iteration {
-                            value("key")
+                            key("key")
                             range(1, 3)
                             //loop listas e chaves de um hashmap // for map goes through keys
                             steps(

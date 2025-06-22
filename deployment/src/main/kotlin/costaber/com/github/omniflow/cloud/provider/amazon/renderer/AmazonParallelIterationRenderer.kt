@@ -12,18 +12,19 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val innerContext = AmazonRenderingContext(amazonContext.getIndentationLevel() + 1)
+        val context = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
         innerContext.setSteps(parallelIterationContext.iterationContext.steps)
         innerContext.getNextStepNameAndAdvance()
         innerContext.getNextStepNameAndAdvance()
-        amazonContext.appendInnerRenderingContext(innerContext)
+        context.appendInnerRenderingContext(innerContext)
 
         if (parallelIterationContext.iterationContext !is IterationForEachContext)
             assert(false) { "This should never happen! AmazonTravesor makes all other ParallelIteration into ParallelBranchContext" }
         val iterationForEachContext: IterationForEachContext = parallelIterationContext.iterationContext as IterationForEachContext
-        val innerName = "InnerMap${amazonContext.getCurrentStepName()}"
+        val innerName = "InnerMap${context.getCurrentStepName()}"
 
-        return render(amazonContext) {
+        return render(context) {
             addLine(AMAZON_MAP_TYPE)
             addLine("\"ItemsPath\": \"$.${iterationForEachContext.forEachVariable.name}\",")
             addLine("\"ItemSelector\": $AMAZON_OPEN_OBJECT")
@@ -33,9 +34,11 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
             addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
             addLine("\"ItemProcessor\": $AMAZON_OPEN_OBJECT")
             incIndentationLevel()
+            innerContext.incIndentationLevel()
             addLine("$AMAZON_START_AT\"$innerName\",")
             addLine(AMAZON_STATES)
             incIndentationLevel()
+            innerContext.incIndentationLevel()
             add("\"$innerName\": $AMAZON_OPEN_OBJECT")
         }
     }
@@ -44,12 +47,15 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
         val nextStepName = amazonContext.getNextStepName()
-        amazonContext.popLastRenderingContext()
-        return render(amazonContext) {
+        val innerContext = amazonContext.popLastRenderingContext()
+        val context = amazonContext.getLastRenderingContext()
+        return render(context) {
             addLine(AMAZON_CLOSE_OBJECT)
             decIndentationLevel()
+            innerContext.decIndentationLevel()
             addLine(AMAZON_CLOSE_OBJECT)
             decIndentationLevel()
+            innerContext.decIndentationLevel()
             addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
             if (nextStepName == null) {
                 add(AMAZON_END)

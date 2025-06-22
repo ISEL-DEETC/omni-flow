@@ -77,7 +77,8 @@ private fun IterationForEachContext.childNodes(prefix: String): IterationForEach
             description("Auto generated")
             context(
                 assign {
-                    variable("Index" equal -1)
+                    variable("Index.$" equal -1)
+                    variable("ArraySize.$" equal variable("States.ArraySize($.${forEachVariable.name})"))
                 }
             )
         },
@@ -100,7 +101,7 @@ private fun IterationForEachContext.childNodes(prefix: String): IterationForEach
                     switch {
                         conditions(
                             condition {
-                                match(variable("Index") lessThan variable("States.ArraySize($.${forEachVariable.name})"))
+                                match(variable("Index") lessThan variable("ArraySize"))
                                 jump("${prefix}IncrementCounter")
                             },
                         )

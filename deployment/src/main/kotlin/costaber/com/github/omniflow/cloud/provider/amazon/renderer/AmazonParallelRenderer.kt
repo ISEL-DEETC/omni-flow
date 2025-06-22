@@ -12,11 +12,12 @@ class AmazonParallelRenderer(private val parallelBranchContext: ParallelBranchCo
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val innerContext = AmazonRenderingContext(amazonContext.getIndentationLevel() + 1)
+        val context = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
         innerContext.setSteps(parallelBranchContext.branches)
         innerContext.getNextStepNameAndAdvance()
-        amazonContext.appendInnerRenderingContext(innerContext)
-        return render(amazonContext) {
+        context.appendInnerRenderingContext(innerContext)
+        return render(context) {
             addLine(AMAZON_PARALLEL_TYPE)
             add(AMAZON_START_BRANCHES)
         }
@@ -26,8 +27,9 @@ class AmazonParallelRenderer(private val parallelBranchContext: ParallelBranchCo
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
         val nextStepName = amazonContext.getNextStepName()
-        amazonContext.popLastRenderingContext()
-        return render(amazonContext) {
+        val innerContext = amazonContext.popLastRenderingContext()
+        val context = amazonContext.getLastRenderingContext()
+        return render(context) {
             addLine(AMAZON_CLOSE_ARRAY_WITH_COMMA)
             if (nextStepName == null) {
                 add(AMAZON_END)

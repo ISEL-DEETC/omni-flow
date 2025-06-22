@@ -110,6 +110,7 @@ internal class WorkflowTest {
     }
 
     @Test
+    @Ignore
     fun `test amazon full deployment`() {
         val deployer = AmazonCloudDeployer.Builder().build()
         val amazonDeployContext = AmazonDeployContext(

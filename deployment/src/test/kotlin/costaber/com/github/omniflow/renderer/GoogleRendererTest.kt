@@ -20,7 +20,7 @@ import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 internal class GoogleRendererTest {
 
@@ -80,8 +80,8 @@ internal class GoogleRendererTest {
                 context(
                     call {
                         method(GET)
-                        host("r1ro8xa7y8.execute-api.us-east-1.amazonaws.com")
-                        path("/default/calculator")
+                        host("example.com")
+                        path("/calculator")
                         query(
                             "number1" to variable("a"),
                             "number2" to variable("b"),
@@ -102,7 +102,7 @@ internal class GoogleRendererTest {
                     - Sum:
                         call: http.get
                         args:
-                            url: r1ro8xa7y8.execute-api.us-east-1.amazonaws.com/default/calculator
+                            url: example.com/calculator
                             query:
                                 number1: ${"$"}{a}
                                 number2: ${"$"}{b}
@@ -173,7 +173,7 @@ internal class GoogleRendererTest {
                 description("For example")
                 context(
                     iteration {
-                        value("key")
+                        key("key")
                         range(1, 9)
                         steps(
                             step {
@@ -233,7 +233,7 @@ internal class GoogleRendererTest {
                 description("For example")
                 context(
                     iteration {
-                        value("key")
+                        key("key")
                         forEach(variable("listString"))
                         steps(
                             step {
@@ -369,7 +369,7 @@ internal class GoogleRendererTest {
                         // for loop unrolling might be a solution for aws, gcp already supports suporta
                         // loop unrolling
                         iteration {
-                            value("key")
+                            key("key")
                             forEach(variable("listString")) // range(1, 9)
                             //loop listas e chaves de um hashmap // for map goes through keys
                             steps(
