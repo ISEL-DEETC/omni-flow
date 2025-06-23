@@ -13,7 +13,6 @@ import costaber.com.github.omniflow.model.ParallelBranchContext
 import costaber.com.github.omniflow.model.ParallelIterationContext
 import costaber.com.github.omniflow.model.Step
 import costaber.com.github.omniflow.model.Value
-import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.ContextVisitor
 import kotlin.collections.plus

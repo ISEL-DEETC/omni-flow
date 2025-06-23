@@ -12,7 +12,12 @@ class GoogleStepRenderer(private val step: Step) : IndentedNodeRenderer() {
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
-            add("- ${step.name}:")
+            if (step.next.isNotEmpty()) {
+                addLine("- ${step.name}:")
+                tab { add("next: ${step.next}") }
+            } else {
+                add("- ${step.name}:")
+            }
         }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext) = "" // nothing

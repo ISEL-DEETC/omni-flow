@@ -5,6 +5,7 @@ data class Step(
     val description: String,
     val type: StepType = StepType.CALL,
     val context: StepContext,
+    val next: String = "",
 ) : Node {
 
     override fun childNodes(): List<Node> {

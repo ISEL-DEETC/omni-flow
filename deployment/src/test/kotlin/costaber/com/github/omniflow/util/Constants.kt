@@ -128,16 +128,16 @@ val CALL_CONTEXT_1 = CallContext(
 )
 
 val STEP_1 = Step(
-    name = STEP_NAME_1,
-    description = STEP_DESCRIPTION_1,
-    type = StepType.CALL,
-    context = CALL_CONTEXT_1,
+    STEP_NAME_1,
+    STEP_DESCRIPTION_1,
+    StepType.CALL,
+    CALL_CONTEXT_1,
 )
 val STEP_2 = Step(
-    name = STEP_NAME_2,
-    description = STEP_DESCRIPTION_2,
-    type = StepType.ASSIGN,
-    context = ASSIGN_CONTEXT_1,
+    STEP_NAME_2,
+    STEP_DESCRIPTION_2,
+    StepType.ASSIGN,
+    ASSIGN_CONTEXT_1,
 )
 
 val WORKFLOW_1 = Workflow(
