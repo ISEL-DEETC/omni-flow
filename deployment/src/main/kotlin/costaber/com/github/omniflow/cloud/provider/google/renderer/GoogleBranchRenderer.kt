@@ -7,7 +7,7 @@ import costaber.com.github.omniflow.renderer.RenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.resource.util.render
 
-class GoogleBranchRenderer(private val branchContext: BranchContext) : IndentedNodeRenderer() {
+class GoogleBranchRenderer(private val branchContext: BranchContext) : GoogleRenderer() {
 
     override val element: Node = branchContext
 

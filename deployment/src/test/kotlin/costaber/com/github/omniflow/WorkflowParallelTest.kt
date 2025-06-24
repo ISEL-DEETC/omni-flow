@@ -3,10 +3,10 @@ package costaber.com.github.omniflow
 import costaber.com.github.omniflow.cloud.provider.amazon.deployer.AmazonCloudDeployer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.dsl.*
 import costaber.com.github.omniflow.model.HttpMethod.GET
-import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
@@ -222,7 +222,7 @@ internal class WorkflowParallelTest {
     fun `test google full deployment`() {
         val nodeTraversor = DepthFirstNodeVisitorTraversor()
         val contextVisitor = NodeContextVisitor(GoogleCloudDeployer.Builder().createNodeRendererStrategyDecider())
-        val renderingContext = IndentedRenderingContext(termContext = GoogleTermContext())
+        val renderingContext = GoogleRenderingContext(termContext = GoogleTermContext())
         val content = nodeTraversor.traverse(contextVisitor, generalWorkflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()

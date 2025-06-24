@@ -6,7 +6,7 @@ import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class GoogleStepRenderer(private val step: Step) : IndentedNodeRenderer() {
+class GoogleStepRenderer(private val step: Step) : GoogleRenderer() {
 
     override val element: Node = step
 

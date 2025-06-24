@@ -6,7 +6,7 @@ import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class GoogleConditionRenderer(private val condition: Condition) : IndentedNodeRenderer() {
+class GoogleConditionRenderer(private val condition: Condition) : GoogleRenderer() {
 
     override val element: Node = condition
 

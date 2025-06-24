@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.metrics
 
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
 import costaber.com.github.omniflow.generator.WorkflowGenerator.textTranslator
@@ -25,7 +26,7 @@ class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
         val googleContextVisitor = NodeContextVisitor(
             StrategyDeciderProvider.googleNodeRendererStrategyDecider()
         )
-        val googleRenderingContext = IndentedRenderingContext(
+        val googleRenderingContext = GoogleRenderingContext(
             0, StringBuilder(), GoogleTermContext()
         )
         val workflow = textTranslator()

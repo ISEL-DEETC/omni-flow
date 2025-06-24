@@ -10,7 +10,7 @@ import costaber.com.github.omniflow.resource.util.render
 class GoogleWorkflowRenderer(
     private val workflow: Workflow,
     private val googleTermResolver: GoogleTermResolver,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = workflow
 

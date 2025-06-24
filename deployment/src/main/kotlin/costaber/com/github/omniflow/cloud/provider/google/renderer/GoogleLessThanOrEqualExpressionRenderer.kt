@@ -8,7 +8,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class GoogleLessThanOrEqualExpressionRenderer(
     private val lessThanOrEqualExpression: LessThanOrEqualExpression<*>,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = lessThanOrEqualExpression
 

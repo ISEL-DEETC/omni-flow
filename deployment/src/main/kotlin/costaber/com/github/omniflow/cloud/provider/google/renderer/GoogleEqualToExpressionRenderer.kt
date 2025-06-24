@@ -8,7 +8,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class GoogleEqualToExpressionRenderer(
     private val equalToExpression: EqualToExpression<*>,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = equalToExpression
 

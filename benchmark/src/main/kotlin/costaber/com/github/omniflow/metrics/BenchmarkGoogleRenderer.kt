@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.metrics
 
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.generator.WorkflowGenerator.usingVariables
 import costaber.com.github.omniflow.generator.WorkflowGenerator.withBinaryConditions
@@ -26,7 +27,7 @@ class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
         workflowWithMultipleDecisions = withMultipleDecisions(numberOfSteps)
         traversor = DepthFirstNodeVisitorTraversor()
         googleContextVisitor = NodeContextVisitor(StrategyDeciderProvider.googleNodeRendererStrategyDecider())
-        googleRenderingContext = IndentedRenderingContext(0, StringBuilder(), GoogleTermContext())
+        googleRenderingContext = GoogleRenderingContext(0, StringBuilder(), GoogleTermContext())
     }
 
     @Benchmark

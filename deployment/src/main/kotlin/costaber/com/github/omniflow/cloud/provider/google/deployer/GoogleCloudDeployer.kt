@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.google.deployer
 
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleBranchRenderer
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
 import costaber.com.github.omniflow.cloud.provider.google.strategy.*
@@ -26,7 +27,7 @@ class GoogleCloudDeployer internal constructor(
 
     override fun deploy(workflow: Workflow, deployContext: GoogleDeployContext) {
         logger.info { "Starting to convert Workflow into a Workflow" }
-        val renderingContext = IndentedRenderingContext(termContext = GoogleTermContext())
+        val renderingContext = GoogleRenderingContext(termContext = GoogleTermContext())
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()

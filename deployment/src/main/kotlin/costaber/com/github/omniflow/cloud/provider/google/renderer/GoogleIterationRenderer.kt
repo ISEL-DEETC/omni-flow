@@ -8,7 +8,7 @@ import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class GoogleIterationRenderer(private val iterationContext: IterationContext) : IndentedNodeRenderer() {
+class GoogleIterationRenderer(private val iterationContext: IterationContext) : GoogleRenderer() {
 
     override val element: Node = iterationContext
 

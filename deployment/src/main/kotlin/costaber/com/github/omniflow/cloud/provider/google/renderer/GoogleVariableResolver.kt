@@ -9,15 +9,18 @@ import costaber.com.github.omniflow.resource.util.render
 class GoogleVariableResolver(
     private val variableInitialization: VariableInitialization<*>,
     private val googleTermResolver: GoogleTermResolver,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = variableInitialization
 
-    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
-        render(renderingContext) {
+    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
+        val googleRenderingContext = renderingContext as GoogleRenderingContext
+        googleRenderingContext.setVariables(listOf(variableInitialization))
+        return render(renderingContext) {
             val term = googleTermResolver.resolve(variableInitialization.term, termContext)
             add("- ${variableInitialization.variable.name}: $term")
         }
+    }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext) = "" // nothing
 }

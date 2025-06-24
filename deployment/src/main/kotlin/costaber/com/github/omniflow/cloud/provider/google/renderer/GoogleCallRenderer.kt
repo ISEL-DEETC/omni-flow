@@ -12,7 +12,7 @@ import costaber.com.github.omniflow.resource.util.render
 class GoogleCallRenderer(
     private val callContext: CallContext,
     private val googleTermResolver: GoogleTermResolver,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     private val objectMapper = ObjectMapper(YAMLFactory())
 
