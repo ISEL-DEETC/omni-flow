@@ -1,7 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import costaber.com.github.omniflow.cloud.provider.amazon.*
+import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.NotEqualToExpression
 import costaber.com.github.omniflow.model.Value
@@ -13,7 +13,7 @@ import costaber.com.github.omniflow.resource.util.render
 class AmazonNotEqualToExpressionRenderer(
     private val notEqualToExpression: NotEqualToExpression<*>,
 ) : AmazonRenderer() {
-    private val objectMapper = ObjectMapper()
+    private val objectMapper = AmazonObjectMapper.default
     override val element: Node = notEqualToExpression
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =

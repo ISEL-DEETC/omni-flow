@@ -1,6 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.model.VariableInitialization
@@ -11,7 +11,7 @@ class AmazonVariablesResolver(
     private val variableInitialization: VariableInitialization<*>
 ) : AmazonRenderer() {
 
-    private val objectMapper = ObjectMapper()
+    private val objectMapper = AmazonObjectMapper.default
 
     override val element: Node = variableInitialization
 

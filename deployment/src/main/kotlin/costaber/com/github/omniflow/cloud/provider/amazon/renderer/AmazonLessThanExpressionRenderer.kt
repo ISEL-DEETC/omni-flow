@@ -1,7 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_VARIABLE
+import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
 import costaber.com.github.omniflow.model.LessThanExpression
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Value
@@ -13,7 +13,7 @@ import costaber.com.github.omniflow.resource.util.render
 class AmazonLessThanExpressionRenderer(
     private val lessThanExpression: LessThanExpression<*>
 ) : AmazonRenderer() {
-    private val objectMapper = ObjectMapper()
+    private val objectMapper = AmazonObjectMapper.default
 
     override val element: Node = lessThanExpression
 

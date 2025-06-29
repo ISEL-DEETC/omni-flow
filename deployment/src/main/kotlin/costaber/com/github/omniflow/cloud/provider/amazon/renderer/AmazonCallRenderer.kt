@@ -1,7 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import costaber.com.github.omniflow.cloud.provider.amazon.*
+import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
 import costaber.com.github.omniflow.model.CallContext
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Term
@@ -15,7 +15,7 @@ class AmazonTaskRenderer(
     private val amazonTermResolver: AmazonTermResolver,
 ) : AmazonRenderer() {
 
-    private val objectMapper = ObjectMapper()
+    private val objectMapper = AmazonObjectMapper.default
 
     override val element: Node = callContext
 
@@ -71,7 +71,7 @@ class AmazonTaskRenderer(
             append(",")
             addEmptyLine()
             addLine(title)
-            tab {
+            tab {AMAZON_START_RESULT_PATH
                 val mutableMap = mapToRender.toMutableMap()
                 val last = mutableMap.entries.lastOrNull()
                 last?.let { mutableMap.remove(last.key) }
