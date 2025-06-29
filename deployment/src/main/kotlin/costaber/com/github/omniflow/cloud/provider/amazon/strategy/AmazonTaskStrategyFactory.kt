@@ -1,6 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
-import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTaskRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonCallRenderer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.CallContext
@@ -15,5 +15,5 @@ class AmazonTaskStrategyFactory : NodeRendererStrategyFactory<String> {
         DefaultPredicate(CallContext::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonTaskRenderer(node as CallContext, AmazonTermResolver)
+        AmazonCallRenderer(node as CallContext, AmazonTermResolver)
 }

@@ -10,7 +10,7 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.resource.util.render
 
-class AmazonTaskRenderer(
+class AmazonCallRenderer(
     private val callContext: CallContext,
     private val amazonTermResolver: AmazonTermResolver,
 ) : AmazonRenderer() {
