@@ -33,8 +33,8 @@
         <aws-sdk.version>2.9.14</aws-sdk.version>
         <kotlin-logging-jvm.version>2.0.11</kotlin-logging-jvm.version>
         <logback-classic.version>1.2.9</logback-classic.version>
-        <jackson-dataformat-yaml.version>2.15.2</jackson-dataformat-yaml.version>
-        <jackson-datatype-jsr310.version>2.15.2</jackson-datatype-jsr310.version>
+        <jackson-dataformat-yaml.version>2.19.1</jackson-dataformat-yaml.version>
+        <jackson-datatype-jsr310.version>2.19.1</jackson-datatype-jsr310.version>
 
         <!-- Testing -->
         <mockk-jvm.version>1.13.5</mockk-jvm.version>
