@@ -4,11 +4,17 @@ import costaber.com.github.omniflow.model.*
 
 class AssignContextBuilder : ContextBuilder {
 
-    private val variables: MutableList<Pair<String, Any>> = mutableListOf()
+    private val variables: MutableList<Pair<Variable, Any>> = mutableListOf()
 
-    fun variable(vararg value: Pair<String, Any>) = apply { this.variables.addAll(value) }
+    fun variables(vararg value: Pair<Variable, Any>) = apply { this.variables.addAll(value) }
 
-    infix fun String.equal(value: Any) = Pair(this, value)
+    @Deprecated("Use infix function instead", ReplaceWith("Variable equalTo Term<T>"))
+    infix fun String.equal(value: Any) = Pair(Variable(this), value)
+
+    infix fun <T> Variable.equalTo(rightTerm: Term<T>): Pair<Variable, Term<T>> = Pair(
+        first = this,
+        second = rightTerm,
+    )
 
     override fun stepType() = StepType.ASSIGN
 
@@ -20,7 +26,7 @@ class AssignContextBuilder : ContextBuilder {
             // Since both are Term there's no need to box one inside the other
             @Suppress("UNCHECKED_CAST")
             VariableInitialization(
-                variable = Variable(it.first),
+                variable = it.first,
                 term = when (val second = it.second) {
                     is Term<*> -> second as Term<Any>
                     else -> Value(second)

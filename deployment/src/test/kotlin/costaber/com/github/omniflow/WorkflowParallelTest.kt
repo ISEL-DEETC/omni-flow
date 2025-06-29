@@ -24,9 +24,12 @@ internal class WorkflowParallelTest {
                 description("Initialize variables")
                 context(
                     assign {
-                        variable("listString" equal listOf("a", "b"))
-                        variable("listNumber" equal listOf(1,2))
-                        variable("c" equal "true")
+                        variables(
+                            variable("listString") equalTo value(listOf("a", "b")),
+                            variable("listNumber") equalTo value(listOf(1, 2)),
+                            variable("c") equalTo value("true")
+                        )
+
                     }
                 )
             },
@@ -47,7 +50,7 @@ internal class WorkflowParallelTest {
                                         description("Initialize variables")
                                         assign {
                                             context(
-                                                variable("Hello"  equal "Hello")
+                                                variables(variable("Hello") equalTo value("Hello"))
                                             )
                                         }
                                     }
@@ -61,7 +64,7 @@ internal class WorkflowParallelTest {
                                         description("Initialize variables")
                                         assign {
                                             context(
-                                                variable("Hello"  equal "Hello")
+                                                variables(variable("Hello") equalTo value("Hello"))
                                             )
                                         }
                                     }
@@ -88,32 +91,12 @@ internal class WorkflowParallelTest {
                                     description("Initialize variables")
                                     context(
                                         assign {
-                                            variable("d" equal variable("key"))
+                                            variables(variable("d") equalTo variable("key"))
                                         }
                                     )
                                 }
                             )
                         }
-                        // next("") // can implicit assume next step to be the next to run
-//                        branches(
-//                            // not sure how to share data between branches
-//                            steps(
-//                                step {
-//                                    assign {
-//                                        context(
-//                                            variable("Hello"  equal "Hello")
-//                                        )
-//                                    }
-//                                }
-//                            ),
-//                            steps(
-//                                step {
-//                                    assign {
-//                                        variable("World" equal "Hello")
-//                                    }
-//                                }
-//                            )
-//                        )
                     }
                 )
             },
@@ -132,7 +115,7 @@ internal class WorkflowParallelTest {
                                 description("Initialize variables")
                                 context(
                                     assign {
-                                        variable("number" equal variable("key"))
+                                        variables(variable("number") equalTo variable("key"))
                                     }
                                 )
                             }
@@ -145,9 +128,11 @@ internal class WorkflowParallelTest {
                 description("Initialize variables")
                 context(
                     assign {
-                        variable("a" equal Random().nextInt())
-                        variable("b" equal Random().nextInt())
-                        variable("c" equal Random().nextInt())
+                        variables(
+                            variable("a") equalTo value(Random().nextInt()),
+                            variable("b") equalTo value(Random().nextInt()),
+                            variable("c") equalTo value(Random().nextInt())
+                        )
                     }
                 )
             },
@@ -192,7 +177,7 @@ internal class WorkflowParallelTest {
                 description("If c equal to 0 affect C with 1")
                 context(
                     assign {
-                        variable("c" equal 1)
+                        variables(variable("c") equalTo value(1))
                     }
                 )
             },

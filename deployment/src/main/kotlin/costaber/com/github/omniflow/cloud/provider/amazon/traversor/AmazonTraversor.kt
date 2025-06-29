@@ -4,6 +4,7 @@ import costaber.com.github.omniflow.dsl.assign
 import costaber.com.github.omniflow.dsl.condition
 import costaber.com.github.omniflow.dsl.step
 import costaber.com.github.omniflow.dsl.switch
+import costaber.com.github.omniflow.dsl.value
 import costaber.com.github.omniflow.dsl.variable
 import costaber.com.github.omniflow.model.BranchContext
 import costaber.com.github.omniflow.model.IterationForEachContext
@@ -17,7 +18,7 @@ import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.ContextVisitor
 import kotlin.collections.plus
 
-class AmazonTraversor: DepthFirstNodeVisitorTraversor() {
+class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
 
     override fun <K, R> traverseNode(
         visitor: ContextVisitor<Node, K, R>,
@@ -25,14 +26,15 @@ class AmazonTraversor: DepthFirstNodeVisitorTraversor() {
         context: K,
         visitResults: MutableList<R>,
     ) {
-        val newNode = when(node) {
-            is Step -> when(node.context) {
+        val newNode = when (node) {
+            is Step -> when (node.context) {
                 is IterationRangeContext -> node.copy(context = node.context.childNodes(node.name))
                 is IterationForEachContext -> node.copy(context = node.context.childNodes(node.name))
-                is ParallelIterationContext -> when(node.context.iterationContext) {
+                is ParallelIterationContext -> when (node.context.iterationContext) {
                     is IterationRangeContext -> node.copy(context = node.context.toParallelBranchContext(node.name))
                     else -> node
                 }
+
                 else -> node
 
             }
@@ -44,40 +46,47 @@ class AmazonTraversor: DepthFirstNodeVisitorTraversor() {
 
 }
 
-private fun ParallelIterationContext.toParallelBranchContext(prefix: String): ParallelBranchContext = ParallelBranchContext(
-    when (this.iterationContext) {
-        is IterationRangeContext -> (this.iterationContext.range.min..this.iterationContext.range.max).map {
-            BranchContext(
-                prefix, null, listOf(
-                    step {
-                        name("${prefix}InitializeCounter")
-                        description("Auto generated")
-                        context(
-                            assign {
-                                variable("${this@toParallelBranchContext.iterationContext.value}.$" equal it)
-                            }
-                        )
-                    }.build()
-                ).plus(this@toParallelBranchContext.iterationContext.steps)
+private fun ParallelIterationContext.toParallelBranchContext(prefix: String): ParallelBranchContext =
+    ParallelBranchContext(
+        when (this.iterationContext) {
+            is IterationRangeContext -> (this.iterationContext.range.min..this.iterationContext.range.max).map {
+                BranchContext(
+                    prefix, null, listOf(
+                        step {
+                            name("${prefix}InitializeCounter")
+                            description("Auto generated")
+                            context(
+                                assign {
+                                    variables(
+                                        variable("${this@toParallelBranchContext.iterationContext.value}.$") equalTo value(
+                                            it
+                                        )
+                                    )
+                                }
+                            )
+                        }.build()
+                    ).plus(this@toParallelBranchContext.iterationContext.steps)
+                )
+            }
+
+            else -> listOf(
+                BranchContext(prefix, null, this.iterationContext.steps),
             )
         }
-        else -> listOf(
-            BranchContext(prefix, null, this.iterationContext.steps),
-        )
-    }
-
-)
+    )
 
 
 private fun IterationForEachContext.childNodes(prefix: String): IterationForEachContext = this.copy(
-    steps=listOf(
+    steps = listOf(
         step {
             name("${prefix}InitializeCounter")
             description("Auto generated")
             context(
                 assign {
-                    variable("Index.$" equal -1)
-                    variable("ArraySize.$" equal variable("States.ArraySize($.${forEachVariable.name})"))
+                    variables(
+                        variable("Index.$") equalTo value(-1),
+                        variable("ArraySize.$") equalTo variable("States.ArraySize($.${forEachVariable.name})")
+                    )
                 }
             )
         },
@@ -86,46 +95,49 @@ private fun IterationForEachContext.childNodes(prefix: String): IterationForEach
             description("Auto generated")
             context(
                 assign {
-                    variable("Index.$" equal "States.MathAdd($.Index, 1)")
-                    variable("${value}.$" equal "States.ArrayGet($.${forEachVariable.name}, $.Index)")
+                    variables(
+                        variable("Index.$") equalTo value("States.MathAdd($.Index, 1)"),
+                        variable("${value}.$") equalTo value("States.ArrayGet($.${forEachVariable.name}, $.Index)")
+                    )
                 }
             )
         }).map { it.build() }
         .plus(steps)
-        .plus(listOf(
-            step {
-                name("${prefix}Loop?")
-                description("Auto generated")
-                context(
-                    switch {
-                        conditions(
-                            condition {
-                                match(variable("Index") lessThan variable("ArraySize"))
-                                jump("${prefix}IncrementCounter")
-                            },
-                        )
-                        default("${prefix}EndLoop")
-                    }
-                )
-            },
-            step {
-                name("${prefix}EndLoop")
-                description("Auto generated")
-                context(
-                    assign {  }
-                )
-            }).map { it.build() })
+        .plus(
+            listOf(
+                step {
+                    name("${prefix}Loop?")
+                    description("Auto generated")
+                    context(
+                        switch {
+                            conditions(
+                                condition {
+                                    match(variable("Index") lessThan variable("ArraySize"))
+                                    jump("${prefix}IncrementCounter")
+                                },
+                            )
+                            default("${prefix}EndLoop")
+                        }
+                    )
+                },
+                step {
+                    name("${prefix}EndLoop")
+                    description("Auto generated")
+                    context(
+                        assign { }
+                    )
+                }).map { it.build() })
 )
 
 
 private fun IterationRangeContext.childNodes(prefix: String): IterationRangeContext = this.copy(
-    steps=listOf(
+    steps = listOf(
         step {
             name("${prefix}InitializeCounter")
             description("Auto generated")
             context(
                 assign {
-                    variable("${value}.$" equal (range.min - 1))
+                    variables(variable("${value}.$") equalTo Value(range.min - 1))
                 }
             )
         },
@@ -134,33 +146,34 @@ private fun IterationRangeContext.childNodes(prefix: String): IterationRangeCont
             description("Auto generated")
             context(
                 assign {
-                   variable( "${value}.$" equal "States.MathAdd($.${value}, 1)")
+                    variables(variable("${value}.$") equalTo value("States.MathAdd($.${value}, 1)"))
                 }
             )
         }).map { it.build() }
         .plus(steps)
-        .plus(listOf(
-            step {
-                name("${prefix}Loop?")
-                description("Auto generated")
-                context(
-                    switch {
-                        conditions(
-                            condition {
-                                match(variable(value) lessThan Value(range.max))
-                                jump("${prefix}IncrementCounter")
-                            },
-                        )
-                        default("${prefix}EndLoop")
-                    }
-                )
-            },
-            step {
-                name("${prefix}EndLoop")
-                description("Auto generated")
-                context(
-                    assign {  }
-                )
-            }).map { it.build() })
+        .plus(
+            listOf(
+                step {
+                    name("${prefix}Loop?")
+                    description("Auto generated")
+                    context(
+                        switch {
+                            conditions(
+                                condition {
+                                    match(variable(value) lessThan Value(range.max))
+                                    jump("${prefix}IncrementCounter")
+                                },
+                            )
+                            default("${prefix}EndLoop")
+                        }
+                    )
+                },
+                step {
+                    name("${prefix}EndLoop")
+                    description("Auto generated")
+                    context(
+                        assign { }
+                    )
+                }).map { it.build() })
 
 )

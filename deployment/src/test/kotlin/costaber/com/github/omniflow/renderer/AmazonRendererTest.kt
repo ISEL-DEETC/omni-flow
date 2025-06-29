@@ -38,15 +38,17 @@ internal class AmazonRendererTest {
 
     @Test
     fun `test assign step`() {
-        val w  = createWorkflow(
+        val w = createWorkflow(
             step {
                 name("Assign")
                 description("Initialize variables")
                 context(
                     assign {
-                        variable("listString" equal listOf("a", "b"))
-                        variable("listNumber" equal listOf(1,2))
-                        variable("c" equal "true")
+                        variables(
+                            variable("listString") equalTo value(listOf("a", "b")),
+                            variable("listNumber") equalTo value(listOf(1, 2)),
+                            variable("c") equalTo value("true")
+                        )
                     }
                 )
             }
@@ -213,7 +215,7 @@ internal class AmazonRendererTest {
                                 description("Initialize variables")
                                 context(
                                     assign {
-                                        variable("number" equal variable("key"))
+                                        variables(variable("number") equalTo variable("key"))
                                     }
                                 )
                             },
@@ -222,7 +224,7 @@ internal class AmazonRendererTest {
                                 description("Initialize variables")
                                 context(
                                     assign {
-                                        variable("number" equal variable("key"))
+                                        variables(variable("number") equalTo variable("key"))
                                     }
                                 )
                             }
@@ -326,7 +328,7 @@ internal class AmazonRendererTest {
                                 description("Initialize variables")
                                 context(
                                     assign {
-                                        variable("number" equal variable("key"))
+                                        variables(variable("number") equalTo variable("key"))
                                     }
                                 )
                             },
@@ -335,7 +337,7 @@ internal class AmazonRendererTest {
                                 description("Initialize variables")
                                 context(
                                     assign {
-                                        variable("number" equal variable("key"))
+                                        variables(variable("number") equalTo variable("key"))
                                     }
                                 )
                             }
@@ -445,7 +447,7 @@ internal class AmazonRendererTest {
                                         description("Initialize variables")
                                         assign {
                                             context(
-                                                variable("Hello"  equal "Hello")
+                                                variables(variable("Hello") equalTo value("Hello"))
                                             )
                                         }
                                     }
@@ -459,7 +461,7 @@ internal class AmazonRendererTest {
                                         description("Initialize variables")
                                         assign {
                                             context(
-                                                variable("Hello"  equal "Hello")
+                                                variables(variable("Hello") equalTo value("Hello"))
                                             )
                                         }
                                     }
@@ -521,7 +523,7 @@ internal class AmazonRendererTest {
     }
 
     @Test
-    fun `test parallel with iteration step with forEach`(){
+    fun `test parallel with iteration step with forEach`() {
         val w = createWorkflow(
             step {
                 name("Parallel Iteration")
@@ -540,7 +542,7 @@ internal class AmazonRendererTest {
                                     description("Initialize variables")
                                     context(
                                         assign {
-                                            variable("d" equal variable("key"))
+                                            variables(variable("d") equalTo variable("key"))
                                         }
                                     )
                                 },
@@ -549,7 +551,7 @@ internal class AmazonRendererTest {
                                     description("Initialize variables")
                                     context(
                                         assign {
-                                            variable("d" equal variable("key"))
+                                            variables(variable("d") equalTo variable("key"))
                                         }
                                     )
                                 }
@@ -619,7 +621,7 @@ internal class AmazonRendererTest {
 
 
     @Test
-    fun `test parallel with iteration step with range`(){
+    fun `test parallel with iteration step with range`() {
         "Map workflow state"
         val w = createWorkflow(
             step {
@@ -639,7 +641,7 @@ internal class AmazonRendererTest {
                                     description("Initialize variables")
                                     context(
                                         assign {
-                                            variable("d" equal variable("key"))
+                                            variables(variable("d") equalTo variable("key"))
                                         }
                                     )
                                 },
@@ -648,7 +650,7 @@ internal class AmazonRendererTest {
                                     description("Initialize variables")
                                     context(
                                         assign {
-                                            variable("d" equal variable("key"))
+                                            variables(variable("d") equalTo variable("key"))
                                         }
                                     )
                                 }

@@ -136,9 +136,11 @@ step {
     description("Initialize variables")
     context(
         assign {
-            variable("number" equal Random().nextInt())
-            variable("text" equal "Hello World!")
-            variable("isOk" equal true)
+            variables(
+                variable("number") equalTo value(Random().nextInt())
+                variable("text") equalTo value("Hello World!")
+                variable("isOk") equalTo value(true)
+            )
         }
     )
 }

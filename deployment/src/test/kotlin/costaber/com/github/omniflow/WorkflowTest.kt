@@ -21,9 +21,11 @@ internal class WorkflowTest {
                 description("Initialize variables")
                 context(
                     assign {
-                        variable("a" equal Random().nextInt())
-                        variable("b" equal Random().nextInt())
-                        variable("c" equal Random().nextInt())
+                        variables(
+                            variable("a") equalTo value(Random().nextInt()),
+                            variable("b") equalTo value(Random().nextInt()),
+                            variable("c") equalTo value(Random().nextInt())
+                        )
                     }
                 )
             },
@@ -68,7 +70,7 @@ internal class WorkflowTest {
                 description("If c equal to 0 affect C with 1")
                 context(
                     assign {
-                        variable("c" equal 1)
+                        variables(variable("c") equalTo value(1))
                     }
                 )
             },
