@@ -9,10 +9,6 @@ data class Variable(
 
     override fun term() = name
 
-    operator fun plus(variable: Variable): Any {
-        TODO("Not yet implemented")
-    }
-
     fun withKey(key: String): Variable {
         return this.copy(withKey = key)
     }
