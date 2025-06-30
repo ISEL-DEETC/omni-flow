@@ -14,9 +14,7 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
         val amazonContext = renderingContext as AmazonRenderingContext
         val context = amazonContext.getLastRenderingContext()
         val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
-        innerContext.setSteps(parallelIterationContext.iterationContext.steps)
-        innerContext.getNextStepNameAndAdvance()
-        innerContext.getNextStepNameAndAdvance()
+        innerContext.setSteps(emptyList<Step>())
         context.appendInnerRenderingContext(innerContext)
 
         if (parallelIterationContext.iterationContext !is IterationForEachContext)
