@@ -6,6 +6,7 @@ import costaber.com.github.omniflow.model.CallContext
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Term
 import costaber.com.github.omniflow.model.Value
+import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.resource.util.render
@@ -110,7 +111,8 @@ class AmazonCallRenderer(
         if (body is String) {
             addLine("$AMAZON_REQUEST_PAYLOAD \"$body\"")
         } else {
-            val lines = objectMapper.writeValueAsString(body)
+            val parsedBody = parseBodyIfMap(body)
+            val lines = objectMapper.writeValueAsString(parsedBody)
                 .split("{", "}", ",")
                 .filterNot(String::isEmpty)
                 .toMutableList()
@@ -122,6 +124,28 @@ class AmazonCallRenderer(
             }
             addEmptyLine()
         }
+    }
+
+    private fun parseBodyIfMap(body: Any): Any {
+        if (body is Map<*, *>) {
+            val resultMap: MutableMap<Any?, Any?> = body.toMutableMap()
+            val stack: MutableList<MutableMap<Any?, Any?>> = mutableListOf()
+            stack.add(resultMap)
+            while (stack.isNotEmpty()) {
+                val currentMap = stack.removeAt(0)
+                currentMap.forEach {
+                    if (it.value is Map<*, *>) {
+                        stack.add((it.value as Map<*, *>).toMutableMap())
+                    }
+                    if (it.key is String && it.value is Variable) {
+                        currentMap.remove(it.key)
+                        currentMap["${it.key}.$"] = "$.${(it.value as Variable).name}"
+                    }
+                }
+            }
+            return resultMap
+        }
+        return body
     }
 
     private fun IndentedRenderingContext.renderAuth() {
