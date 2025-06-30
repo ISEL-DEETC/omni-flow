@@ -38,8 +38,18 @@ class AmazonRenderingContext(
         lastCondition == condition
 
     fun setSteps(steps: Collection<Step>) {
-        stepsNames = steps.map { it.name }
-            .toMutableList()
+        var previousStep: Step? = null
+        val result: MutableList<String> = mutableListOf()
+        for (step in steps) {
+            val stepName = if (previousStep?.next?.isNotBlank() == true) {
+                previousStep.next
+            } else {
+                step.name
+            }
+            previousStep = step
+            result.add(stepName)
+        }
+        stepsNames = result
     }
 
     fun setSteps(stepsContext: List<StepContext>) {
