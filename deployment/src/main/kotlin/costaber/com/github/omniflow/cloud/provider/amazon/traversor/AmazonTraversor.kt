@@ -31,7 +31,10 @@ class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
                 is IterationRangeContext -> node.copy(context = node.context.childNodes(node.name))
                 is IterationForEachContext -> node.copy(context = node.context.childNodes(node.name))
                 is ParallelIterationContext -> when (node.context.iterationContext) {
-                    is IterationRangeContext -> node.copy(context = node.context.toParallelBranchContext(node.name))
+                    is IterationRangeContext -> node.copy(context = toParallelBranchContext(
+                        node.name,
+                        node.context.iterationContext
+                    ))
                     else -> node
                 }
 
@@ -46,31 +49,25 @@ class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
 
 }
 
-private fun ParallelIterationContext.toParallelBranchContext(prefix: String): ParallelBranchContext =
+private fun toParallelBranchContext(prefix: String, iterationRangeContext: IterationRangeContext): ParallelBranchContext =
     ParallelBranchContext(
-        when (this.iterationContext) {
-            is IterationRangeContext -> (this.iterationContext.range.min..this.iterationContext.range.max).map {
-                BranchContext(
-                    prefix, null, listOf(
-                        step {
-                            name("${prefix}InitializeCounter")
-                            description("Auto generated")
-                            context(
-                                assign {
-                                    variables(
-                                        variable("${this@toParallelBranchContext.iterationContext.value}.$") equalTo value(
-                                            it
-                                        )
+        (iterationRangeContext.range.min..iterationRangeContext.range.max).map {
+            BranchContext(
+                prefix, null, listOf(
+                    step {
+                        name("${prefix}InitializeCounter")
+                        description("Auto generated")
+                        context(
+                            assign {
+                                variables(
+                                    variable("${iterationRangeContext.value}.$") equalTo value(
+                                        it
                                     )
-                                }
-                            )
-                        }.build()
-                    ).plus(this@toParallelBranchContext.iterationContext.steps)
-                )
-            }
-
-            else -> listOf(
-                BranchContext(prefix, null, this.iterationContext.steps),
+                                )
+                            }
+                        )
+                    }.build()
+                ).plus(iterationRangeContext.steps)
             )
         }
     )
