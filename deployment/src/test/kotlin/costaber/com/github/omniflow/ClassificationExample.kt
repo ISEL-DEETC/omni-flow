@@ -29,11 +29,13 @@ internal class ClassificationExample {
                 context(
                     assign {
                         variables(
-                            variable("inputTexts") equalTo value(listOf(
-                                "Awesome!",
-                                "This is bad.",
-                                "Neutral Response."
-                            ))
+                            variable("inputTexts") equalTo value(
+                                listOf(
+                                    "Awesome!",
+                                    "This is bad.",
+                                    "Neutral Response."
+                                )
+                            )
                         )
                         variables(variable("feedback") equalTo value(mapOf<String, Value<*>>()))
                     }
@@ -72,11 +74,19 @@ internal class ClassificationExample {
                                         switch {
                                             conditions(
                                                 condition {
-                                                    match(variable("sentiment.body.sentiment_score") equalTo value(1))
+                                                    match(
+                                                        variable("sentiment").withKey("sentiment_score")
+                                                                equalTo
+                                                                value(1)
+                                                    )
                                                     jump("PositiveFeedback")
                                                 },
                                                 condition {
-                                                    match(variable("sentiment.body.sentiment_score") equalTo value(-1))
+                                                    match(
+                                                        variable("sentiment").withKey("sentiment_score")
+                                                                equalTo
+                                                                value(-1)
+                                                    )
                                                     jump("NegativeFeedback")
                                                 }
                                             )
