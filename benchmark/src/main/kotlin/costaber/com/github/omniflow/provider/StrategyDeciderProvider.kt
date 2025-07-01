@@ -37,7 +37,7 @@ object StrategyDeciderProvider {
             .addRendererStrategy(AmazonPassStrategyFactory())
             .addRendererStrategy(AmazonStateMachineStrategyFactory())
             .addRendererStrategy(AmazonStateStrategyFactory())
-            .addRendererStrategy(AmazonTaskStrategyFactory())
+            .addRendererStrategy(AmazonCallStrategyFactory())
             .addRendererStrategy(AmazonVariableStrategyFactory())
             .build()
     }

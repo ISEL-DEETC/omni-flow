@@ -9,7 +9,7 @@ import costaber.com.github.omniflow.predicate.DefaultPredicate
 import costaber.com.github.omniflow.renderer.NodeRenderer
 import java.util.function.Predicate
 
-class AmazonTaskStrategyFactory : NodeRendererStrategyFactory<String> {
+class AmazonCallStrategyFactory : NodeRendererStrategyFactory<String> {
 
     override fun getMatcher(): Predicate<Node> =
         DefaultPredicate(CallContext::class)

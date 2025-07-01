@@ -55,7 +55,7 @@ class AmazonCloudDeployer internal constructor(
                 .addRendererStrategy(AmazonPassStrategyFactory())
                 .addRendererStrategy(AmazonStateMachineStrategyFactory())
                 .addRendererStrategy(AmazonStateStrategyFactory())
-                .addRendererStrategy(AmazonTaskStrategyFactory())
+                .addRendererStrategy(AmazonCallStrategyFactory())
                 .addRendererStrategy(AmazonVariableStrategyFactory())
                 .addRendererStrategy(AmazonParallelStrategyFactory())
                 .addRendererStrategy(AmazonBranchStrategyFactory())
