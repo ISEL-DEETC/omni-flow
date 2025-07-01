@@ -6,18 +6,19 @@ import costaber.com.github.omniflow.util.STEP_1
 import costaber.com.github.omniflow.visitor.ContextVisitor
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.junit5.MockKExtension
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.Before
 import strikt.api.expect
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
-@ExtendWith(MockKExtension::class)
 internal class DepthFirstNodeVisitorTraversorTest {
 
     @InjectMockKs
     private lateinit var depthFirstNodeVisitorTraversor: DepthFirstNodeVisitorTraversor
+
+    @Before
+    fun setUp() = MockKAnnotations.init(this, relaxUnitFun = true)
 
     @Test
     fun `traverse has expected results`() {

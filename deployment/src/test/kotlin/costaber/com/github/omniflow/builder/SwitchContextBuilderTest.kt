@@ -8,7 +8,7 @@ import costaber.com.github.omniflow.util.CONDITION_1
 import costaber.com.github.omniflow.util.CONDITION_CONTEXT_DEFAULT_1
 import costaber.com.github.omniflow.util.EQUAL_TO_EXPRESSION_1
 import costaber.com.github.omniflow.util.STEP_NAME_1
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isA

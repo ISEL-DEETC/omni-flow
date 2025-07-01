@@ -21,7 +21,7 @@ import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 internal class GoogleRendererTest {
 

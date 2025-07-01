@@ -3,7 +3,7 @@ package costaber.com.github.omniflow.service
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
 import costaber.com.github.omniflow.util.getResourceContent
 import org.junit.Ignore
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 internal class GoogleWorkflowServiceTest {
 

@@ -6,7 +6,7 @@ import costaber.com.github.omniflow.util.AUDIENCE_1
 import costaber.com.github.omniflow.util.AUTH_TYPE_1
 import costaber.com.github.omniflow.util.SCOPES_1
 import costaber.com.github.omniflow.util.SCOPE_1
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo

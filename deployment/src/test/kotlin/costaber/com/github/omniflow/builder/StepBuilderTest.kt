@@ -5,7 +5,7 @@ import costaber.com.github.omniflow.dsl.step
 import costaber.com.github.omniflow.model.HttpMethod
 import costaber.com.github.omniflow.model.Step
 import costaber.com.github.omniflow.util.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo

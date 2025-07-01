@@ -10,7 +10,7 @@ import costaber.com.github.omniflow.model.HttpMethod.GET
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import java.util.*
 
 internal class WorkflowParallelTest {

@@ -1,6 +1,6 @@
 package costaber.com.github.omniflow.renderer
 
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 

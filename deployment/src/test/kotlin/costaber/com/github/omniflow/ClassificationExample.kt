@@ -13,7 +13,7 @@ import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.CONTENT_TYPE_APPLICATION_JSON
 import costaber.com.github.omniflow.util.HEADER_CONTENT_TYPE
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 

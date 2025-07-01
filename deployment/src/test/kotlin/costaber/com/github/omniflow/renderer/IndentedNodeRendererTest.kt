@@ -2,7 +2,7 @@ package costaber.com.github.omniflow.renderer
 
 import costaber.com.github.omniflow.model.Node
 import io.mockk.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
