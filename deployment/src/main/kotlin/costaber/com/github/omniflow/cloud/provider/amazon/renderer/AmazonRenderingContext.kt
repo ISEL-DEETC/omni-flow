@@ -15,7 +15,8 @@ class AmazonRenderingContext(
     termContext: TermContext = object : TermContext {},
 ) : IndentedRenderingContext(indentationLevel, stringBuilder, termContext) {
     companion object {
-        private var innerRenderingContext: MutableList<AmazonRenderingContext> = mutableListOf()
+        private val innerRenderingContext: MutableList<AmazonRenderingContext> = mutableListOf()
+        private val hostResolver: MutableMap<String, String> = mutableMapOf()
     }
 
     private lateinit var stepsNames: MutableList<String>
@@ -82,6 +83,16 @@ class AmazonRenderingContext(
     fun nestedLevel(): Int {
         return innerRenderingContext.size
     }
+
+    fun addToHostResolver(host: String, address: String) {
+        hostResolver[host] = address
+    }
+
+    fun addToHostResolver(entries: Map<String, String>) {
+        hostResolver.putAll(entries)
+    }
+
+    fun hostResolve(host: String): String? = hostResolver.getOrDefault(host, null)
 
     override fun toString(): String {
         return "AmazonRenderingContext(indentationLevel=${getIndentationLevel()},stepsNames=$stepsNames,currentStepName=$currentStepName,lastVariable=$lastVariable,lastCondition=$lastCondition,nestedLevel=${nestedLevel()})"

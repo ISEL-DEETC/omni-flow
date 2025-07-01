@@ -219,6 +219,7 @@ internal class ClassificationExample {
         val nodeTraversor = DepthFirstNodeVisitorTraversor()
         val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
         val renderingContext = AmazonRenderingContext()
+        renderingContext.addToHostResolver("https://sentiment.soik.eu", "xnivwfynoh.execute-api.eu-north-1.amazonaws.com")
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()

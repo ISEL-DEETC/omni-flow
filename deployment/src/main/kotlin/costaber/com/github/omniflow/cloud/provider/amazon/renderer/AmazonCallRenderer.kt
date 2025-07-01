@@ -20,14 +20,17 @@ class AmazonCallRenderer(
 
     override val element: Node = callContext
 
-    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
-        render(renderingContext) {
+    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
+        val amazonContext = renderingContext as AmazonRenderingContext
+        val host = amazonContext.hostResolve(callContext.host)?: callContext.host
+
+        return render(renderingContext) {
             addLine(AMAZON_TASK_TYPE)
             addLine(AMAZON_RESOURCE)
             addLine("$AMAZON_INPUT_PATH\"\$\",")
             addLine(AMAZON_START_PARAMETERS)
             tab {
-                addLine("${AMAZON_API_ENDPOINT}\"${callContext.host}\",")
+                addLine("${AMAZON_API_ENDPOINT}\"${host}\",")
                 addLine("${AMAZON_METHOD}\"${callContext.method}\",")
                 add("${AMAZON_PATH}\"${callContext.path}\"")
                 renderMap(AMAZON_HEADERS, callContext.header, renderingContext.termContext)
@@ -38,6 +41,7 @@ class AmazonCallRenderer(
             }
             add(AMAZON_CLOSE_OBJECT_WITH_COMMA)
         }
+    }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
