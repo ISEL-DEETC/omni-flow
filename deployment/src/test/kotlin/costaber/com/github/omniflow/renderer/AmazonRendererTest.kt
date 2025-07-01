@@ -573,9 +573,9 @@ internal class AmazonRendererTest {
                 "Parallel Iteration": {
                     "Comment": "Initialize variables",
                     "Type": "Map",
-                    "ItemsPath": "${'$'}.listString",
+                    "ItemsPath": "$.listString",
                     "ItemSelector": {
-                        "key.${'$'}": "${'$'}${'$'}.Map.Item.Value"
+                        "key.$": "$$.Map.Item.Value"
                     },
                     "ItemProcessor": {
                         "StartAt": "InnerMapParallel Iteration",
@@ -590,7 +590,7 @@ internal class AmazonRendererTest {
                                                 "Comment": "Initialize variables",
                                                 "Type": "Pass",
                                                 "Result": {
-                                                    "d": "${'$'}.key"
+                                                    "d": "$.key"
                                                 },
                                                 "Next": "AssignParallelIteration2"
                                             },
@@ -598,7 +598,7 @@ internal class AmazonRendererTest {
                                                 "Comment": "Initialize variables",
                                                 "Type": "Pass",
                                                 "Result": {
-                                                    "d": "${'$'}.key"
+                                                    "d": "$.key"
                                                 },
                                                 "End": true
                                             }
@@ -622,19 +622,15 @@ internal class AmazonRendererTest {
 
     @Test
     fun `test parallel with iteration step with range`() {
-        "Map workflow state"
         val w = createWorkflow(
             step {
                 name("Parallel Iteration")
                 description("Initialize variables")
                 context(
                     parallel {
-                        // for loop unrolling might be a solution for aws, gcp already supports suporta
-                        // loop unrolling
                         iteration {
                             key("key")
                             range(1, 3)
-                            //loop listas e chaves de um hashmap // for map goes through keys
                             steps(
                                 step {
                                     name("AssignParallelIteration1")
@@ -680,7 +676,7 @@ internal class AmazonRendererTest {
                                     "Comment": "Auto generated",
                                     "Type": "Pass",
                                     "Result": {
-                                        "key.${'$'}": 1
+                                        "key.$": 1
                                     },
                                     "Next": "AssignParallelIteration1"
                                 },
@@ -709,7 +705,7 @@ internal class AmazonRendererTest {
                                     "Comment": "Auto generated",
                                     "Type": "Pass",
                                     "Result": {
-                                        "key.${'$'}": 2
+                                        "key.$": 2
                                     },
                                     "Next": "AssignParallelIteration1"
                                 },
@@ -738,7 +734,7 @@ internal class AmazonRendererTest {
                                     "Comment": "Auto generated",
                                     "Type": "Pass",
                                     "Result": {
-                                        "key.${'$'}": 3
+                                        "key.$": 3
                                     },
                                     "Next": "AssignParallelIteration1"
                                 },

@@ -27,7 +27,7 @@ class AmazonParallelRenderer(private val parallelBranchContext: ParallelBranchCo
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
         val nextStepName = amazonContext.getNextStepName()
-        val innerContext = amazonContext.popLastRenderingContext()
+        amazonContext.popLastRenderingContext()
         val context = amazonContext.getLastRenderingContext()
         return render(context) {
             addLine(AMAZON_CLOSE_ARRAY_WITH_COMMA)

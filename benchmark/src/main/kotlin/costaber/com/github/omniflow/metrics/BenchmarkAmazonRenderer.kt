@@ -31,37 +31,37 @@ class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
 
     @Benchmark
     override fun benchmarkWorkflowWithIndependentSteps() {
-        traversor!!.traverse<RenderingContext, String>(
-            amazonContextVisitor!!,
+        traversor.traverse(
+            amazonContextVisitor,
             workflowWithIndependentSteps,
-            amazonRenderingContext!!
+            amazonRenderingContext
         )
     }
 
     @Benchmark
     override fun benchmarkWorkflowUsingVariables() {
-        traversor!!.traverse<RenderingContext, String>(
-            amazonContextVisitor!!,
+        traversor.traverse(
+            amazonContextVisitor,
             workflowUsingVariables,
-            amazonRenderingContext!!
+            amazonRenderingContext
         )
     }
 
     @Benchmark
     override fun benchmarkWorkflowWithBinaryConditions() {
-        traversor!!.traverse<RenderingContext, String>(
-            amazonContextVisitor!!,
+        traversor.traverse(
+            amazonContextVisitor,
             workflowWithBinaryConditions,
-            amazonRenderingContext!!
+            amazonRenderingContext
         )
     }
 
     @Benchmark
     override fun benchmarkWorkflowWithMultipleDecisions() {
-        traversor!!.traverse<RenderingContext, String>(
-            amazonContextVisitor!!,
+        traversor.traverse(
+            amazonContextVisitor,
             workflowWithMultipleDecisions,
-            amazonRenderingContext!!
+            amazonRenderingContext
         )
     }
 }
