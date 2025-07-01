@@ -16,10 +16,10 @@ class GoogleVariableResolver(
         val googleRenderingContext = renderingContext as GoogleRenderingContext
         googleRenderingContext.setVariables(listOf(variableInitialization))
         return render(renderingContext) {
-            val variable = if (variableInitialization.variable.withKey.isEmpty()) {
+            val variable = if (variableInitialization.variable.getWithKeys().isEmpty()) {
                 variableInitialization.variable.name
             } else {
-                "${variableInitialization.variable.name}[${variableInitialization.variable.withKey}]"
+                "${variableInitialization.variable.name}${variableInitialization.variable.getWithKeys().map { "[$it]" }}"
             }
             val term = googleTermResolver.resolve(variableInitialization.term, termContext)
             add("- ${variable}: $term")
