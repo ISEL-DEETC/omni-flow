@@ -47,7 +47,8 @@ internal class GoogleRendererTest {
                         variables(
                             variable("listString") equalTo value(listOf("a", "b")),
                             variable("listNumber") equalTo value(listOf(1,2)),
-                            variable("c") equalTo value("true")
+                            variable("c") equalTo value("true"),
+                            variable("a").withKey("b").withKey("c") equalTo value("true")
                         )
                     }
                 )
@@ -66,6 +67,7 @@ internal class GoogleRendererTest {
                             - listString: [a, b]
                             - listNumber: [1, 2]
                             - c: 'true'
+                            - a[b][c]: 'true'
                     - return_output:
                         return: ${"$"}{result}
         """.trimIndent()

@@ -1,5 +1,7 @@
 package costaber.com.github.omniflow.model
 
+import costaber.com.github.omniflow.builder.ResultType
+
 data class CallContext(
     val method: HttpMethod,
     val host: String,
@@ -10,6 +12,7 @@ data class CallContext(
     val query: Map<String, Term<*>> = emptyMap(),
     val timeoutInSeconds: Long? = null,
     val result: String,
+    val resultType: ResultType = ResultType.BODY,
 ) : StepContext {
 
     override fun childNodes() = emptyList<Node>()

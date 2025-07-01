@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.google.renderer
 
+import costaber.com.github.omniflow.builder.ResultType
 import costaber.com.github.omniflow.cloud.provider.google.jackson.GoogleObjectMapper
 import costaber.com.github.omniflow.model.CallContext
 import costaber.com.github.omniflow.model.Node
@@ -15,10 +16,20 @@ class GoogleCallRenderer(
 
     override val element: Node = callContext
 
+    private fun ResultType.name(): String = when(this) {
+        ResultType.BODY -> "body"
+        ResultType.CODE -> "code"
+        ResultType.HEADERS -> "headers"
+    }
+
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
             val googleTermContext = termContext as GoogleTermContext
             val httpMethod = callContext.method.name.lowercase()
+            googleTermResolver.addVariableTranslation(
+                name = callContext.result,
+                translation = "${callContext.result}.${callContext.resultType.name()}"
+            )
             addLine("call: http.${httpMethod}")
             addLine("args:")
             tab {

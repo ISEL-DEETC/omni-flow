@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonNotEqualToExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.NotEqualToExpression
@@ -14,5 +15,5 @@ class AmazonNotEqualToExpressionStrategyFactory : NodeRendererStrategyFactory<St
         DefaultPredicate(NotEqualToExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonNotEqualToExpressionRenderer(node as NotEqualToExpression<*>)
+        AmazonNotEqualToExpressionRenderer(node as NotEqualToExpression<*>, AmazonTermResolver)
 }

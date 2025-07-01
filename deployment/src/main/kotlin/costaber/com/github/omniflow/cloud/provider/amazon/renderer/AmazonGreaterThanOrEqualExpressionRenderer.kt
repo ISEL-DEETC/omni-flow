@@ -11,6 +11,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonGreaterThanOrEqualExpressionRenderer(
     private val greaterThanOrEqualExpression: GreaterThanOrEqualExpression<*>,
+    private val amazonTermResolver: AmazonTermResolver
 ) : AmazonRenderer() {
 
     override val element: Node = greaterThanOrEqualExpression

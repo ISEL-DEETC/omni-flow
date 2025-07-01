@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
+import costaber.com.github.omniflow.builder.ResultType
 import costaber.com.github.omniflow.cloud.provider.amazon.*
 import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
 import costaber.com.github.omniflow.model.CallContext
@@ -19,6 +20,12 @@ class AmazonCallRenderer(
     private val objectMapper = AmazonObjectMapper.default
 
     override val element: Node = callContext
+
+    private fun ResultType.name(): String = when(this) {
+        ResultType.BODY -> AMAZON_RESPONSE_BODY
+        ResultType.CODE -> AMAZON_STATUS_CODE_BODY
+        ResultType.HEADERS -> AMAZON_HEADERS_BODY
+    }
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
@@ -47,14 +54,14 @@ class AmazonCallRenderer(
         val amazonContext = renderingContext as AmazonRenderingContext
         val nextStepName = amazonContext.getNextStepName()
         val currentStepName = amazonContext.getCurrentStepName()
-        amazonTermResolver.addVariable(
-            prefix = amazonContext.getCurrentStepName().orEmpty(),
+        amazonTermResolver.addVariableTranslation(
             name = callContext.result,
+            translation = "${amazonContext.getCurrentStepName().orEmpty()}.${callContext.result}"
         )
         return render(renderingContext) {
             addLine(AMAZON_START_RESULT_SELECTOR)
             tab {
-                addLine("\"${callContext.result}.\$\": \"\$.${AMAZON_RESPONSE_BODY}\"")
+                addLine("\"${callContext.result}.\$\": \"\$.${callContext.resultType.name()}\"")
             }
             addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
             addLine("$AMAZON_START_RESULT_PATH\"\$.${currentStepName}\",")

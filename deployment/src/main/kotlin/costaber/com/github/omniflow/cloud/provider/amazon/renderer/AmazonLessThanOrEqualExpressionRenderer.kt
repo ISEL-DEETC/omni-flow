@@ -10,7 +10,8 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
 class AmazonLessThanOrEqualExpressionRenderer(
-    private val lessThanOrEqualExpression: LessThanOrEqualExpression<*>
+    private val lessThanOrEqualExpression: LessThanOrEqualExpression<*>,
+    private val amazonTermResolver: AmazonTermResolver
 ) : AmazonRenderer() {
     private val objectMapper = AmazonObjectMapper.default
 

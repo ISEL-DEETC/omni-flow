@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.google.renderer
 
 import costaber.com.github.omniflow.model.Node
+import costaber.com.github.omniflow.model.Notation
 import costaber.com.github.omniflow.model.VariableInitialization
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
@@ -19,7 +20,7 @@ class GoogleVariableResolver(
             val variable = if (variableInitialization.variable.getWithKeys().isEmpty()) {
                 variableInitialization.variable.name
             } else {
-                "${variableInitialization.variable.name}${variableInitialization.variable.getWithKeys().map { "[$it]" }}"
+                googleTermResolver.resolveVariable(variableInitialization.variable, Notation.SQUARE_BRACKETS_NOTATION)
             }
             val term = googleTermResolver.resolve(variableInitialization.term, termContext)
             add("- ${variable}: $term")

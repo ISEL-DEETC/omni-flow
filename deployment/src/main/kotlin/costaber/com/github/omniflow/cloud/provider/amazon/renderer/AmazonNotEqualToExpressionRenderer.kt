@@ -11,6 +11,7 @@ import costaber.com.github.omniflow.resource.util.render
 
 class AmazonNotEqualToExpressionRenderer(
     private val notEqualToExpression: NotEqualToExpression<*>,
+    private val amazonTermResolver: AmazonTermResolver
 ) : AmazonRenderer() {
     private val objectMapper = AmazonObjectMapper.default
     override val element: Node = notEqualToExpression

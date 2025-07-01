@@ -14,6 +14,7 @@ class CallContextBuilder : ContextBuilder {
     private lateinit var result: String
 
     // optional
+    private var resultType: ResultType = ResultType.BODY
     private val header: MutableMap<String, Term<*>> = mutableMapOf()
     private val query: MutableMap<String, Term<*>> = mutableMapOf()
     private var body: Any? = null
@@ -38,6 +39,8 @@ class CallContextBuilder : ContextBuilder {
 
     fun result(value: String) = apply { this.result = value }
 
+    fun resultType(resultType: ResultType) = apply { this.resultType = resultType }
+
     override fun stepType() = StepType.CALL
 
     override fun build() = CallContext(
@@ -49,6 +52,7 @@ class CallContextBuilder : ContextBuilder {
         body = body,
         authentication = authenticationBuilder?.build(),
         timeoutInSeconds = timeout,
-        result = result
+        result = result,
+        resultType = resultType
     )
 }

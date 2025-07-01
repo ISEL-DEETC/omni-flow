@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.google.strategy
 
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleNotEqualToExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.NotEqualToExpression
@@ -14,5 +15,5 @@ class GoogleNotEqualToExpressionStrategyFactory : NodeRendererStrategyFactory<St
         DefaultPredicate(NotEqualToExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        GoogleNotEqualToExpressionRenderer(node as NotEqualToExpression<*>)
+        GoogleNotEqualToExpressionRenderer(node as NotEqualToExpression<*>, GoogleTermResolver)
 }

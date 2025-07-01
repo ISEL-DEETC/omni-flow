@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow
 
+import costaber.com.github.omniflow.builder.ResultType
 import costaber.com.github.omniflow.cloud.provider.amazon.deployer.AmazonCloudDeployer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
@@ -64,6 +65,7 @@ internal class ClassificationExample {
                                             )
                                             body(mapOf("text" to variable("textItem")))
                                             result("sentiment")
+                                            resultType(ResultType.BODY)
                                         }
                                     )
                                 },
@@ -159,7 +161,7 @@ internal class ClassificationExample {
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
-        val expected = """
+        val expected = $$"""
             main:
                 steps:
                     - AssignInputs:
@@ -170,7 +172,7 @@ internal class ClassificationExample {
                         parallel:
                                 for:
                                     value: textItem
-                                    in: ${"$"}{inputTexts}
+                                    in: ${inputTexts}
                                     steps:
                                         - CallSentimentAPI:
                                             call: http.post
@@ -180,15 +182,15 @@ internal class ClassificationExample {
                                                     Content-Type: 'application/json'
                                                     X-API-Key: 'your-secret-api-key-here'
                                                 body:
-                                                    text: '${"$"}{textItem}'
+                                                    text: '${textItem}'
                                             result: sentiment
                                         - ClassifyResult:
                                             switch:
                                                 - condition:
-                                                    ${"$"}{sentiment.body.sentiment_score == 1}
+                                                    ${sentiment.body.sentiment_score == 1}
                                                   next: PositiveFeedback
                                                 - condition:
-                                                    ${"$"}{sentiment.body.sentiment_score == -1}
+                                                    ${sentiment.body.sentiment_score == -1}
                                                   next: NegativeFeedback
                                             next: NeutralFeedback
                                         - PositiveFeedback:
@@ -208,7 +210,7 @@ internal class ClassificationExample {
                                                 - _: ''
                                 shared: [feedback]
                     - return_output:
-                        return: ${"$"}{feedback}
+                        return: ${feedback}
         """.trimIndent()
 
         expectThat(content).isEqualTo(expected)

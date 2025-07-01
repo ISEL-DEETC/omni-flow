@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonLessThanOrEqualExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.LessThanOrEqualExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class AmazonLessThanOrEqualExpressionStrategyFactory : NodeRendererStrategyFacto
         DefaultPredicate(LessThanOrEqualExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonLessThanOrEqualExpressionRenderer(node as LessThanOrEqualExpression<*>)
+        AmazonLessThanOrEqualExpressionRenderer(node as LessThanOrEqualExpression<*>, AmazonTermResolver)
 }

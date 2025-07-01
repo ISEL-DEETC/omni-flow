@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonGreaterThanExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.GreaterThanExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class AmazonGreaterThanExpressionStrategyFactory : NodeRendererStrategyFactory<S
         DefaultPredicate(GreaterThanExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonGreaterThanExpressionRenderer(node as GreaterThanExpression<*>)
+        AmazonGreaterThanExpressionRenderer(node as GreaterThanExpression<*>, AmazonTermResolver)
 }

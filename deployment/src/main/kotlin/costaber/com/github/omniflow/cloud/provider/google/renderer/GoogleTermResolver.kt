@@ -5,7 +5,7 @@ import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.renderer.TermResolver
 
-object GoogleTermResolver : TermResolver {
+object GoogleTermResolver : TermResolver() {
 
     override fun resolveVariable(variable: Variable, termContext: TermContext): String {
         val googleTermContext = termContext as GoogleTermContext

@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.google.strategy
 
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleGreaterThanExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.GreaterThanExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class GoogleGreaterThanExpressionStrategyFactory : NodeRendererStrategyFactory<S
         DefaultPredicate(GreaterThanExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        GoogleGreaterThanExpressionRenderer(node as GreaterThanExpression<*>)
+        GoogleGreaterThanExpressionRenderer(node as GreaterThanExpression<*>, GoogleTermResolver)
 }
