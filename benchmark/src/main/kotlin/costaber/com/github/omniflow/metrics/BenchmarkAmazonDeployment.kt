@@ -14,7 +14,7 @@ import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.Setup
 import java.io.IOException
 
-class BenchmarkAmazonDeployment : BenchmarkWorkflowDeployment() {
+open class BenchmarkAmazonDeployment : BenchmarkWorkflowDeployment() {
     private lateinit var amazonStateMachineService: AmazonStateMachineService
 
     @Setup

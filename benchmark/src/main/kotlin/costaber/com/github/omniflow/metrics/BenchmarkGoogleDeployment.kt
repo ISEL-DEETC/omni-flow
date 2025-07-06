@@ -16,7 +16,7 @@ import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.Setup
 import java.io.IOException
 
-class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
+open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
     private var googleWorkflowService: GoogleWorkflowService? = null
 
     @Setup

@@ -13,7 +13,7 @@ import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.Setup
 
-class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
+open class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
     private lateinit var traversor: DepthFirstNodeVisitorTraversor
     private lateinit var amazonContextVisitor: NodeContextVisitor
     private lateinit var amazonRenderingContext: IndentedRenderingContext

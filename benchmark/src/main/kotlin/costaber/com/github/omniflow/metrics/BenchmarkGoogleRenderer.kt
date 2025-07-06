@@ -14,7 +14,7 @@ import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.Setup
 
-class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
+open class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
     private var traversor: DepthFirstNodeVisitorTraversor? = null
     private var googleContextVisitor: NodeContextVisitor? = null
     private var googleRenderingContext: IndentedRenderingContext? = null
