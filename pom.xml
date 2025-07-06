@@ -19,8 +19,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <java.version>11</java.version>
-        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
+        <java.version>17</java.version>
+        <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
 
         <!-- Plugin versions -->
         <kotlin-maven-plugin.version>2.2.0</kotlin-maven-plugin.version>
@@ -38,11 +38,10 @@
 
         <!-- Testing -->
         <mockk-jvm.version>1.14.3</mockk-jvm.version>
-        <strikt-core.version>0.34.1</strikt-core.version>
-        <junit-jupiter-api.version>5.13.2</junit-jupiter-api.version>
+        <strikt-core.version>0.35.1</strikt-core.version>
+        <junit-jupiter-api.version>5.13.3</junit-jupiter-api.version>
         <kotlin-test-junit.version>2.2.0</kotlin-test-junit.version>
     </properties>
-
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
