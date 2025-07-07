@@ -105,35 +105,52 @@ class AmazonCallRenderer(
     }
 
     private fun IndentedRenderingContext.renderBody() {
-        callContext.body?.let {
+        if (callContext.bodyRaw.isNotEmpty()){
             append(",")
             addEmptyLine()
             add(AMAZON_REQUEST_BODY)
             append("{")
             addEmptyLine()
             tab {
-                processBody(it)
+                addLine("$AMAZON_REQUEST_PAYLOAD \"${callContext.bodyRaw}\"")
+            }
+            add("}")
+        } else if (callContext.body.isNotEmpty()) {
+            append(",")
+            addEmptyLine()
+            add(AMAZON_REQUEST_BODY)
+            append("{")
+            addEmptyLine()
+            tab {
+                val lines: Iterator<Map.Entry<String, Any>> = callContext.body.entries.iterator()
+                var line: Map.Entry<String, Any>?
+                var key: String?
+                var value: Any?
+                if (lines.hasNext()) {
+                    line = lines.next()
+                    key = line.key
+                    value = line.value
+                    addLine(key, value)
+                }
+                while (lines.hasNext()) {
+                    append(",")
+                    addEmptyLine()
+                    line = lines.next()
+                    key = line.key
+                    value = line.value
+                    addLine(key, value)
+                }
+                addEmptyLine()
             }
             add("}")
         }
     }
 
-    private fun IndentedRenderingContext.processBody(body: Any) {
-        if (body is String) {
-            addLine("$AMAZON_REQUEST_PAYLOAD \"$body\"")
-        } else {
-            val parsedBody = parseBodyIfMap(body)
-            val lines = objectMapper.writeValueAsString(parsedBody)
-                .split("{", "}", ",")
-                .filterNot(String::isEmpty)
-                .toMutableList()
-            lines.removeFirstOrNull()?.let { line -> add(line) }
-            lines.forEach { line ->
-                append(",")
-                addEmptyLine()
-                add(line)
-            }
-            addEmptyLine()
+    private fun IndentedRenderingContext.addLine(key: String, value: Any) {
+        when (value) {
+            is Variable -> add("\"${key}.$\":\"$.${value.term()}\"")
+            is Term<*> -> add("\"${key}\":${objectMapper.writeValueAsString(value.term())}")
+            else -> add("\"${key}\":${objectMapper.writeValueAsString(value)}")
         }
     }
 

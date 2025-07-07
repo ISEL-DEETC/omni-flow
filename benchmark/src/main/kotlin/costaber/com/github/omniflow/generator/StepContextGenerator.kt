@@ -20,7 +20,8 @@ object StepContextGenerator {
             "example.com",
             "/example",
             null,
-            PersonNameBody("John", "Johnson"),
+            body = mapOf("firstName" to "John", "lastName" to "Johnson"),
+            "",
             headers,
             queries,
             5L,
@@ -38,7 +39,8 @@ object StepContextGenerator {
             "example.com",
             "/example",
             null,
-            PersonNameBody("John", "Johnson"),
+            mapOf("firstName" to "John", "lastName" to "Johnson"),
+            "",
             emptyMap(),
             queries,
             5L,
@@ -95,7 +97,8 @@ object StepContextGenerator {
             "https://translation.googleapis.com",
             "/v3/projects/19823573:translateText",
             Authentication("OAuth2", null, null, null),
-            TranslationApiBody("Hello, my name is John!", "en-US", "ru-RU"),
+            mapOf("contents" to "Hello, my name is John!", "sourceLanguageCode" to "en-US", "targetLanguageCode" to "ru-RU"),
+            "",
             emptyMap(),
             emptyMap(),
             null,
@@ -117,6 +120,7 @@ object StepContextGenerator {
             "petstore.execute-api.us-east-1.amazonaws.com",
             "/pets",
             Authentication("IAM_ROLE", null, null, null),
+            emptyMap(),
             "$.NewPet",
             emptyMap(),
             emptyMap(),
@@ -140,7 +144,8 @@ object StepContextGenerator {
             "petstore.execute-api.us-east-1.amazonaws.com",
             "/pets",
             Authentication("IAM_ROLE", null, null, null),
-            null,
+            emptyMap(),
+            "",
             emptyMap(),
             emptyMap(),
             null,
@@ -154,6 +159,7 @@ object StepContextGenerator {
             "notifyApp.execute-api.us-east-1.amazonaws.com",
             "/",
             Authentication("IAM_ROLE", null, null, null),
+            emptyMap(),
             "Add pet to store status code - $.StatusCode",
             emptyMap(),
             emptyMap(),
@@ -161,12 +167,4 @@ object StepContextGenerator {
             "NotificationStatus"
         )
     }
-
-    internal class PersonNameBody(var firstName: String?, var lastName: String?)
-
-    internal class TranslationApiBody(
-        var contents: String?,
-        var sourceLanguageCode: String?,
-        var targetLanguageCode: String?
-    )
 }

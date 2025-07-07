@@ -71,9 +71,13 @@ class GoogleCallRenderer(
     }
 
     private fun IndentedRenderingContext.renderBody() {
-        callContext.body?.let {
-            val yamlString = objectMapper.writeValueAsString(it)
-                .replace("---", "\n")
+        if (callContext.bodyRaw.isNotEmpty()) {
+            tab {
+                addEmptyLine()
+                add("body: \"${callContext.bodyRaw}\"")
+            }
+        } else if (callContext.body.isNotEmpty()) {
+            val yamlString = objectMapper.writeValueAsString(callContext.body)
                 .split("\n")
                 .filterNot(String::isEmpty)
             tab {

@@ -97,6 +97,10 @@ internal class AmazonRendererTest {
                             "number2" to variable("b"),
                             "op" to value("add")
                         )
+                        body(
+                            "a" to value(1),
+                            "b" to value(2)
+                        )
                         result("sumResult")
                     }
                 )
@@ -106,7 +110,7 @@ internal class AmazonRendererTest {
         val content = nodeTraversor.traverse(contextVisitor, w, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
-        val expected = """
+        val expected = $$"""
             {
                 "Comment": "Description",
                 "StartAt": "Sum",
@@ -115,21 +119,25 @@ internal class AmazonRendererTest {
                         "Comment": "Sum 2 random numbers",
                         "Type": "Task",
                         "Resource": "arn:aws:states:::apigateway:invoke",
-                        "InputPath": "${'$'}",
+                        "InputPath": "$",
                         "Parameters": {
                             "ApiEndpoint": "example.com",
                             "Method": "GET",
                             "Path": "/calculator",
                             "QueryParameters": {
-                                "number1.${'$'}": "States.Array(States.Format('{}', ${'$'}.a))",
-                                "number2.${'$'}": "States.Array(States.Format('{}', ${'$'}.b))",
-                                "op.${'$'}": "States.Array(States.Format('{}', 'add'))"
+                                "number1.$": "States.Array(States.Format('{}', $.a))",
+                                "number2.$": "States.Array(States.Format('{}', $.b))",
+                                "op.$": "States.Array(States.Format('{}', 'add'))"
+                            },
+                            "RequestBody": {
+                                "a":1,
+                                "b":2
                             }
                         },
                         "ResultSelector": {
-                            "sumResult.${'$'}": "${'$'}.ResponseBody"
+                            "sumResult.$": "$.ResponseBody"
                         },
-                        "ResultPath": "${'$'}.Sum",
+                        "ResultPath": "$.Sum",
                         "End": true
                     }
                 }

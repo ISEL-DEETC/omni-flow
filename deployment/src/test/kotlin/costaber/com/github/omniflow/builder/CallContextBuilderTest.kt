@@ -45,7 +45,7 @@ internal class CallContextBuilderTest {
                 get { path }.isEqualTo(PATH)
                 get { header }.containsKeys(HEADER_CONTENT_TYPE, HEADER_ACCEPT)
                 get { query }.containsKey(QUERY_STRING_WORKFLOW_ID)
-                get { body }.isEqualTo(BODY_1)
+                get { bodyRaw }.isEqualTo(BODY_1)
                 get { authentication?.type }.isEqualTo(AUTH_TYPE_2)
                 get { timeoutInSeconds }.isEqualTo(TIMEOUT)
                 get { result }.isEqualTo(CALL_CONTEXT_RESULT_1)
