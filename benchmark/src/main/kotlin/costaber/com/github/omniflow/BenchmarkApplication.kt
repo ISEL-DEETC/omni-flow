@@ -13,12 +13,12 @@ object BenchmarkApplication {
         require(args.isNotEmpty()) { "Argument corresponding to the file path is missing" }
 
         val filePath = args[0]
-        require(filePath.endsWith(".txt")) { "The file format must be TXT" }
+        require(filePath.endsWith(".json")) { "The file format must be json" }
 
         val opt = OptionsBuilder()
             .addProfiler(JavaFlightRecorderProfiler::class.java)
             .shouldDoGC(true)
-            .resultFormat(ResultFormatType.TEXT)
+            .resultFormat(ResultFormatType.JSON)
             .result(filePath)
             .build()
 
