@@ -1,10 +1,9 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
+import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_NUMERIC_GREATER_THAN
+import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_NUMERIC_GREATER_THAN_PATH
 import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_VARIABLE
-import costaber.com.github.omniflow.model.GreaterThanExpression
-import costaber.com.github.omniflow.model.Node
-import costaber.com.github.omniflow.model.Value
-import costaber.com.github.omniflow.model.Variable
+import costaber.com.github.omniflow.model.*
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
@@ -17,12 +16,24 @@ class AmazonGreaterThanExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
-            addLine("$AMAZON_VARIABLE\"\$.${greaterThanExpression.left.term()}\",")
+            addLine(
+                "$AMAZON_VARIABLE\"\$.${
+                    amazonTermResolver.resolveVariable(
+                        greaterThanExpression.left,
+                        Notation.DOT_NOTATION
+                    )
+                }\","
+            )
             when (greaterThanExpression.right) {
-                is Value<*> -> add("\"NumericGreaterThan\": ")
-                is Variable -> add("\"NumericGreaterThanPath\": ")
+                is Value<*> -> add("$AMAZON_NUMERIC_GREATER_THAN${greaterThanExpression.right.term()},")
+                is Variable -> add(
+                    "$AMAZON_NUMERIC_GREATER_THAN_PATH\"\$.${
+                        amazonTermResolver.resolveVariable(
+                            greaterThanExpression.right,
+                            Notation.DOT_NOTATION
+                        )
+                    }\",")
             }
-            append("${greaterThanExpression.right.term()},")
         }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext): String = "" // nothing
