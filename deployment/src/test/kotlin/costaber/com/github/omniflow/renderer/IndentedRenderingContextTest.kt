@@ -1,8 +1,8 @@
 package costaber.com.github.omniflow.renderer
 
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class IndentedRenderingContextTest {
 

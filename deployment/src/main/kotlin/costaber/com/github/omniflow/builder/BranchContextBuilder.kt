@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.builder
 
-import costaber.com.github.omniflow.model.*
+import costaber.com.github.omniflow.model.BranchContext
+import costaber.com.github.omniflow.model.StepContext
 
 class BranchContextBuilder : Builder<StepContext> {
 
@@ -15,7 +16,7 @@ class BranchContextBuilder : Builder<StepContext> {
     fun steps(vararg value: StepBuilder) = apply { steps.addAll(value.toList()) }
 
 
-    override fun build() : BranchContext {
+    override fun build(): BranchContext {
         return BranchContext(name, description, steps.map { it.build() })
     }
 }

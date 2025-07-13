@@ -16,7 +16,7 @@ class GoogleNotEqualToExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val key = googleTermResolver.resolveVariable(notEqualToExpression.left, Notation.DOT_NOTATION)
-        val value = when(notEqualToExpression.right) {
+        val value = when (notEqualToExpression.right) {
             is Variable -> googleTermResolver.resolveVariable(notEqualToExpression.right, Notation.DOT_NOTATION)
             else -> notEqualToExpression.right.term()
         }

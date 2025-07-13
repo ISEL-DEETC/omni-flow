@@ -5,10 +5,10 @@ import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.util.VALUE_1
 import costaber.com.github.omniflow.util.VARIABLE_1
 import costaber.com.github.omniflow.util.VARIABLE_NAME_1
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class DslDefinitionTest {
 

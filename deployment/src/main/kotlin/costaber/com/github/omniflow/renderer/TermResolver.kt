@@ -33,6 +33,7 @@ abstract class TermResolver {
         return when (notation) {
             Notation.DOT_NOTATION ->
                 "${translateVariable(variable.term())}.${variable.getWithKeys().joinToString(".")}"
+
             Notation.SQUARE_BRACKETS_NOTATION ->
                 "${variable.name}${variable.getWithKeys().joinToString("") { "[$it]" }}"
         }

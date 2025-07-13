@@ -8,7 +8,6 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 
 
-
 class AmazonRenderingContext(
     indentationLevel: Int = 0,
     stringBuilder: StringBuilder = StringBuilder(),

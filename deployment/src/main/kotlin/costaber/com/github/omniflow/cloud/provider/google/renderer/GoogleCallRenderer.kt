@@ -16,7 +16,7 @@ class GoogleCallRenderer(
 
     override val element: Node = callContext
 
-    private fun ResultType.name(): String = when(this) {
+    private fun ResultType.name(): String = when (this) {
         ResultType.BODY -> "body"
         ResultType.CODE -> "code"
         ResultType.HEADERS -> "headers"

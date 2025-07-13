@@ -16,7 +16,7 @@ class GoogleEqualToExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val key = googleTermResolver.resolveVariable(equalToExpression.left, Notation.DOT_NOTATION)
-        val value = when(equalToExpression.right) {
+        val value = when (equalToExpression.right) {
             is Variable -> googleTermResolver.resolveVariable(equalToExpression.right, Notation.DOT_NOTATION)
             else -> equalToExpression.right.term()
         }

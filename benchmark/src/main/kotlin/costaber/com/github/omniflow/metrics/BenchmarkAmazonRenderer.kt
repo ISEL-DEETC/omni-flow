@@ -7,7 +7,6 @@ import costaber.com.github.omniflow.generator.WorkflowGenerator.withIndependentS
 import costaber.com.github.omniflow.generator.WorkflowGenerator.withMultipleDecisions
 import costaber.com.github.omniflow.provider.StrategyDeciderProvider
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
-import costaber.com.github.omniflow.renderer.RenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import org.openjdk.jmh.annotations.Benchmark

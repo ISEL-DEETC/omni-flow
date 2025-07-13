@@ -131,7 +131,7 @@ object WorkflowGenerator {
 
     @JvmStatic
     fun textTranslator(): Workflow {
-        val steps: MutableList<Step> =  mutableListOf()
+        val steps: MutableList<Step> = mutableListOf()
         steps.add(newTranslation())
         steps.add(assignTranslation())
         return Workflow(

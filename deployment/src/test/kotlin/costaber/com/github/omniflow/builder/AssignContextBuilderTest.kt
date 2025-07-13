@@ -8,11 +8,11 @@ import costaber.com.github.omniflow.model.StepType
 import costaber.com.github.omniflow.util.VARIABLE_INITIALIZATION_1
 import costaber.com.github.omniflow.util.VARIABLE_INITIALIZATION_3
 import costaber.com.github.omniflow.util.VARIABLE_NAME_1
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class AssignContextBuilderTest {
 

@@ -1,22 +1,9 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.traversor
 
-import costaber.com.github.omniflow.dsl.assign
-import costaber.com.github.omniflow.dsl.condition
-import costaber.com.github.omniflow.dsl.step
-import costaber.com.github.omniflow.dsl.switch
-import costaber.com.github.omniflow.dsl.value
-import costaber.com.github.omniflow.dsl.variable
-import costaber.com.github.omniflow.model.BranchContext
-import costaber.com.github.omniflow.model.IterationForEachContext
-import costaber.com.github.omniflow.model.IterationRangeContext
-import costaber.com.github.omniflow.model.Node
-import costaber.com.github.omniflow.model.ParallelBranchContext
-import costaber.com.github.omniflow.model.ParallelIterationContext
-import costaber.com.github.omniflow.model.Step
-import costaber.com.github.omniflow.model.Value
+import costaber.com.github.omniflow.dsl.*
+import costaber.com.github.omniflow.model.*
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.ContextVisitor
-import kotlin.collections.plus
 
 class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
 
@@ -31,10 +18,13 @@ class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
                 is IterationRangeContext -> node.copy(context = node.context.childNodes(node.name))
                 is IterationForEachContext -> node.copy(context = node.context.childNodes(node.name))
                 is ParallelIterationContext -> when (node.context.iterationContext) {
-                    is IterationRangeContext -> node.copy(context = toParallelBranchContext(
-                        node.name,
-                        node.context.iterationContext
-                    ))
+                    is IterationRangeContext -> node.copy(
+                        context = toParallelBranchContext(
+                            node.name,
+                            node.context.iterationContext
+                        )
+                    )
+
                     else -> node
                 }
 
@@ -49,7 +39,10 @@ class AmazonTraversor : DepthFirstNodeVisitorTraversor() {
 
 }
 
-private fun toParallelBranchContext(prefix: String, iterationRangeContext: IterationRangeContext): ParallelBranchContext =
+private fun toParallelBranchContext(
+    prefix: String,
+    iterationRangeContext: IterationRangeContext
+): ParallelBranchContext =
     ParallelBranchContext(
         (iterationRangeContext.range.min..iterationRangeContext.range.max).map {
             BranchContext(

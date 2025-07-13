@@ -1,6 +1,9 @@
 package costaber.com.github.omniflow.cloud.provider.google.renderer
 
-import costaber.com.github.omniflow.model.*
+import costaber.com.github.omniflow.model.Node
+import costaber.com.github.omniflow.model.ParallelBranchContext
+import costaber.com.github.omniflow.model.ParallelContext
+import costaber.com.github.omniflow.model.ParallelIterationContext
 import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
@@ -37,7 +40,8 @@ class GoogleParallelRenderer(private val parallelContext: ParallelContext) : Ind
         val googleRenderingContext = (renderingContext as GoogleRenderingContext)
         val innerContext = googleRenderingContext.popLastRenderingContext()
         val currentContext = googleRenderingContext.getLastRenderingContext()
-        val sharedVariables = currentContext.getVariables().map { it.variable.name }.toSet().intersect(innerContext.getVariables().map { it.variable.name }.toSet())
+        val sharedVariables = currentContext.getVariables().map { it.variable.name }.toSet()
+            .intersect(innerContext.getVariables().map { it.variable.name }.toSet())
         return render(currentContext) {
             if (sharedVariables.isNotEmpty()) {
                 tab { add("shared: [${sharedVariables.joinToString(",")}]") }

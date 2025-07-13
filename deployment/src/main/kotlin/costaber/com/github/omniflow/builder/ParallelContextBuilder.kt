@@ -1,6 +1,9 @@
 package costaber.com.github.omniflow.builder
 
-import costaber.com.github.omniflow.model.*
+import costaber.com.github.omniflow.model.ParallelBranchContext
+import costaber.com.github.omniflow.model.ParallelContext
+import costaber.com.github.omniflow.model.ParallelIterationContext
+import costaber.com.github.omniflow.model.StepType
 
 class ParallelContextBuilder : ContextBuilder {
 

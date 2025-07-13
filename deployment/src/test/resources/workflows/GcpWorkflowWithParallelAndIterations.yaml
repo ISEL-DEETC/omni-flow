@@ -1,80 +1,80 @@
 main:
-    steps:
-        - ListAssign:
-            assign:
-                - listString: [a, b]
-                - listNumber: [1, 2]
-                - c: 'true'
-        - Parallel:
-            parallel:
-                branches:
-                    - branch1:
-                        steps:
-                                - Assign step:
-                                    assign:
-                                        - Hello: 'Hello'
-                    - branch2:
-                        steps:
-                                - Assign step 2:
-                                    assign:
-                                        - Hello: 'Hello'
-        - Parallel Iteration:
-            parallel:
-                    for:
-                        value: key
-                        in: ${listString}
-                        steps:
-                            - AssignParallelIteration1:
-                                assign:
-                                    - d: Variable(name=key)
-                            - AssignParallelIteration2:
-                                assign:
-                                    - d: Variable(name=key)
-        - For:
-            for:
-                value: key
-                range: [1, 9]
+  steps:
+    - ListAssign:
+        assign:
+          - listString: [ a, b ]
+          - listNumber: [ 1, 2 ]
+          - c: 'true'
+    - Parallel:
+        parallel:
+          branches:
+            - branch1:
                 steps:
-                    - AssignIteration1:
-                        assign:
-                            - number: Variable(name=key)
-                    - AssignIteration2:
-                        assign:
-                            - number: Variable(name=key)
-        - InitVariables:
-            assign:
-                - a: 1
-                - b: 2
-                - c: 3
-        - Sum:
-            call: http.get
-            args:
-                url: r1ro8xa7y8.execute-api.us-east-1.amazonaws.com/default/calculator
-                query:
-                    number1: ${a}
-                    number2: ${b}
-                    op: 'add'
-            result: sumResult
-        - Condition:
-            switch:
-                - condition:
-                    ${c == 0}
-                  next: Assign1ToC
-                - condition:
-                    ${c > 0}
-                  next: DivWithC
+                  - Assign step:
+                      assign:
+                        - Hello: 'Hello'
+            - branch2:
+                steps:
+                  - Assign step 2:
+                      assign:
+                        - Hello: 'Hello'
+    - Parallel Iteration:
+        parallel:
+          for:
+            value: key
+            in: ${listString}
+            steps:
+              - AssignParallelIteration1:
+                  assign:
+                    - d: Variable(name=key)
+              - AssignParallelIteration2:
+                  assign:
+                    - d: Variable(name=key)
+    - For:
+        for:
+          value: key
+          range: [ 1, 9 ]
+          steps:
+            - AssignIteration1:
+                assign:
+                  - number: Variable(name=key)
+            - AssignIteration2:
+                assign:
+                  - number: Variable(name=key)
+    - InitVariables:
+        assign:
+          - a: 1
+          - b: 2
+          - c: 3
+    - Sum:
+        call: http.get
+        args:
+          url: r1ro8xa7y8.execute-api.us-east-1.amazonaws.com/default/calculator
+          query:
+            number1: ${a}
+            number2: ${b}
+            op: 'add'
+        result: sumResult
+    - Condition:
+        switch:
+          - condition:
+              ${c == 0}
             next: Assign1ToC
-        - Assign1ToC:
-            assign:
-                - c: 1
-        - DivWithC:
-            call: http.get
-            args:
-                url: r1ro8xa7y8.execute-api.us-east-1.amazonaws.com/default/calculator
-                query:
-                    number1: ${sumResult.body}
-                    number2: ${c}
-                    op: 'div'
-            result: divResult
-        - return_output:
-            return: ${divResult.body}
+          - condition:
+              ${c > 0}
+            next: DivWithC
+        next: Assign1ToC
+    - Assign1ToC:
+        assign:
+          - c: 1
+    - DivWithC:
+        call: http.get
+        args:
+          url: r1ro8xa7y8.execute-api.us-east-1.amazonaws.com/default/calculator
+          query:
+            number1: ${sumResult.body}
+            number2: ${c}
+            op: 'div'
+        result: divResult
+    - return_output:
+        return: ${divResult.body}

@@ -16,7 +16,7 @@ class GoogleGreaterThanExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val key = googleTermResolver.resolveVariable(greaterThanExpression.left, Notation.DOT_NOTATION)
-        val value = when(greaterThanExpression.right) {
+        val value = when (greaterThanExpression.right) {
             is Variable -> googleTermResolver.resolveVariable(greaterThanExpression.right, Notation.DOT_NOTATION)
             else -> greaterThanExpression.right.term()
         }

@@ -3,11 +3,7 @@ package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 import costaber.com.github.omniflow.builder.ResultType
 import costaber.com.github.omniflow.cloud.provider.amazon.*
 import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
-import costaber.com.github.omniflow.model.CallContext
-import costaber.com.github.omniflow.model.Node
-import costaber.com.github.omniflow.model.Term
-import costaber.com.github.omniflow.model.Value
-import costaber.com.github.omniflow.model.Variable
+import costaber.com.github.omniflow.model.*
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
 import costaber.com.github.omniflow.resource.util.render
@@ -21,7 +17,7 @@ class AmazonCallRenderer(
 
     override val element: Node = callContext
 
-    private fun ResultType.name(): String = when(this) {
+    private fun ResultType.name(): String = when (this) {
         ResultType.BODY -> AMAZON_RESPONSE_BODY
         ResultType.CODE -> AMAZON_STATUS_CODE_BODY
         ResultType.HEADERS -> AMAZON_HEADERS_BODY
@@ -29,7 +25,7 @@ class AmazonCallRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val host = amazonContext.hostResolve(callContext.host)?: callContext.host
+        val host = amazonContext.hostResolve(callContext.host) ?: callContext.host
 
         return render(renderingContext) {
             addLine(AMAZON_TASK_TYPE)
@@ -83,7 +79,8 @@ class AmazonCallRenderer(
             append(",")
             addEmptyLine()
             addLine(title)
-            tab {AMAZON_START_RESULT_PATH
+            tab {
+                AMAZON_START_RESULT_PATH
                 val mutableMap = mapToRender.toMutableMap()
                 val last = mutableMap.entries.lastOrNull()
                 last?.let { mutableMap.remove(last.key) }
@@ -105,7 +102,7 @@ class AmazonCallRenderer(
     }
 
     private fun IndentedRenderingContext.renderBody() {
-        if (callContext.bodyRaw.isNotEmpty()){
+        if (callContext.bodyRaw.isNotEmpty()) {
             append(",")
             addEmptyLine()
             add(AMAZON_REQUEST_BODY)
@@ -152,28 +149,6 @@ class AmazonCallRenderer(
             is Term<*> -> add("\"${key}\":${objectMapper.writeValueAsString(value.term())}")
             else -> add("\"${key}\":${objectMapper.writeValueAsString(value)}")
         }
-    }
-
-    private fun parseBodyIfMap(body: Any): Any {
-        if (body is Map<*, *>) {
-            val resultMap: MutableMap<Any?, Any?> = body.toMutableMap()
-            val stack: MutableList<MutableMap<Any?, Any?>> = mutableListOf()
-            stack.add(resultMap)
-            while (stack.isNotEmpty()) {
-                val currentMap = stack.removeAt(0)
-                currentMap.forEach {
-                    if (it.value is Map<*, *>) {
-                        stack.add((it.value as Map<*, *>).toMutableMap())
-                    }
-                    if (it.key is String && it.value is Variable) {
-                        currentMap.remove(it.key)
-                        currentMap["${it.key}.$"] = "$.${(it.value as Variable).name}"
-                    }
-                }
-            }
-            return resultMap
-        }
-        return body
     }
 
     private fun IndentedRenderingContext.renderAuth() {

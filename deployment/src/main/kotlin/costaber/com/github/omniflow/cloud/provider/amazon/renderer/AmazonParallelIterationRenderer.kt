@@ -1,12 +1,16 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
 import costaber.com.github.omniflow.cloud.provider.amazon.*
-import costaber.com.github.omniflow.model.*
+import costaber.com.github.omniflow.model.IterationForEachContext
+import costaber.com.github.omniflow.model.Node
+import costaber.com.github.omniflow.model.ParallelIterationContext
+import costaber.com.github.omniflow.model.Step
 import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class AmazonParallelIterationRenderer(private val parallelIterationContext: ParallelIterationContext) : IndentedNodeRenderer() {
+class AmazonParallelIterationRenderer(private val parallelIterationContext: ParallelIterationContext) :
+    IndentedNodeRenderer() {
 
     override val element: Node = parallelIterationContext
 
@@ -19,7 +23,8 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
 
         if (parallelIterationContext.iterationContext !is IterationForEachContext)
             assert(false) { "This should never happen! AmazonTravesor makes all other ParallelIteration into ParallelBranchContext" }
-        val iterationForEachContext: IterationForEachContext = parallelIterationContext.iterationContext as IterationForEachContext
+        val iterationForEachContext: IterationForEachContext =
+            parallelIterationContext.iterationContext as IterationForEachContext
         val innerName = "InnerMap${context.getCurrentStepName()}"
 
         return render(context) {

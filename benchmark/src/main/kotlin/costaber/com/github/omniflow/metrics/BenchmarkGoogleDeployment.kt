@@ -6,8 +6,6 @@ import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflow
 import costaber.com.github.omniflow.generator.WorkflowGenerator.textTranslator
 import costaber.com.github.omniflow.provider.OfficialWorkflowSamplesProvider
 import costaber.com.github.omniflow.provider.StrategyDeciderProvider
-import costaber.com.github.omniflow.renderer.IndentedRenderingContext
-import costaber.com.github.omniflow.renderer.RenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.Constants
 import costaber.com.github.omniflow.util.ListUtils

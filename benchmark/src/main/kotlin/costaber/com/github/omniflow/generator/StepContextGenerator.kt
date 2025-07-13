@@ -10,7 +10,7 @@ object StepContextGenerator {
 
     fun independentCall(): StepContext {
         val headers = mapOf(
-            "Content-Type" to  Value("application/json")
+            "Content-Type" to Value("application/json")
         )
         val queries = mapOf(
             "number" to Value(1)
@@ -97,7 +97,11 @@ object StepContextGenerator {
             "https://translation.googleapis.com",
             "/v3/projects/19823573:translateText",
             Authentication("OAuth2", null, null, null),
-            mapOf("contents" to "Hello, my name is John!", "sourceLanguageCode" to "en-US", "targetLanguageCode" to "ru-RU"),
+            mapOf(
+                "contents" to "Hello, my name is John!",
+                "sourceLanguageCode" to "en-US",
+                "targetLanguageCode" to "ru-RU"
+            ),
             "",
             emptyMap(),
             emptyMap(),

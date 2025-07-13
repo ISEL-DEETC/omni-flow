@@ -2,9 +2,9 @@ package costaber.com.github.omniflow.renderer
 
 import costaber.com.github.omniflow.model.Node
 import io.mockk.*
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class IndentedNodeRendererTest {
 

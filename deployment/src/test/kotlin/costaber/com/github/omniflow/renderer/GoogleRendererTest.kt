@@ -4,17 +4,7 @@ import costaber.com.github.omniflow.builder.StepBuilder
 import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
-import costaber.com.github.omniflow.dsl.assign
-import costaber.com.github.omniflow.dsl.branch
-import costaber.com.github.omniflow.dsl.call
-import costaber.com.github.omniflow.dsl.condition
-import costaber.com.github.omniflow.dsl.iteration
-import costaber.com.github.omniflow.dsl.parallel
-import costaber.com.github.omniflow.dsl.step
-import costaber.com.github.omniflow.dsl.switch
-import costaber.com.github.omniflow.dsl.value
-import costaber.com.github.omniflow.dsl.variable
-import costaber.com.github.omniflow.dsl.workflow
+import costaber.com.github.omniflow.dsl.*
 import costaber.com.github.omniflow.model.HttpMethod.GET
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
@@ -38,7 +28,7 @@ internal class GoogleRendererTest {
 
     @Test
     fun `test assign step`() {
-        val w  = createWorkflow(
+        val w = createWorkflow(
             step {
                 name("Assign")
                 description("Initialize variables")
@@ -46,7 +36,7 @@ internal class GoogleRendererTest {
                     assign {
                         variables(
                             variable("listString") equalTo value(listOf("a", "b")),
-                            variable("listNumber") equalTo value(listOf(1,2)),
+                            variable("listNumber") equalTo value(listOf(1, 2)),
                             variable("c") equalTo value("true"),
                             variable("a").withKey("b").withKey("c") equalTo value("true")
                         )
@@ -364,7 +354,7 @@ internal class GoogleRendererTest {
     }
 
     @Test
-    fun `test parallel with iteration step`(){
+    fun `test parallel with iteration step`() {
         val w = createWorkflow(
             step {
                 name("Parallel Iteration")

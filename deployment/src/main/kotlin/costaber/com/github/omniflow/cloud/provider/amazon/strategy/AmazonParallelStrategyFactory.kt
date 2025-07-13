@@ -16,7 +16,7 @@ class AmazonParallelStrategyFactory : NodeRendererStrategyFactory<String> {
     override fun getMatcher(): Predicate<Node> =
         DefaultPredicate(ParallelContext::class)
 
-    override fun getRenderer(node: Node): NodeRenderer<String> = when(node) {
+    override fun getRenderer(node: Node): NodeRenderer<String> = when (node) {
         is ParallelBranchContext -> AmazonParallelRenderer(node)
         is ParallelIterationContext -> AmazonParallelIterationRenderer(node)
         else -> throw UnsupportedOperationException("ParallelBranchContext $node is not supported.")

@@ -17,7 +17,8 @@ class IterationContextBuilder : ContextBuilder {
         if (forEachVariable != null) {
             throw IllegalArgumentException("Cannot use both ForEach and Range at the same time.")
         }
-        range = Range(min, max) }
+        range = Range(min, max)
+    }
 
     fun forEach(variable: Variable) = apply {
         if (range != null) {
@@ -29,7 +30,7 @@ class IterationContextBuilder : ContextBuilder {
     fun steps(vararg value: StepBuilder) = apply { steps.addAll(value.toList()) }
 
 
-    override fun build() : IterationContext {
+    override fun build(): IterationContext {
         if (range != null)
             return IterationRangeContext(key, steps.map { it.build() }, range!!)
         if (forEachVariable != null)

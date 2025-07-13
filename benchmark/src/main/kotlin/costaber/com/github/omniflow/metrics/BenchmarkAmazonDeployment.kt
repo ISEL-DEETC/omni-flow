@@ -5,7 +5,6 @@ import costaber.com.github.omniflow.cloud.provider.amazon.service.AmazonStateMac
 import costaber.com.github.omniflow.generator.WorkflowGenerator.saveAndGetPetFromStore
 import costaber.com.github.omniflow.provider.OfficialWorkflowSamplesProvider
 import costaber.com.github.omniflow.provider.StrategyDeciderProvider
-import costaber.com.github.omniflow.renderer.RenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.Constants
 import costaber.com.github.omniflow.util.ListUtils

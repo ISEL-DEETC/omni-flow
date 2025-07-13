@@ -10,8 +10,8 @@ import costaber.com.github.omniflow.model.HttpMethod.GET
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
-import kotlin.test.Test
 import java.util.*
+import kotlin.test.Test
 
 internal class WorkflowParallelTest {
 

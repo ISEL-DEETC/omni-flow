@@ -2,9 +2,9 @@ package costaber.com.github.omniflow.resource.util
 
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.renderer.TermContext
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class IndentedRenderingContextExtensionTest {
 

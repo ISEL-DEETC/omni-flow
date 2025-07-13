@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.type.TypeFactory
 import costaber.com.github.omniflow.jackson.OmniflowObjectMapper
-import costaber.com.github.omniflow.model.CallContext
-import costaber.com.github.omniflow.model.HttpMethod
-import costaber.com.github.omniflow.model.StepType
-import costaber.com.github.omniflow.model.Term
-import costaber.com.github.omniflow.model.Value
+import costaber.com.github.omniflow.model.*
 
 
 class CallContextBuilder : ContextBuilder {
@@ -17,6 +13,7 @@ class CallContextBuilder : ContextBuilder {
     private val objectMapper: ObjectMapper
     private val typeFactory: TypeFactory = TypeFactory.defaultInstance()
     private val mapType = typeFactory.constructMapType(Map::class.java, String::class.java, Any::class.java)
+
     constructor(objectMapper: ObjectMapper = OmniflowObjectMapper.default) : super() {
         this.objectMapper = objectMapper
     }

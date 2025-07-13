@@ -14,9 +14,9 @@ import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.CONTENT_TYPE_APPLICATION_JSON
 import costaber.com.github.omniflow.util.HEADER_CONTENT_TYPE
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class ClassificationExample {
 
@@ -221,7 +221,10 @@ internal class ClassificationExample {
         val nodeTraversor = DepthFirstNodeVisitorTraversor()
         val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
         val renderingContext = AmazonRenderingContext()
-        renderingContext.addToHostResolver("https://sentiment.soik.eu", "xnivwfynoh.execute-api.eu-north-1.amazonaws.com")
+        renderingContext.addToHostResolver(
+            "https://sentiment.soik.eu",
+            "xnivwfynoh.execute-api.eu-north-1.amazonaws.com"
+        )
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()

@@ -1,11 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.renderer
 
 import costaber.com.github.omniflow.cloud.provider.amazon.*
-import costaber.com.github.omniflow.model.Notation
-import costaber.com.github.omniflow.model.EqualToExpression
-import costaber.com.github.omniflow.model.Node
-import costaber.com.github.omniflow.model.Value
-import costaber.com.github.omniflow.model.Variable
+import costaber.com.github.omniflow.model.*
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
@@ -18,9 +14,24 @@ class AmazonEqualToExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
         render(renderingContext) {
-            addLine("$AMAZON_VARIABLE\"\$.${amazonTermResolver.resolveVariable(equalToExpression.left, Notation.DOT_NOTATION)}\",")
+            addLine(
+                "$AMAZON_VARIABLE\"\$.${
+                    amazonTermResolver.resolveVariable(
+                        equalToExpression.left,
+                        Notation.DOT_NOTATION
+                    )
+                }\","
+            )
             when (equalToExpression.right) {
-                is Variable -> add("$AMAZON_STRING_EQUALS_PATH\"\$.${amazonTermResolver.resolveVariable(equalToExpression.right, Notation.DOT_NOTATION)}\",")
+                is Variable -> add(
+                    "$AMAZON_STRING_EQUALS_PATH\"\$.${
+                        amazonTermResolver.resolveVariable(
+                            equalToExpression.right,
+                            Notation.DOT_NOTATION
+                        )
+                    }\","
+                )
+
                 is Value<*> -> renderValue(equalToExpression.right)
             }
         }

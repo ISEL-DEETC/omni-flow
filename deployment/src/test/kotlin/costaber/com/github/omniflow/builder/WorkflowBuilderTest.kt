@@ -6,11 +6,11 @@ import costaber.com.github.omniflow.dsl.workflow
 import costaber.com.github.omniflow.model.HttpMethod
 import costaber.com.github.omniflow.model.Workflow
 import costaber.com.github.omniflow.util.*
-import kotlin.test.Test
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class WorkflowBuilderTest {
 

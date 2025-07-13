@@ -16,7 +16,7 @@ class GoogleLessThanOrEqualExpressionRenderer(
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val key = googleTermResolver.resolveVariable(lessThanOrEqualExpression.left, Notation.DOT_NOTATION)
-        val value = when(lessThanOrEqualExpression.right) {
+        val value = when (lessThanOrEqualExpression.right) {
             is Variable -> googleTermResolver.resolveVariable(lessThanOrEqualExpression.right, Notation.DOT_NOTATION)
             else -> lessThanOrEqualExpression.right.term()
         }
