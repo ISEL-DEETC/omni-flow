@@ -1,6 +1,5 @@
 package costaber.com.github.omniflow
 
-import org.openjdk.jmh.profile.JavaFlightRecorderProfiler
 import org.openjdk.jmh.results.format.ResultFormatType
 import org.openjdk.jmh.runner.Runner
 import org.openjdk.jmh.runner.RunnerException
@@ -13,12 +12,11 @@ object BenchmarkApplication {
         require(args.isNotEmpty()) { "Argument corresponding to the file path is missing" }
 
         val filePath = args[0]
-        require(filePath.endsWith(".json")) { "The file format must be json" }
+        require(filePath.endsWith(".txt")) { "The file format must be TXT" }
 
         val opt = OptionsBuilder()
-            .addProfiler(JavaFlightRecorderProfiler::class.java)
             .shouldDoGC(true)
-            .resultFormat(ResultFormatType.JSON)
+            .resultFormat(ResultFormatType.TEXT)
             .result(filePath)
             .build()
 
