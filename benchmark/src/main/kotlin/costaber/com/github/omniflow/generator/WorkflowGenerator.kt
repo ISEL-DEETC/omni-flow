@@ -7,12 +7,19 @@ import costaber.com.github.omniflow.generator.StepGenerator.assignTranslation
 import costaber.com.github.omniflow.generator.StepGenerator.binaryConditional
 import costaber.com.github.omniflow.generator.StepGenerator.checkSuccess
 import costaber.com.github.omniflow.generator.StepGenerator.independent
+import costaber.com.github.omniflow.generator.StepGenerator.iterationWithForEach
+import costaber.com.github.omniflow.generator.StepGenerator.iterationWithRange
 import costaber.com.github.omniflow.generator.StepGenerator.multipleDecision
 import costaber.com.github.omniflow.generator.StepGenerator.newTranslation
 import costaber.com.github.omniflow.generator.StepGenerator.notifyWatchers
+import costaber.com.github.omniflow.generator.StepGenerator.parallelIteration
+import costaber.com.github.omniflow.generator.StepGenerator.parallelMultipleBranch
+import costaber.com.github.omniflow.generator.StepGenerator.parallelOneBranch
 import costaber.com.github.omniflow.generator.StepGenerator.petsFromStore
 import costaber.com.github.omniflow.generator.StepGenerator.usingVariables
+import costaber.com.github.omniflow.model.Range
 import costaber.com.github.omniflow.model.Step
+import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.model.Workflow
 
 object WorkflowGenerator {
@@ -158,4 +165,81 @@ object WorkflowGenerator {
             "NotificationStatus"
         )
     }
+
+    fun withIterationsRange(stepsNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        listOf(
+            iterationWithRange(
+                STEP_NAME, 0, (0 until stepsNumber).map { independent("INNER$STEP_NAME", it) },
+                Range(1, 10)
+            )
+        ),
+        WORKFLOW_RESULT
+    )
+
+    fun withIterationsForEach(stepsNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        listOf(
+            iterationWithForEach(
+                STEP_NAME, 0, (0 until stepsNumber).map { independent("INNER$STEP_NAME", it) },
+                Variable("number")
+            )
+        ),
+        WORKFLOW_RESULT
+    )
+
+    fun withParallelOneBranch(stepsNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        listOf(parallelOneBranch((0 until stepsNumber).map { independent("INNER$STEP_NAME", it) })),
+        WORKFLOW_RESULT
+    )
+
+    fun withParallelMultipleBranches(stepsNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        0.until(stepsNumber).map {
+            parallelMultipleBranch(
+                (0 until stepsNumber).map { independent("INNER$it$STEP_NAME", it) },
+                stepsNumber
+            )
+        },
+        WORKFLOW_RESULT
+    )
+
+    fun withParallelIterationRange(stepNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        listOf(
+            parallelIteration(
+                StepContextGenerator.iteration(
+                    (0 until stepNumber).map { independent("INNER$it$STEP_NAME", it) },
+                    Range(1, 10)
+                )
+            )
+        ),
+        WORKFLOW_RESULT
+    )
+
+    fun withParallelIterationWithForEach(stepNumber: Int): Workflow = Workflow(
+        WORKFLOW_NAME,
+        WORKFLOW_DESCRIPTION,
+        WORKFLOW_INPUT,
+        listOf(
+            parallelIteration(
+                StepContextGenerator.iteration(
+                    (0 until stepNumber).map { independent("INNER$it$STEP_NAME", it) },
+                    Variable("number1"),
+                )
+            )
+        ),
+        WORKFLOW_RESULT
+    )
 }

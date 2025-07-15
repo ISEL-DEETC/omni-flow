@@ -1,11 +1,11 @@
 package costaber.com.github.omniflow.metrics
 
+import costaber.com.github.omniflow.cloud.provider.amazon.provider.AmazonDefaultStrategyDeciderProvider
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.amazon.service.AmazonStateMachineService
+import costaber.com.github.omniflow.cloud.provider.amazon.traversor.AmazonTraversor
 import costaber.com.github.omniflow.generator.WorkflowGenerator.saveAndGetPetFromStore
 import costaber.com.github.omniflow.provider.OfficialWorkflowSamplesProvider
-import costaber.com.github.omniflow.provider.StrategyDeciderProvider
-import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.Constants
 import costaber.com.github.omniflow.util.ListUtils
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
@@ -19,9 +19,9 @@ open class BenchmarkAmazonDeployment : BenchmarkWorkflowDeployment() {
     @Setup
     @Throws(IOException::class)
     fun setup() {
-        val traversor = DepthFirstNodeVisitorTraversor()
+        val traversor = AmazonTraversor()
         val amazonContextVisitor = NodeContextVisitor(
-            StrategyDeciderProvider.amazonNodeRendererStrategyDecider()
+            AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider()
         )
         val amazonRenderingContext = AmazonRenderingContext()
         val saveAndGetPetFromStoreWorkflow = saveAndGetPetFromStore()

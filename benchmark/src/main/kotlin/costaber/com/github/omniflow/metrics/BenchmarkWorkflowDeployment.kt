@@ -8,9 +8,7 @@ import java.util.concurrent.TimeUnit
 @Warmup(iterations = 0, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 1, timeUnit = TimeUnit.MILLISECONDS)
 @Fork(1)
-@State(
-    Scope.Benchmark
-)
+@State(Scope.Benchmark)
 abstract class BenchmarkWorkflowDeployment {
     protected lateinit var generatedWorkflow: String
     protected lateinit var exampleWorkflow: String

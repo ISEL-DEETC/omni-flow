@@ -1,5 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.google.deployer
 
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
@@ -46,26 +47,5 @@ class GoogleCloudDeployer internal constructor(
             contextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider()),
             googleWorkflowService = GoogleWorkflowService(),
         )
-
-        fun createNodeRendererStrategyDecider(): NodeRendererStrategyDecider {
-            return DefaultNodeRendererStrategyDecider.Builder()
-                .addRendererStrategy(GoogleAssignStrategyFactory())
-                .addRendererStrategy(GoogleCallStrategyFactory())
-                .addRendererStrategy(GoogleConditionStrategyFactory())
-                .addRendererStrategy(GoogleEqualToExpressionStrategyFactory())
-                .addRendererStrategy(GoogleGreaterThanExpressionStrategyFactory())
-                .addRendererStrategy(GoogleGreaterThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(GoogleLessThanExpressionStrategyFactory())
-                .addRendererStrategy(GoogleLessThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(GoogleNotEqualToExpressionStrategyFactory())
-                .addRendererStrategy(GoogleStepStrategyFactory())
-                .addRendererStrategy(GoogleSwitchStrategyFactory())
-                .addRendererStrategy(GoogleVariableStrategyFactory())
-                .addRendererStrategy(GoogleWorkflowStrategyFactory())
-                .addRendererStrategy(GoogleParallelStrategyFactory())
-                .addRendererStrategy(GoogleBranchStrategyFactory())
-                .addRendererStrategy(GoogleIterationStrategyFactory())
-                .build()
-        }
     }
 }

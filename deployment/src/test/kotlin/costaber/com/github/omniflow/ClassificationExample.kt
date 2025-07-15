@@ -1,9 +1,9 @@
 package costaber.com.github.omniflow
 
 import costaber.com.github.omniflow.builder.ResultType
-import costaber.com.github.omniflow.cloud.provider.amazon.deployer.AmazonCloudDeployer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
-import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
+import costaber.com.github.omniflow.cloud.provider.amazon.provider.AmazonDefaultStrategyDeciderProvider
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.dsl.*
@@ -156,7 +156,7 @@ internal class ClassificationExample {
     @Test
     fun `test classification workflow for gcp`() {
         val nodeTraversor = DepthFirstNodeVisitorTraversor()
-        val contextVisitor = NodeContextVisitor(GoogleCloudDeployer.Builder().createNodeRendererStrategyDecider())
+        val contextVisitor = NodeContextVisitor(GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider())
         val renderingContext = GoogleRenderingContext(termContext = GoogleTermContext())
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
@@ -219,7 +219,7 @@ internal class ClassificationExample {
     @Test
     fun `test classification workflow for aws`() {
         val nodeTraversor = DepthFirstNodeVisitorTraversor()
-        val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
+        val contextVisitor = NodeContextVisitor(AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider())
         val renderingContext = AmazonRenderingContext()
         renderingContext.addToHostResolver(
             "https://sentiment.soik.eu",

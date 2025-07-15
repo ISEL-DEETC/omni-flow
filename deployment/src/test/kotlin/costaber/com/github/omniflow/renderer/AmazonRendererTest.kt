@@ -1,7 +1,7 @@
 package costaber.com.github.omniflow.renderer
 
 import costaber.com.github.omniflow.builder.StepBuilder
-import costaber.com.github.omniflow.cloud.provider.amazon.deployer.AmazonCloudDeployer
+import costaber.com.github.omniflow.cloud.provider.amazon.provider.AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.amazon.traversor.AmazonTraversor
 import costaber.com.github.omniflow.dsl.*
@@ -16,7 +16,7 @@ import kotlin.test.Test
 internal class AmazonRendererTest {
     private val observer = VisitorObserver()
     private val nodeTraversor = AmazonTraversor().registerObserver(observer)
-    private val contextVisitor = NodeContextVisitor(AmazonCloudDeployer.Builder().createNodeRendererStrategyDecider())
+    private val contextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider())
     private val renderingContext = AmazonRenderingContext()
 
     private fun createWorkflow(vararg s: StepBuilder) = workflow {

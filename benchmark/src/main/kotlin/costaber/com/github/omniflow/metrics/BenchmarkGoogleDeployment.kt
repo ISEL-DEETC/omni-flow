@@ -1,11 +1,11 @@
 package costaber.com.github.omniflow.metrics
 
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
 import costaber.com.github.omniflow.generator.WorkflowGenerator.textTranslator
 import costaber.com.github.omniflow.provider.OfficialWorkflowSamplesProvider
-import costaber.com.github.omniflow.provider.StrategyDeciderProvider
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.util.Constants
 import costaber.com.github.omniflow.util.ListUtils
@@ -22,7 +22,7 @@ open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
     fun setup() {
         val traversor = DepthFirstNodeVisitorTraversor()
         val googleContextVisitor = NodeContextVisitor(
-            StrategyDeciderProvider.googleNodeRendererStrategyDecider()
+            GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider()
         )
         val googleRenderingContext = GoogleRenderingContext(
             0, StringBuilder(), GoogleTermContext()

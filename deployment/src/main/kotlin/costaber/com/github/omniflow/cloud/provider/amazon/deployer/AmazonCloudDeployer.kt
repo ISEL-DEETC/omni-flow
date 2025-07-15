@@ -3,6 +3,7 @@ package costaber.com.github.omniflow.cloud.provider.amazon.deployer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.amazon.service.AmazonStateMachineService
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.*
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.deployer.CloudDeployer
 import costaber.com.github.omniflow.factory.DefaultNodeRendererStrategyDecider
 import costaber.com.github.omniflow.factory.NodeRendererStrategyDecider
@@ -42,25 +43,5 @@ class AmazonCloudDeployer internal constructor(
             contextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider()),
             amazonStateMachineService = AmazonStateMachineService()
         )
-
-        fun createNodeRendererStrategyDecider(): NodeRendererStrategyDecider {
-            return DefaultNodeRendererStrategyDecider.Builder()
-                .addRendererStrategy(AmazonChoiceStrategyFactory())
-                .addRendererStrategy(AmazonConditionStrategyFactory())
-                .addRendererStrategy(AmazonEqualToExpressionStrategyFactory())
-                .addRendererStrategy(AmazonGreaterThanExpressionStrategyFactory())
-                .addRendererStrategy(AmazonGreaterThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(AmazonLessThanExpressionStrategyFactory())
-                .addRendererStrategy(AmazonLessThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(AmazonPassStrategyFactory())
-                .addRendererStrategy(AmazonStateMachineStrategyFactory())
-                .addRendererStrategy(AmazonStateStrategyFactory())
-                .addRendererStrategy(AmazonCallStrategyFactory())
-                .addRendererStrategy(AmazonVariableStrategyFactory())
-                .addRendererStrategy(AmazonParallelStrategyFactory())
-                .addRendererStrategy(AmazonBranchStrategyFactory())
-                .addRendererStrategy(AmazonIterationStrategyFactory())
-                .build()
-        }
     }
 }

@@ -22,7 +22,7 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
         context.appendInnerRenderingContext(innerContext)
 
         if (parallelIterationContext.iterationContext !is IterationForEachContext)
-            assert(false) { "This should never happen! AmazonTravesor makes all other ParallelIteration into ParallelBranchContext" }
+            throw IllegalStateException("This should never happen! AmazonTravesor makes all other ParallelIteration into ParallelBranchContext")
         val iterationForEachContext: IterationForEachContext =
             parallelIterationContext.iterationContext as IterationForEachContext
         val innerName = "InnerMap${context.getCurrentStepName()}"

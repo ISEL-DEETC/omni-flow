@@ -1,7 +1,11 @@
 package costaber.com.github.omniflow.generator
 
+import costaber.com.github.omniflow.model.BranchContext
+import costaber.com.github.omniflow.model.IterationContext
+import costaber.com.github.omniflow.model.Range
 import costaber.com.github.omniflow.model.Step
 import costaber.com.github.omniflow.model.StepType
+import costaber.com.github.omniflow.model.Variable
 
 object StepGenerator {
     const val STEP_NAME: String = "stepNumber"
@@ -112,6 +116,61 @@ object StepGenerator {
             "Call Notify Api to notify watchers with the result",
             StepType.CALL,
             StepContextGenerator.callNotifyApi()
+        )
+    }
+
+    @JvmStatic
+    fun iterationWithRange(stepName: String?, index: Int, steps: List<Step>, range: Range): Step {
+        return Step(
+            stepName + index,
+            "Iterates through a collection",
+            StepType.ITERATION,
+            StepContextGenerator.iteration(steps, range)
+        )
+    }
+
+    @JvmStatic
+    fun iterationWithForEach(stepName: String?, index: Int, steps: List<Step>, forEachVariable: Variable): Step {
+        return Step(
+            stepName + index,
+            "Iterates through a collection",
+            StepType.ITERATION,
+            StepContextGenerator.iteration(steps, forEachVariable)
+        )
+    }
+
+    @JvmStatic
+    fun parallelOneBranch(steps: List<Step>): Step {
+        return Step(
+            STEP_NAME,
+            "Parallel Context",
+            StepType.PARALLEL,
+            StepContextGenerator.parallel(
+                listOf(StepContextGenerator.branch("First Branch", steps)),
+            )
+        )
+    }
+
+    @JvmStatic
+    fun parallelMultipleBranch(steps: List<Step>, numberOfBranches: Int): Step {
+        return Step(
+            STEP_NAME,
+            "Parallel Context",
+            StepType.PARALLEL,
+            StepContextGenerator.parallel(
+                (0 until numberOfBranches).map { StepContextGenerator.branch("Branch $it", steps) }
+            )
+        )
+    }
+
+    fun parallelIteration(iterationContext: IterationContext): Step {
+        return Step(
+            STEP_NAME,
+            "Parallel Iteration",
+            StepType.PARALLEL,
+            StepContextGenerator.parallel(
+                iterationContext = iterationContext
+            )
         )
     }
 }

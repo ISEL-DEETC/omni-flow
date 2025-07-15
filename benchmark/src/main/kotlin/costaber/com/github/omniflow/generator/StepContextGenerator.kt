@@ -171,4 +171,40 @@ object StepContextGenerator {
             "NotificationStatus"
         )
     }
+
+    fun iteration(steps: List<Step>, range: Range): IterationContext {
+        return IterationRangeContext(
+            value = "key",
+            steps = steps,
+            range = range
+        )
+    }
+
+    fun iteration(steps: List<Step>, forEachVariable: Variable): IterationContext {
+        return IterationForEachContext(
+            value = "key",
+            steps = steps,
+            forEachVariable = forEachVariable
+        )
+    }
+
+    fun branch(stepName: String, steps: List<Step>): BranchContext {
+        return BranchContext(
+            name = stepName,
+            description = "Branch description",
+            steps = steps
+        )
+    }
+
+    fun parallel(branches: List<BranchContext>): StepContext {
+        return ParallelBranchContext(
+            branches = branches,
+        )
+    }
+
+    fun parallel(iterationContext: IterationContext): StepContext {
+        return ParallelIterationContext(
+            iterationContext = iterationContext,
+        )
+    }
 }

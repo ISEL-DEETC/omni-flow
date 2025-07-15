@@ -2,6 +2,7 @@ package costaber.com.github.omniflow.factory
 
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.renderer.NodeRenderer
+import kotlin.jvm.optionals.getOrNull
 
 class DefaultNodeRendererStrategyDecider internal constructor(
     private val rendererStrategyFactories: List<NodeRendererStrategyFactory<*>>,
@@ -12,7 +13,7 @@ class DefaultNodeRendererStrategyDecider internal constructor(
             .filter { it.getMatcher().test(node) }
             .findFirst()
             .map { it.getRenderer(node) }
-            .orElseThrow()
+            .getOrNull() ?: throw NoSuchElementException("No renderer found for node: $node")
     }
 
     class Builder {

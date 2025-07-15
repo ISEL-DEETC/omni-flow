@@ -2,6 +2,7 @@ package costaber.com.github.omniflow.renderer
 
 import costaber.com.github.omniflow.builder.StepBuilder
 import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDeployer
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.dsl.*
@@ -16,7 +17,7 @@ import kotlin.test.Test
 internal class GoogleRendererTest {
 
     private val nodeTraversor = DepthFirstNodeVisitorTraversor()
-    private val contextVisitor = NodeContextVisitor(GoogleCloudDeployer.Builder().createNodeRendererStrategyDecider())
+    private val contextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider())
     private val renderingContext = GoogleRenderingContext(termContext = GoogleTermContext())
 
     private fun createWorkflow(vararg s: StepBuilder) = workflow {
