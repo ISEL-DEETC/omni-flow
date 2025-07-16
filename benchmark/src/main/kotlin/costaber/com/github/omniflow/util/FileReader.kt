@@ -10,12 +10,10 @@ class FileReader {
     @Throws(IOException::class)
     fun readFileFromResources(fileName: String?): String {
         val classLoader = javaClass.classLoader
-        val resourceFile = classLoader.getResource(fileName)
+        val resourceFile = classLoader.getResourceAsStream(fileName)
         if (resourceFile == null) {
-            throw FileNotFoundException(fileName + " not found!")
+            throw FileNotFoundException("$fileName not found!")
         }
-        val filePath = resourceFile.path
-        val fileContent = Files.readAllBytes(Paths.get(filePath))
-        return String(fileContent, StandardCharsets.UTF_8)
+        return String(resourceFile.readAllBytes(), StandardCharsets.UTF_8)
     }
 }
