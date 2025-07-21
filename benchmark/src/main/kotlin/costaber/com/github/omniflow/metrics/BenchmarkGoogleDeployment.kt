@@ -15,7 +15,7 @@ import org.openjdk.jmh.annotations.Setup
 import java.io.IOException
 
 open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
-    private var googleWorkflowService: GoogleWorkflowService? = null
+    private lateinit var googleWorkflowService: GoogleWorkflowService
 
     @Setup
     @Throws(IOException::class)
@@ -41,7 +41,7 @@ open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
 
     @Benchmark
     override fun benchmarkGeneratedWorkflowDeployment() {
-        googleWorkflowService!!.deploy(
+        googleWorkflowService.deploy(
             PROJECT_ID,
             ZONE,
             SERVICE_ACCOUNT,
@@ -54,7 +54,7 @@ open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
 
     @Benchmark
     override fun benchmarkExampleWorkflowDeployment() {
-        googleWorkflowService!!.deploy(
+        googleWorkflowService.deploy(
             PROJECT_ID,
             ZONE,
             SERVICE_ACCOUNT,
