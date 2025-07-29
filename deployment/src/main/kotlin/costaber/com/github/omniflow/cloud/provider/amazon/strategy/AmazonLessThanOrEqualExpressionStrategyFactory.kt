@@ -1,6 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
-import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonLessThanOrEqualExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.binaryexpression.AmazonLessThanOrEqualExpressionRenderer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.LessThanOrEqualExpression

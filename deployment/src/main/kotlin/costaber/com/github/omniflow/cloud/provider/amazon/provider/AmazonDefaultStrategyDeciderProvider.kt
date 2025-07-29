@@ -10,6 +10,7 @@ import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonGreater
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonIterationStrategyFactory
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonLessThanExpressionStrategyFactory
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonLessThanOrEqualExpressionStrategyFactory
+import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonNotEqualToExpressionStrategyFactory
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonParallelStrategyFactory
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonPassStrategyFactory
 import costaber.com.github.omniflow.cloud.provider.amazon.strategy.AmazonStateMachineStrategyFactory
@@ -28,6 +29,7 @@ object AmazonDefaultStrategyDeciderProvider {
             .addRendererStrategy(AmazonGreaterThanOrEqualExpressionStrategyFactory())
             .addRendererStrategy(AmazonLessThanExpressionStrategyFactory())
             .addRendererStrategy(AmazonLessThanOrEqualExpressionStrategyFactory())
+            .addRendererStrategy(AmazonNotEqualToExpressionStrategyFactory())
             .addRendererStrategy(AmazonPassStrategyFactory())
             .addRendererStrategy(AmazonStateMachineStrategyFactory())
             .addRendererStrategy(AmazonStateStrategyFactory())

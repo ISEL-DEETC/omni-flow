@@ -1,11 +1,6 @@
 package costaber.com.github.omniflow.generator
 
-import costaber.com.github.omniflow.model.BranchContext
-import costaber.com.github.omniflow.model.IterationContext
-import costaber.com.github.omniflow.model.Range
-import costaber.com.github.omniflow.model.Step
-import costaber.com.github.omniflow.model.StepType
-import costaber.com.github.omniflow.model.Variable
+import costaber.com.github.omniflow.model.*
 
 object StepGenerator {
     const val STEP_NAME: String = "stepNumber"

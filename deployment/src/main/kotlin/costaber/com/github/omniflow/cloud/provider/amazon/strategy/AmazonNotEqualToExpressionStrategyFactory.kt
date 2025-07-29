@@ -1,6 +1,6 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
-import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonNotEqualToExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.binaryexpression.AmazonNotEqualToExpressionRenderer
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.Node

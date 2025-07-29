@@ -2,11 +2,8 @@ package costaber.com.github.omniflow.cloud.provider.amazon.deployer
 
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.amazon.service.AmazonStateMachineService
-import costaber.com.github.omniflow.cloud.provider.amazon.strategy.*
 import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.deployer.CloudDeployer
-import costaber.com.github.omniflow.factory.DefaultNodeRendererStrategyDecider
-import costaber.com.github.omniflow.factory.NodeRendererStrategyDecider
 import costaber.com.github.omniflow.model.Workflow
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor

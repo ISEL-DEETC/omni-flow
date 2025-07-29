@@ -4,10 +4,7 @@ import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefault
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
-import costaber.com.github.omniflow.cloud.provider.google.strategy.*
 import costaber.com.github.omniflow.deployer.CloudDeployer
-import costaber.com.github.omniflow.factory.DefaultNodeRendererStrategyDecider
-import costaber.com.github.omniflow.factory.NodeRendererStrategyDecider
 import costaber.com.github.omniflow.model.Workflow
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
