@@ -13,7 +13,7 @@ class AmazonObjectMapper {
             Version(1, 0, 0, null, null, null)
         ).addSerializer(Variable::class.javaObjectType, VariableAmazonSerializer())
 
-        val default = ObjectMapper()
+        val default: ObjectMapper = ObjectMapper()
             .registerModule(module)
     }
 }

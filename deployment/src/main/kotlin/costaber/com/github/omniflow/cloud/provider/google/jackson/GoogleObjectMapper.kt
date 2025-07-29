@@ -13,7 +13,7 @@ class GoogleObjectMapper {
             Version(1, 0, 0, null, null, null)
         ).addSerializer(Variable::class.javaObjectType, VariableGoogleSerializer())
 
-        val default = ObjectMapper(GoogleYAMLFactory.default)
+        val default: ObjectMapper = ObjectMapper(GoogleYAMLFactory.default)
             .registerModule(module)
     }
 }

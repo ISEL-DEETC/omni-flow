@@ -9,8 +9,8 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
 class AmazonNotEqualToExpressionRenderer(
-    private val notEqualToExpression: NotEqualToExpression<*>,
-    private val amazonTermResolver: AmazonTermResolver
+    notEqualToExpression: NotEqualToExpression<*>,
+    amazonTermResolver: AmazonTermResolver
 ) : AmazonBinaryExpressionRenderer(notEqualToExpression, amazonTermResolver) {
 
     override val amazonVariablePath: String = AMAZON_STRING_EQUALS_PATH

@@ -133,12 +133,12 @@
                     </annotationProcessorPaths>
                 </configuration>
                 <executions>
-                    <!-- Replacing default-compile as it is treated specially by maven -->
+                    <!-- Replacing default-compile as it is treated especially by maven -->
                     <execution>
                         <id>default-compile</id>
                         <phase>none</phase>
                     </execution>
-                    <!-- Replacing default-testCompile as it is treated specially by maven -->
+                    <!-- Replacing default-testCompile as it is treated especially by maven -->
                     <execution>
                         <id>default-testCompile</id>
                         <phase>none</phase>

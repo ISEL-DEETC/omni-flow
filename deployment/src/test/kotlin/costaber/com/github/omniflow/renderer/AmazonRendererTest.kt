@@ -100,7 +100,7 @@ internal class AmazonRendererTest {
         val content = nodeTraversor.traverse(contextVisitor, w, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
-        val expected = $$"""
+        val expected = """
             {
                 "Comment": "Description",
                 "StartAt": "Sum",
@@ -435,9 +435,7 @@ internal class AmazonRendererTest {
                     parallel {
                         // next("") // can implicit assume next step to be the next to run
                         branches(
-                            // not sure how to share data between branches
                             branch {
-                                //# each branch missing a steps
                                 name("branch1")
                                 steps(
                                     step {

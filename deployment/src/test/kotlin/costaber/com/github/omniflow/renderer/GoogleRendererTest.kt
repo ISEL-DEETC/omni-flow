@@ -290,9 +290,7 @@ internal class GoogleRendererTest {
                     parallel {
                         // next("") // can implicit assume next step to be the next to run
                         branches(
-                            // not sure how to share data between branches
                             branch {
-                                //# each branch missing a steps
                                 name("branch1")
                                 steps(
                                     step {

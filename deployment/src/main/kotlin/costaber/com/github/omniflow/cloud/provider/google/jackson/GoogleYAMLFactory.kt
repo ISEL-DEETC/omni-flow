@@ -12,9 +12,9 @@ import java.io.Writer
 class GoogleYAMLFactory : YAMLFactory() {
     companion object {
         val default: YAMLFactory = GoogleYAMLFactory()
-            .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)  //removes marker characters ---
+            .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
             .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
-            .disable(YAMLGenerator.Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)  //avoid numbers being quote
+            .disable(YAMLGenerator.Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
             .enable(YAMLGenerator.Feature.INDENT_ARRAYS_WITH_INDICATOR)
     }
 

@@ -9,8 +9,8 @@ definition and deployment, enabling a seamless translation of workflows across d
 need to get familiarized with the schemas of each provider.
 
 This project was developed as part of the Master's thesis in Computer Science and Engineering at the [Instituto Superior
-de Engenharia de Lisboa (ISEL)][isel], entitled "Function Composition in Function-as-a-Service Platforms". The project
-was advised by Professors Filipe Freitas and José Simão, and developed by Bernardo Costa.
+de Engenharia de Lisboa (ISEL)][isel], entitled "Function Composition in Function-as-a-Service Platforms." The project
+was advised by Professors Filipe Freitas and José Simão and developed by Bernardo Costa.
 
 ## How to Build
 
@@ -26,7 +26,7 @@ was advised by Professors Filipe Freitas and José Simão, and developed by Bern
 
 ## How to Benchmark
 
-To run the benchmarks successfully it is required the following environment variables:
+To run the benchmarks successfully, it is required the following environment variables:
 * `AWS_ROLE_ARN`: Amazon Resource Name format
 * `AWS_REGION`: Region
 * `GOOGLE_PROJECT_ID`: Globally unique identifier for your project
