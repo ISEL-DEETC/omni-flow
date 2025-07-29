@@ -3,16 +3,6 @@ package costaber.com.github.omniflow.metrics
 import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
-import costaber.com.github.omniflow.generator.WorkflowGenerator.usingVariables
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withBinaryConditions
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIndependentSteps
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIterationsForEach
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIterationsRange
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withMultipleDecisions
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelIterationRange
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelIterationWithForEach
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelMultipleBranches
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelOneBranch
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
@@ -26,108 +16,97 @@ open class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
 
     @Setup
     fun setup() {
-        workflowWithIndependentSteps = withIndependentSteps(numberOfSteps)
-        workflowUsingVariables = usingVariables(numberOfSteps)
-        workflowWithBinaryConditions = withBinaryConditions(numberOfSteps)
-        workflowWithMultipleDecisions = withMultipleDecisions(numberOfSteps)
-        workflowWithIterationsWithRange = withIterationsRange(numberOfSteps)
-        workflowWithIterationsWithForEach = withIterationsForEach(numberOfSteps)
-        workflowWithParallelOneBranch = withParallelOneBranch(numberOfSteps)
-        workflowWithParallelMultipleBranches = withParallelMultipleBranches(numberOfSteps)
-        withParallelIterationWithRange = withParallelIterationRange(numberOfSteps)
-        withParallelIterationWithForEach = withParallelIterationWithForEach(numberOfSteps)
-
         traversor = DepthFirstNodeVisitorTraversor()
         googleContextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider())
         googleRenderingContext = GoogleRenderingContext(0, StringBuilder(), GoogleTermContext())
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIndependentSteps() {
+    override fun benchmarkWorkflowWithIndependentSteps(state: WorkflowWithIndependentStepsState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithIndependentSteps,
+            state.workflowWithIndependentSteps,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowUsingVariables() {
+    override fun benchmarkWorkflowUsingVariables(state: WorkflowUsingVariablesState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowUsingVariables,
+            state.workflowUsingVariables,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithBinaryConditions() {
+    override fun benchmarkWorkflowWithBinaryConditions(state: WorkflowWithBinaryConditionsState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithBinaryConditions,
+            state.workflowWithBinaryConditions,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithMultipleDecisions() {
+    override fun benchmarkWorkflowWithMultipleDecisions(state: WorkflowWithMultipleDecisionsState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithMultipleDecisions,
+            state.workflowWithMultipleDecisions,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIterationsWithRange() {
+    override fun benchmarkWorkflowWithIterationsWithRange(state: WorkflowWithIterationsWithRangeState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithIterationsWithRange,
+            state.workflowWithIterationsWithRange,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIterationsWithForEach() {
+    override fun benchmarkWorkflowWithIterationsWithForEach(state: WorkflowWithIterationsWithForEachState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithIterationsWithForEach,
+            state.workflowWithIterationsWithForEach,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelOneBranch() {
+    override fun benchmarkWorkflowWithParallelOneBranch(state: WorkflowWithParallelOneBranchState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithParallelOneBranch,
+            state.workflowWithParallelOneBranch,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelMultipleBranches() {
+    override fun benchmarkWorkflowWithParallelMultipleBranches(state: WorkflowWithParallelMultipleBranchesState) {
         traversor.traverse(
             googleContextVisitor,
-            workflowWithParallelMultipleBranches,
+            state.workflowWithParallelMultipleBranches,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelIterationWithRange() {
+    override fun benchmarkWorkflowWithParallelIterationWithRange(state: WorkflowWithParallelIterationWithRangeState) {
         traversor.traverse(
             googleContextVisitor,
-            withParallelIterationWithRange,
+            state.withParallelIterationWithRange,
             googleRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelIterationForEach() {
+    override fun benchmarkWorkflowWithParallelIterationForEach(state: WorkflowWithParallelIterationForEachState) {
         traversor.traverse(
             googleContextVisitor,
-            withParallelIterationWithForEach,
+            state.withParallelIterationWithForEach,
             googleRenderingContext
         )
     }

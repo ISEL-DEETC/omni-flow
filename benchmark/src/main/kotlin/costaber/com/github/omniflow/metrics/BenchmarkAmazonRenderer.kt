@@ -3,16 +3,6 @@ package costaber.com.github.omniflow.metrics
 import costaber.com.github.omniflow.cloud.provider.amazon.provider.AmazonDefaultStrategyDeciderProvider
 import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonRenderingContext
 import costaber.com.github.omniflow.cloud.provider.amazon.traversor.AmazonTraversor
-import costaber.com.github.omniflow.generator.WorkflowGenerator.usingVariables
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withBinaryConditions
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIndependentSteps
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIterationsForEach
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withIterationsRange
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withMultipleDecisions
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelIterationRange
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelIterationWithForEach
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelMultipleBranches
-import costaber.com.github.omniflow.generator.WorkflowGenerator.withParallelOneBranch
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
@@ -26,108 +16,97 @@ open class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
 
     @Setup
     fun setup() {
-        workflowWithIndependentSteps = withIndependentSteps(numberOfSteps)
-        workflowUsingVariables = usingVariables(numberOfSteps)
-        workflowWithBinaryConditions = withBinaryConditions(numberOfSteps)
-        workflowWithMultipleDecisions = withMultipleDecisions(numberOfSteps)
-        workflowWithIterationsWithRange = withIterationsRange(numberOfSteps)
-        workflowWithIterationsWithForEach = withIterationsForEach(numberOfSteps)
-        workflowWithParallelOneBranch = withParallelOneBranch(numberOfSteps)
-        workflowWithParallelMultipleBranches = withParallelMultipleBranches(numberOfSteps)
-        withParallelIterationWithRange = withParallelIterationRange(numberOfSteps)
-        withParallelIterationWithForEach = withParallelIterationWithForEach(numberOfSteps)
-
         traversor = AmazonTraversor()
         amazonContextVisitor = NodeContextVisitor(AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider())
         amazonRenderingContext = AmazonRenderingContext()
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIndependentSteps() {
+    override fun benchmarkWorkflowWithIndependentSteps(state: WorkflowWithIndependentStepsState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithIndependentSteps,
+            state.workflowWithIndependentSteps,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowUsingVariables() {
+    override fun benchmarkWorkflowUsingVariables(state: WorkflowUsingVariablesState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowUsingVariables,
+            state.workflowUsingVariables,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithBinaryConditions() {
+    override fun benchmarkWorkflowWithBinaryConditions(state: WorkflowWithBinaryConditionsState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithBinaryConditions,
+            state.workflowWithBinaryConditions,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithMultipleDecisions() {
+    override fun benchmarkWorkflowWithMultipleDecisions(state: WorkflowWithMultipleDecisionsState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithMultipleDecisions,
+            state.workflowWithMultipleDecisions,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIterationsWithRange() {
+    override fun benchmarkWorkflowWithIterationsWithRange(state: WorkflowWithIterationsWithRangeState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithIterationsWithRange,
+            state.workflowWithIterationsWithRange,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithIterationsWithForEach() {
+    override fun benchmarkWorkflowWithIterationsWithForEach(state: WorkflowWithIterationsWithForEachState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithIterationsWithForEach,
+            state.workflowWithIterationsWithForEach,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelOneBranch() {
+    override fun benchmarkWorkflowWithParallelOneBranch(state: WorkflowWithParallelOneBranchState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithParallelOneBranch,
+            state.workflowWithParallelOneBranch,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelMultipleBranches() {
+    override fun benchmarkWorkflowWithParallelMultipleBranches(state: WorkflowWithParallelMultipleBranchesState) {
         traversor.traverse(
             amazonContextVisitor,
-            workflowWithParallelMultipleBranches,
+            state.workflowWithParallelMultipleBranches,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelIterationWithRange() {
+    override fun benchmarkWorkflowWithParallelIterationWithRange(state: WorkflowWithParallelIterationWithRangeState) {
         traversor.traverse(
             amazonContextVisitor,
-            withParallelIterationWithRange,
+            state.withParallelIterationWithRange,
             amazonRenderingContext
         )
     }
 
     @Benchmark
-    override fun benchmarkWorkflowWithParallelIterationForEach() {
+    override fun benchmarkWorkflowWithParallelIterationForEach(state: WorkflowWithParallelIterationForEachState) {
         traversor.traverse(
             amazonContextVisitor,
-            withParallelIterationWithForEach,
+            state.withParallelIterationWithForEach,
             amazonRenderingContext
         )
     }
