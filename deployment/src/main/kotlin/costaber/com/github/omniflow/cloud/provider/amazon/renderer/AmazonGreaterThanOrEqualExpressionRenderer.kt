@@ -25,7 +25,7 @@ class AmazonGreaterThanOrEqualExpressionRenderer(
                 }\","
             )
             when (greaterThanOrEqualExpression.right) {
-                is Value<*> -> add("$AMAZON_NUMERIC_GREATER_THAN_EQUALS{greaterThanExpression.right.term()},")
+                is Value<*> -> add("$AMAZON_NUMERIC_GREATER_THAN_EQUALS${greaterThanOrEqualExpression.right.term()},")
                 is Variable -> add(
                     "$AMAZON_NUMERIC_GREATER_THAN_EQUALS_PATH\"\$.${
                         amazonTermResolver.resolveVariable(
