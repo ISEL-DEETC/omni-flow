@@ -16,6 +16,7 @@ open class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
 
     @Setup
     fun setup() {
+        System.gc()
         traversor = DepthFirstNodeVisitorTraversor()
         googleContextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider())
         googleRenderingContext = GoogleRenderingContext(0, StringBuilder(), GoogleTermContext())

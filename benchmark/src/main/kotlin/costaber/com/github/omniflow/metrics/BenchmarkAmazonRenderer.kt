@@ -16,6 +16,7 @@ open class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
 
     @Setup
     fun setup() {
+        System.gc()
         traversor = AmazonTraversor()
         amazonContextVisitor = NodeContextVisitor(AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider())
         amazonRenderingContext = AmazonRenderingContext()
