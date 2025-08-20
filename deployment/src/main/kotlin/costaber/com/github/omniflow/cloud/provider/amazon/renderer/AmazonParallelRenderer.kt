@@ -13,12 +13,16 @@ class AmazonParallelRenderer(private val parallelBranchContext: ParallelBranchCo
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val context = amazonContext.getLastRenderingContext()
-        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
+        val currentContext = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(
+            indentationLevel = currentContext.getIndentationLevel() + 1,
+            stringBuilder = currentContext.stringBuilder,
+            termContext = currentContext.termContext
+        )
         innerContext.setSteps(parallelBranchContext.branches)
         innerContext.getNextStepNameAndAdvance()
-        context.appendInnerRenderingContext(innerContext)
-        return render(context) {
+        currentContext.appendInnerRenderingContext(innerContext)
+        return render(currentContext) {
             addLine(AMAZON_PARALLEL_TYPE)
             add(AMAZON_START_BRANCHES)
         }

@@ -13,12 +13,16 @@ class AmazonBranchRenderer(private val branchContext: BranchContext) : IndentedN
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val context = amazonContext.getLastRenderingContext()
-        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
+        val currentContext = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(
+            indentationLevel = currentContext.getIndentationLevel() + 1,
+            stringBuilder = currentContext.stringBuilder,
+            termContext = currentContext.termContext
+        )
         innerContext.setSteps(branchContext.steps)
         innerContext.getNextStepNameAndAdvance()
         amazonContext.appendInnerRenderingContext(innerContext)
-        return render(context) {
+        return render(currentContext) {
             addLine(AMAZON_OPEN_OBJECT)
             incIndentationLevel()
             innerContext.incIndentationLevel()

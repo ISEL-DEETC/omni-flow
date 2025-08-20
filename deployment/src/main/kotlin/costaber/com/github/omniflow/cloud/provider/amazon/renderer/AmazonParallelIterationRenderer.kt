@@ -16,18 +16,22 @@ class AmazonParallelIterationRenderer(private val parallelIterationContext: Para
 
     override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
         val amazonContext = renderingContext as AmazonRenderingContext
-        val context = amazonContext.getLastRenderingContext()
-        val innerContext = AmazonRenderingContext(context.getIndentationLevel() + 1)
+        val currentContext = amazonContext.getLastRenderingContext()
+        val innerContext = AmazonRenderingContext(
+            indentationLevel = currentContext.getIndentationLevel() + 1,
+            stringBuilder = currentContext.stringBuilder,
+            termContext = currentContext.termContext
+        )
         innerContext.setSteps(emptyList<Step>())
-        context.appendInnerRenderingContext(innerContext)
+        currentContext.appendInnerRenderingContext(innerContext)
 
         if (parallelIterationContext.iterationContext !is IterationForEachContext)
             throw IllegalStateException("This should never happen! AmazonTravesor makes all other ParallelIteration into ParallelBranchContext")
         val iterationForEachContext: IterationForEachContext =
             parallelIterationContext.iterationContext as IterationForEachContext
-        val innerName = "InnerMap${context.getCurrentStepName()}"
+        val innerName = "InnerMap${currentContext.getCurrentStepName()}"
 
-        return render(context) {
+        return render(currentContext) {
             addLine(AMAZON_MAP_TYPE)
             addLine("\"ItemsPath\": \"$.${iterationForEachContext.forEachVariable.name}\",")
             addLine("\"ItemSelector\": $AMAZON_OPEN_OBJECT")
