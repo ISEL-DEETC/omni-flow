@@ -17,6 +17,6 @@ class AmazonGreaterThanExpressionRenderer(
     private val objectMapper = AmazonObjectMapper.default
 
     override fun IndentedRenderingContext.renderValue(value: Value<*>) {
-        add("$AMAZON_NUMERIC_GREATER_THAN\"${objectMapper.writeValueAsString(value.term())}\",")
+        add("$AMAZON_NUMERIC_GREATER_THAN${objectMapper.writeValueAsString(value.term())},")
     }
 }

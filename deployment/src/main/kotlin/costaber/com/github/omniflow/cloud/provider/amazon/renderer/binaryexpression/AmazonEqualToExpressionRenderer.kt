@@ -23,7 +23,7 @@ class AmazonEqualToExpressionRenderer(
             is Number -> add("$AMAZON_NUMERIC_EQUALS${value.term()},")
             is String -> add("$AMAZON_STRING_EQUALS\"${value.term()}\",")
             is Boolean -> add("$AMAZON_BOOLEAN_EQUALS${value.term()},")
-            else -> add("$AMAZON_STRING_EQUALS\"${objectMapper.writeValueAsString(value.term())}\",")
+            else -> add("$AMAZON_STRING_EQUALS${objectMapper.writeValueAsString(value.term())},")
         }
     }
 }
