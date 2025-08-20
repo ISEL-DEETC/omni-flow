@@ -200,18 +200,32 @@ object WorkflowGenerator {
         WORKFLOW_RESULT
     )
 
-    fun withParallelMultipleBranches(stepsNumber: Int): Workflow = Workflow(
-        WORKFLOW_NAME,
-        WORKFLOW_DESCRIPTION,
-        WORKFLOW_INPUT,
-        0.until(stepsNumber).map {
-            parallelMultipleBranch(
-                (0 until stepsNumber).map { independent("INNER$it$STEP_NAME", it) },
-                stepsNumber
+    fun withParallelMultipleBranches(stepsNumber: Int, bucketSize: Int = 10): Workflow {
+        val steps = mutableListOf<Step>()
+        0.until(stepsNumber / bucketSize).map {
+            steps.add(
+                parallelMultipleBranch(
+                    (0 until 1).map { independent("INNER$it$STEP_NAME", it) },
+                    bucketSize
+                )
             )
-        },
-        WORKFLOW_RESULT
-    )
+        }
+        if (stepsNumber % bucketSize != 0) {
+            steps.add(
+                parallelMultipleBranch(
+                    (0 until 1).map { independent("INNER$it$STEP_NAME", it) },
+                    bucketSize
+                )
+            )
+        }
+        return Workflow(
+            WORKFLOW_NAME,
+            WORKFLOW_DESCRIPTION,
+            WORKFLOW_INPUT,
+            steps,
+            WORKFLOW_RESULT
+        )
+    }
 
     fun withParallelIterationRange(stepNumber: Int): Workflow = Workflow(
         WORKFLOW_NAME,
