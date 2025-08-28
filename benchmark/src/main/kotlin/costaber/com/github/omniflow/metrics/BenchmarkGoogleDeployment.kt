@@ -52,7 +52,7 @@ open class BenchmarkGoogleDeployment : BenchmarkWorkflowDeployment() {
         )
     }
 
-    @Benchmark
+    //@Benchmark
     override fun benchmarkExampleWorkflowDeployment() {
         googleWorkflowService.deploy(
             PROJECT_ID,

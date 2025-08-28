@@ -7,6 +7,7 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Level
 import org.openjdk.jmh.annotations.Setup
 
 open class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
@@ -14,12 +15,12 @@ open class BenchmarkGoogleRenderer : BenchmarkWorkflowRenderer() {
     private lateinit var googleContextVisitor: NodeContextVisitor
     private lateinit var googleRenderingContext: IndentedRenderingContext
 
-    @Setup
+    @Setup(Level.Iteration)
     fun setup() {
-        System.gc()
         traversor = DepthFirstNodeVisitorTraversor()
         googleContextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider())
         googleRenderingContext = GoogleRenderingContext(0, StringBuilder(), GoogleTermContext())
+        System.gc()
     }
 
     @Benchmark

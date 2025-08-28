@@ -7,6 +7,7 @@ import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
 import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Level
 import org.openjdk.jmh.annotations.Setup
 
 open class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
@@ -14,12 +15,13 @@ open class BenchmarkAmazonRenderer : BenchmarkWorkflowRenderer() {
     private lateinit var amazonContextVisitor: NodeContextVisitor
     private lateinit var amazonRenderingContext: IndentedRenderingContext
 
-    @Setup
+
+    @Setup(Level.Iteration)
     fun setup() {
-        System.gc()
         traversor = AmazonTraversor()
         amazonContextVisitor = NodeContextVisitor(AmazonDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider())
         amazonRenderingContext = AmazonRenderingContext()
+        System.gc()
     }
 
     @Benchmark
