@@ -1,0 +1,51 @@
+{
+  "StartAt": "InitializeCounter",
+  "States": {
+    "InitializeCounter": {
+      "Type": "Pass",
+      "Comment": "Initialize the counter at 0.  Move all inputs to Payload.Input",
+      "Parameters": {
+        "Counter": 0
+      },
+      "Next": "IncrementCounter"
+    },
+    "IncrementCounter": {
+      "Type": "Pass",
+      "Comment": "Increment the Counter by 1",
+      "Parameters": {
+        "Counter.$": "States.MathAdd($.Counter, 1)"
+      },
+      "Next": "MockWork"
+    },
+    "MockWork": {
+      "Type": "Pass",
+      "Comment": "Simulate some work.  Optionally break early from the loop with ExitNow: true",
+      "Result": false,
+      "ResultPath": "$.ExitNow",
+      "Next": "Loop?"
+    },
+    "Loop?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Variable": "$.Counter",
+              "NumericGreaterThanEqualsPath": "$$.Execution.Input.workCount"
+            },
+            {
+              "Variable": "$.ExitNow",
+              "BooleanEquals": true
+            }
+          ],
+          "Next": "Success"
+        }
+      ],
+      "Default": "IncrementCounter"
+    },
+    "Success": {
+      "Type": "Succeed"
+    }
+  },
+  "TimeoutSeconds": 3
+}

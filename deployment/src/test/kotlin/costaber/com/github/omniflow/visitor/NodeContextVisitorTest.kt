@@ -9,13 +9,11 @@ import costaber.com.github.omniflow.util.STEP_1
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.Before
 import strikt.api.expect
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
-@ExtendWith(MockKExtension::class)
 internal class NodeContextVisitorTest {
 
     @MockK
@@ -23,6 +21,9 @@ internal class NodeContextVisitorTest {
 
     @InjectMockKs
     private lateinit var nodeContextVisitor: NodeContextVisitor
+
+    @Before
+    fun setUp() = MockKAnnotations.init(this, relaxUnitFun = true)
 
     @Test
     fun `beginVisit has expected results`() {

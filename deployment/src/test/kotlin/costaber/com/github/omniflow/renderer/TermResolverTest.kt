@@ -12,7 +12,7 @@ internal class TermResolverTest {
     @ParameterizedTest
     @MethodSource("costaber.com.github.omniflow.util.data.TermDataProvider#termResolveDataProvider")
     fun `resolver has expected results`(term: Term<*>, expectedResult: String) {
-        val actualResult = object : TermResolver {
+        val actualResult = object : TermResolver() {
             // TODO: implement using a term context maybe
             override fun resolveVariable(
                 variable: Variable,

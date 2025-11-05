@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.google.strategy
 
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleLessThanExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.LessThanExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class GoogleLessThanExpressionStrategyFactory : NodeRendererStrategyFactory<Stri
         DefaultPredicate(LessThanExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        GoogleLessThanExpressionRenderer(node as LessThanExpression<*>)
+        GoogleLessThanExpressionRenderer(node as LessThanExpression<*>, GoogleTermResolver)
 }

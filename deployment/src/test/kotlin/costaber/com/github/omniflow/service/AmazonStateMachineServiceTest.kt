@@ -2,8 +2,8 @@ package costaber.com.github.omniflow.service
 
 import costaber.com.github.omniflow.cloud.provider.amazon.service.AmazonStateMachineService
 import costaber.com.github.omniflow.util.getResourceContent
-import org.junit.Ignore
-import org.junit.Test
+import kotlin.test.Ignore
+import kotlin.test.Test
 
 internal class AmazonStateMachineServiceTest {
 

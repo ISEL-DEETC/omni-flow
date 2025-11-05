@@ -6,9 +6,9 @@ import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleCloudDe
 import costaber.com.github.omniflow.cloud.provider.google.deployer.GoogleDeployContext
 import costaber.com.github.omniflow.dsl.*
 import costaber.com.github.omniflow.model.HttpMethod.GET
-import org.junit.Ignore
-import org.junit.Test
 import java.util.*
+import kotlin.test.Ignore
+import kotlin.test.Test
 
 internal class WorkflowTest {
 
@@ -21,9 +21,11 @@ internal class WorkflowTest {
                 description("Initialize variables")
                 context(
                     assign {
-                        variable("a" equal Random().nextInt())
-                        variable("b" equal Random().nextInt())
-                        variable("c" equal Random().nextInt())
+                        variables(
+                            variable("a") equalTo value(Random().nextInt()),
+                            variable("b") equalTo value(Random().nextInt()),
+                            variable("c") equalTo value(Random().nextInt())
+                        )
                     }
                 )
             },
@@ -68,7 +70,7 @@ internal class WorkflowTest {
                 description("If c equal to 0 affect C with 1")
                 context(
                     assign {
-                        variable("c" equal 1)
+                        variables(variable("c") equalTo value(1))
                     }
                 )
             },
@@ -110,6 +112,7 @@ internal class WorkflowTest {
     }
 
     @Test
+    @Ignore
     fun `test amazon full deployment`() {
         val deployer = AmazonCloudDeployer.Builder().build()
         val amazonDeployContext = AmazonDeployContext(

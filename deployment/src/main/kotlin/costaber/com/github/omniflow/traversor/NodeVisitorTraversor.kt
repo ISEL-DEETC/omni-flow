@@ -20,4 +20,6 @@ interface NodeVisitorTraversor {
         visitor: ContextVisitor<Node, K, R>,
         root: Node, context: K
     ): List<R>
+
+    fun registerObserver(observer: NodeVisitorTraversorObserver): NodeVisitorTraversor
 }

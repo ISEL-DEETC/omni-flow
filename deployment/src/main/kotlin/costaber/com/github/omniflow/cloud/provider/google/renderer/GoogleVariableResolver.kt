@@ -1,23 +1,31 @@
 package costaber.com.github.omniflow.cloud.provider.google.renderer
 
 import costaber.com.github.omniflow.model.Node
+import costaber.com.github.omniflow.model.Notation
 import costaber.com.github.omniflow.model.VariableInitialization
-import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
 class GoogleVariableResolver(
     private val variableInitialization: VariableInitialization<*>,
     private val googleTermResolver: GoogleTermResolver,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = variableInitialization
 
-    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String =
-        render(renderingContext) {
+    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
+        val googleRenderingContext = renderingContext as GoogleRenderingContext
+        googleRenderingContext.setVariables(listOf(variableInitialization))
+        return render(renderingContext) {
+            val variable = if (variableInitialization.variable.getWithKeys().isEmpty()) {
+                variableInitialization.variable.name
+            } else {
+                googleTermResolver.resolveVariable(variableInitialization.variable, Notation.SQUARE_BRACKETS_NOTATION)
+            }
             val term = googleTermResolver.resolve(variableInitialization.term, termContext)
-            add("- ${variableInitialization.variable.name}: $term")
+            add("- ${variable}: $term")
         }
+    }
 
     override fun internalEndRender(renderingContext: IndentedRenderingContext) = "" // nothing
 }

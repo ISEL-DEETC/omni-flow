@@ -4,7 +4,7 @@ import costaber.com.github.omniflow.resource.TAB
 
 open class IndentedRenderingContext(
     private var indentationLevel: Int = 0,
-    private val stringBuilder: StringBuilder = StringBuilder(),
+    val stringBuilder: StringBuilder = StringBuilder(),
     val termContext: TermContext,
 ) : RenderingContext {
 
@@ -17,6 +17,9 @@ open class IndentedRenderingContext(
 
     fun decIndentationLevel() {
         indentationLevel -= 1
+        if (indentationLevel < 0) {
+            throw IllegalStateException("Indentation level cannot be negative")
+        }
     }
 
     fun addLine(value: String) {
@@ -44,4 +47,11 @@ open class IndentedRenderingContext(
     fun getString() = stringBuilder.toString().also {
         stringBuilder.clear()
     }
+
+    fun getIndentationLevel() = indentationLevel
+
+    override fun toString(): String {
+        return "IndentedRenderingContext(indentationLevel=$indentationLevel, termContext=$termContext)"
+    }
+
 }

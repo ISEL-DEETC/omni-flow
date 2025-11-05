@@ -1,0 +1,161 @@
+package costaber.com.github.omniflow.cloud.provider.amazon.renderer
+
+import costaber.com.github.omniflow.builder.ResultType
+import costaber.com.github.omniflow.cloud.provider.amazon.*
+import costaber.com.github.omniflow.cloud.provider.amazon.jackson.AmazonObjectMapper
+import costaber.com.github.omniflow.model.*
+import costaber.com.github.omniflow.renderer.IndentedRenderingContext
+import costaber.com.github.omniflow.renderer.TermContext
+import costaber.com.github.omniflow.resource.util.render
+
+class AmazonCallRenderer(
+    private val callContext: CallContext,
+    private val amazonTermResolver: AmazonTermResolver,
+) : AmazonRenderer() {
+
+    private val objectMapper = AmazonObjectMapper.default
+
+    override val element: Node = callContext
+
+    private fun ResultType.name(): String = when (this) {
+        ResultType.BODY -> AMAZON_RESPONSE_BODY
+        ResultType.CODE -> AMAZON_STATUS_CODE_BODY
+        ResultType.HEADERS -> AMAZON_HEADERS_BODY
+    }
+
+    override fun internalBeginRender(renderingContext: IndentedRenderingContext): String {
+        val amazonContext = renderingContext as AmazonRenderingContext
+        val host = amazonContext.hostResolve(callContext.host) ?: callContext.host
+
+        return render(renderingContext) {
+            addLine(AMAZON_TASK_TYPE)
+            addLine(AMAZON_RESOURCE)
+            addLine("$AMAZON_INPUT_PATH\"\$\",")
+            addLine(AMAZON_START_PARAMETERS)
+            tab {
+                addLine("${AMAZON_API_ENDPOINT}\"${host}\",")
+                addLine("${AMAZON_METHOD}\"${callContext.method}\",")
+                add("${AMAZON_PATH}\"${callContext.path}\"")
+                renderMap(AMAZON_HEADERS, callContext.header, renderingContext.termContext)
+                renderMap(AMAZON_QUERY_PARAMETERS, callContext.query, renderingContext.termContext)
+                renderBody()
+                renderAuth()
+                addEmptyLine()
+            }
+            add(AMAZON_CLOSE_OBJECT_WITH_COMMA)
+        }
+    }
+
+    override fun internalEndRender(renderingContext: IndentedRenderingContext): String {
+        val amazonContext = renderingContext as AmazonRenderingContext
+        val nextStepName = amazonContext.getNextStepName()
+        val currentStepName = amazonContext.getCurrentStepName()
+        amazonTermResolver.addVariableTranslation(
+            name = callContext.result,
+            translation = "${amazonContext.getCurrentStepName().orEmpty()}.${callContext.result}"
+        )
+        return render(renderingContext) {
+            addLine(AMAZON_START_RESULT_SELECTOR)
+            tab {
+                addLine("\"${callContext.result}.\$\": \"\$.${callContext.resultType.name()}\"")
+            }
+            addLine(AMAZON_CLOSE_OBJECT_WITH_COMMA)
+            addLine("$AMAZON_START_RESULT_PATH\"\$.${currentStepName}\",")
+            if (nextStepName == null || nextStepName.isBlank()) {
+                add(AMAZON_END)
+            } else {
+                add("${AMAZON_NEXT}\"${nextStepName}\"")
+            }
+        }
+    }
+
+
+    private fun IndentedRenderingContext.renderMap(
+        title: String,
+        mapToRender: Map<String, Term<*>>,
+        termContext: TermContext,
+    ) {
+        if (mapToRender.isNotEmpty()) {
+            append(",")
+            addEmptyLine()
+            addLine(title)
+            tab {
+                AMAZON_START_RESULT_PATH
+                val mutableMap = mapToRender.toMutableMap()
+                val last = mutableMap.entries.lastOrNull()
+                last?.let { mutableMap.remove(last.key) }
+                mutableMap.forEach {
+                    addLine("${renderMapEntry(it, termContext)},")
+                }
+                last?.let { addLine(renderMapEntry(it, termContext)) }
+            }
+            add("}")
+        }
+    }
+
+    private fun renderMapEntry(mapEntry: Map.Entry<String, Term<*>>, termContext: TermContext): String {
+        var value = amazonTermResolver.resolve(mapEntry.value, termContext)
+        if (mapEntry.value is Value) {
+            value = "\"States.Array(States.Format('{}', $value))\""
+        }
+        return "\"${mapEntry.key}.\$\": $value"
+    }
+
+    private fun IndentedRenderingContext.renderBody() {
+        if (callContext.bodyRaw.isNotEmpty()) {
+            append(",")
+            addEmptyLine()
+            add(AMAZON_REQUEST_BODY)
+            append("{")
+            addEmptyLine()
+            tab {
+                addLine("$AMAZON_REQUEST_PAYLOAD \"${callContext.bodyRaw}\"")
+            }
+            add("}")
+        } else if (callContext.body.isNotEmpty()) {
+            append(",")
+            addEmptyLine()
+            add(AMAZON_REQUEST_BODY)
+            append("{")
+            addEmptyLine()
+            tab {
+                val lines: Iterator<Map.Entry<String, Any>> = callContext.body.entries.iterator()
+                var line: Map.Entry<String, Any>?
+                var key: String?
+                var value: Any?
+                if (lines.hasNext()) {
+                    line = lines.next()
+                    key = line.key
+                    value = line.value
+                    addLine(key, value)
+                }
+                while (lines.hasNext()) {
+                    append(",")
+                    addEmptyLine()
+                    line = lines.next()
+                    key = line.key
+                    value = line.value
+                    addLine(key, value)
+                }
+                addEmptyLine()
+            }
+            add("}")
+        }
+    }
+
+    private fun IndentedRenderingContext.addLine(key: String, value: Any) {
+        when (value) {
+            is Variable -> add("\"${key}.$\":\"$.${value.term()}\"")
+            is Term<*> -> add("\"${key}\":${objectMapper.writeValueAsString(value.term())}")
+            else -> add("\"${key}\":${objectMapper.writeValueAsString(value)}")
+        }
+    }
+
+    private fun IndentedRenderingContext.renderAuth() {
+        callContext.authentication?.let {
+            append(",")
+            addEmptyLine()
+            add("${AMAZON_AUTH_TYPE}\"${it.type}\"")
+        }
+    }
+}

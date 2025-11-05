@@ -11,9 +11,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 internal class DefaultNodeRendererStrategyDeciderTest {

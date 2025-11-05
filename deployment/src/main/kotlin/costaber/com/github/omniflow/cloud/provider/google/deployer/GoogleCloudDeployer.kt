@@ -1,13 +1,11 @@
 package costaber.com.github.omniflow.cloud.provider.google.deployer
 
+import costaber.com.github.omniflow.cloud.provider.google.provider.GoogleDefaultStrategyDeciderProvider.createNodeRendererStrategyDecider
+import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleRenderingContext
 import costaber.com.github.omniflow.cloud.provider.google.renderer.GoogleTermContext
 import costaber.com.github.omniflow.cloud.provider.google.service.GoogleWorkflowService
-import costaber.com.github.omniflow.cloud.provider.google.strategy.*
 import costaber.com.github.omniflow.deployer.CloudDeployer
-import costaber.com.github.omniflow.factory.DefaultNodeRendererStrategyDecider
-import costaber.com.github.omniflow.factory.NodeRendererStrategyDecider
 import costaber.com.github.omniflow.model.Workflow
-import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.joinToStringNewLines
 import costaber.com.github.omniflow.traversor.DepthFirstNodeVisitorTraversor
 import costaber.com.github.omniflow.visitor.NodeContextVisitor
@@ -25,7 +23,7 @@ class GoogleCloudDeployer internal constructor(
 
     override fun deploy(workflow: Workflow, deployContext: GoogleDeployContext) {
         logger.info { "Starting to convert Workflow into a Workflow" }
-        val renderingContext = IndentedRenderingContext(termContext = GoogleTermContext())
+        val renderingContext = GoogleRenderingContext(termContext = GoogleTermContext())
         val content = nodeTraversor.traverse(contextVisitor, workflow, renderingContext)
             .filterNot(String::isEmpty)
             .joinToStringNewLines()
@@ -46,23 +44,5 @@ class GoogleCloudDeployer internal constructor(
             contextVisitor = NodeContextVisitor(createNodeRendererStrategyDecider()),
             googleWorkflowService = GoogleWorkflowService(),
         )
-
-        private fun createNodeRendererStrategyDecider(): NodeRendererStrategyDecider {
-            return DefaultNodeRendererStrategyDecider.Builder()
-                .addRendererStrategy(GoogleAssignStrategyFactory())
-                .addRendererStrategy(GoogleCallStrategyFactory())
-                .addRendererStrategy(GoogleConditionStrategyFactory())
-                .addRendererStrategy(GoogleEqualToExpressionStrategyFactory())
-                .addRendererStrategy(GoogleGreaterThanExpressionStrategyFactory())
-                .addRendererStrategy(GoogleGreaterThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(GoogleLessThanExpressionStrategyFactory())
-                .addRendererStrategy(GoogleLessThanOrEqualExpressionStrategyFactory())
-                .addRendererStrategy(GoogleNotEqualToExpressionStrategyFactory())
-                .addRendererStrategy(GoogleStepStrategyFactory())
-                .addRendererStrategy(GoogleSwitchStrategyFactory())
-                .addRendererStrategy(GoogleVariableStrategyFactory())
-                .addRendererStrategy(GoogleWorkflowStrategyFactory())
-                .build()
-        }
     }
 }

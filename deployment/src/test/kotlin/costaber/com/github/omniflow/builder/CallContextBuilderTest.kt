@@ -5,12 +5,12 @@ import costaber.com.github.omniflow.dsl.value
 import costaber.com.github.omniflow.model.CallContext
 import costaber.com.github.omniflow.model.HttpMethod
 import costaber.com.github.omniflow.util.*
-import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.containsKey
 import strikt.assertions.containsKeys
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class CallContextBuilderTest {
 
@@ -45,7 +45,7 @@ internal class CallContextBuilderTest {
                 get { path }.isEqualTo(PATH)
                 get { header }.containsKeys(HEADER_CONTENT_TYPE, HEADER_ACCEPT)
                 get { query }.containsKey(QUERY_STRING_WORKFLOW_ID)
-                get { body }.isEqualTo(BODY_1)
+                get { bodyRaw }.isEqualTo(BODY_1)
                 get { authentication?.type }.isEqualTo(AUTH_TYPE_2)
                 get { timeoutInSeconds }.isEqualTo(TIMEOUT)
                 get { result }.isEqualTo(CALL_CONTEXT_RESULT_1)

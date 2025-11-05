@@ -36,3 +36,15 @@ fun switch(switchContextBuilder: SwitchContextBuilder.() -> Unit): SwitchContext
 fun condition(switchConditionBuilder: SwitchConditionBuilder.() -> Unit): SwitchConditionBuilder {
     return SwitchConditionBuilder().apply(switchConditionBuilder)
 }
+
+fun parallel(parallelContextBuilder: ParallelContextBuilder.() -> Unit): ParallelContextBuilder {
+    return ParallelContextBuilder().apply(parallelContextBuilder)
+}
+
+fun iteration(iterationContextBuilder: IterationContextBuilder.() -> Unit): IterationContextBuilder {
+    return IterationContextBuilder().apply(iterationContextBuilder)
+}
+
+fun branch(branchContextBuilder: BranchContextBuilder.() -> Unit): BranchContextBuilder {
+    return BranchContextBuilder().apply(branchContextBuilder)
+}

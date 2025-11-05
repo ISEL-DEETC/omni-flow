@@ -3,7 +3,7 @@ package costaber.com.github.omniflow.renderer
 import costaber.com.github.omniflow.model.Node
 
 /**
- * Interface that represents a html node
+ * Interface that represents a HTML node
  * from the template that is subject to render
  *
  * @param <T> the concrete node type

@@ -1,5 +1,5 @@
 main:
-  params: [args]
+  params: [ args ]
   steps:
     - new_translation:
         call: http.post

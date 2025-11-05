@@ -3,7 +3,9 @@ package costaber.com.github.omniflow.traversor
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.visitor.ContextVisitor
 
-class DepthFirstNodeVisitorTraversor : NodeVisitorTraversor {
+open class DepthFirstNodeVisitorTraversor : NodeVisitorTraversor {
+
+    protected val observers: MutableList<NodeVisitorTraversorObserver> = mutableListOf()
 
     override fun <K, R> traverse(
         visitor: ContextVisitor<Node, K, R>,
@@ -17,20 +19,32 @@ class DepthFirstNodeVisitorTraversor : NodeVisitorTraversor {
         return result
     }
 
-    private fun <K, R> traverseNode(
+    override fun registerObserver(observer: NodeVisitorTraversorObserver): NodeVisitorTraversor {
+        observers.add(observer)
+        return this
+    }
+
+    protected open fun <K, R> traverseNode(
         visitor: ContextVisitor<Node, K, R>,
         node: Node,
         context: K,
         visitResults: MutableList<R>,
     ) {
-        val beginVisitResult = visitor.beginVisit(node, context)
-        visitResults.add(beginVisitResult)
+        try {
+            val beginVisitResult = visitor.beginVisit(node, context)
+            visitResults.add(beginVisitResult)
+            observers.forEach { it.onBeginVisit(visitor, node, context, visitResults) }
 
-        node.childNodes().forEach {
-            traverseNode(visitor, it, context, visitResults)
+            node.childNodes().forEach {
+                traverseNode(visitor, it, context, visitResults)
+            }
+
+            val endVisitResult = visitor.endVisit(node, context)
+            visitResults.add(endVisitResult)
+            observers.forEach { it.onEndVisit(visitor, node, context, visitResults) }
+        } catch (e: Exception) {
+            observers.forEach { it.close() }
+            throw e
         }
-
-        val endVisitResult = visitor.endVisit(node, context)
-        visitResults.add(endVisitResult)
     }
 }

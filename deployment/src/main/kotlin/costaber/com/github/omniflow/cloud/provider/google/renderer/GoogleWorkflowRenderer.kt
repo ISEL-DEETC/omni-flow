@@ -3,14 +3,13 @@ package costaber.com.github.omniflow.cloud.provider.google.renderer
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Variable
 import costaber.com.github.omniflow.model.Workflow
-import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
 class GoogleWorkflowRenderer(
     private val workflow: Workflow,
     private val googleTermResolver: GoogleTermResolver,
-) : IndentedNodeRenderer() {
+) : GoogleRenderer() {
 
     override val element: Node = workflow
 

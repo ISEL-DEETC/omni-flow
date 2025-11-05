@@ -1,10 +1,10 @@
 package costaber.com.github.omniflow.resource.exception
 
 import costaber.com.github.omniflow.util.WORKFLOW_NAME_1
-import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import kotlin.test.Test
 
 internal class ExceptionsTest {
 

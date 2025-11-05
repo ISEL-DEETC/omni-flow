@@ -2,11 +2,10 @@ package costaber.com.github.omniflow.cloud.provider.google.renderer
 
 import costaber.com.github.omniflow.model.AssignContext
 import costaber.com.github.omniflow.model.Node
-import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class GoogleAssignRenderer(assignContext: AssignContext) : IndentedNodeRenderer() {
+class GoogleAssignRenderer(assignContext: AssignContext) : GoogleRenderer() {
 
     override val element: Node = assignContext
 

@@ -5,11 +5,10 @@ import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_START_AT
 import costaber.com.github.omniflow.cloud.provider.amazon.AMAZON_STATES
 import costaber.com.github.omniflow.model.Node
 import costaber.com.github.omniflow.model.Workflow
-import costaber.com.github.omniflow.renderer.IndentedNodeRenderer
 import costaber.com.github.omniflow.renderer.IndentedRenderingContext
 import costaber.com.github.omniflow.resource.util.render
 
-class AmazonStateMachineRenderer(private val workflow: Workflow) : IndentedNodeRenderer() {
+class AmazonStateMachineRenderer(private val workflow: Workflow) : AmazonRenderer() {
 
     override val element: Node = workflow
 

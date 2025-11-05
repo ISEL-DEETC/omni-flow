@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
-import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonEqualToExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.binaryexpression.AmazonEqualToExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.EqualToExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class AmazonEqualToExpressionStrategyFactory : NodeRendererStrategyFactory<Strin
         DefaultPredicate(EqualToExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonEqualToExpressionRenderer(node as EqualToExpression<*>)
+        AmazonEqualToExpressionRenderer(node as EqualToExpression<*>, AmazonTermResolver)
 }

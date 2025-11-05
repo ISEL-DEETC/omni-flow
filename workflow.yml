@@ -1,0 +1,71 @@
+# Simple workflow
+main:
+  params: [ input ]
+  steps:
+    - checkSearchTermInInput:
+        switch:
+          - condition: '${"searchTerm" in input}'
+            assign:
+              - searchTerm: '${input.searchTerm}'
+            next: readWikipedia
+    - getLocation:
+        call: sys.get_env
+        args:
+          name: GOOGLE_CLOUD_LOCATION
+        result: location
+    - setFromCallResult:
+        assign:
+          - searchTerm: '${text.split(location, "-")[0]}'
+    - readWikipedia:
+        call: http.get
+        args:
+          url: 'https://en.wikipedia.org/w/api.php'
+          query:
+            action: opensearch
+            search: '${searchTerm}'
+        result: wikiResult
+    - returnOutput:
+        return: '${wikiResult.body[1]}'
+
+---
+
+# parallel with loop
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - user: { }
+          - notification: { }
+    - parallel_branches:
+        parallel:
+          shared: [ user, notification ]
+          branches:
+            - getUser:
+                steps:
+                  - getUserCall:
+                      call: http.get
+                      args:
+                        url: ${"https://example.com/users/" + args.userId}
+                      result: user
+                  - for-in-map:
+                      steps:
+                        - assignMap:
+                            assign:
+                              - map: { 1: 10, 2: 20, 3: 30 }
+                              - sum: 0
+                        - loopMap:
+                            for:
+                              value: key
+                              in: ${keys(map)}
+                              steps:
+                                - sumMap:
+                                    assign:
+                                      - sum: ${sum + map[key]}
+            - getNotification:
+                steps:
+                  - getNotificationCall:
+                      call: http.get
+                      args:
+                        url: ${"https://example.com/notification/" + args.notificationId}
+                      result: notification

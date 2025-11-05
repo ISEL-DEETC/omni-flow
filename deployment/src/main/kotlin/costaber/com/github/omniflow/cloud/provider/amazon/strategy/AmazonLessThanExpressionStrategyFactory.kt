@@ -1,6 +1,7 @@
 package costaber.com.github.omniflow.cloud.provider.amazon.strategy
 
-import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonLessThanExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.binaryexpression.AmazonLessThanExpressionRenderer
+import costaber.com.github.omniflow.cloud.provider.amazon.renderer.AmazonTermResolver
 import costaber.com.github.omniflow.factory.NodeRendererStrategyFactory
 import costaber.com.github.omniflow.model.LessThanExpression
 import costaber.com.github.omniflow.model.Node
@@ -14,5 +15,5 @@ class AmazonLessThanExpressionStrategyFactory : NodeRendererStrategyFactory<Stri
         DefaultPredicate(LessThanExpression::class)
 
     override fun getRenderer(node: Node): NodeRenderer<String> =
-        AmazonLessThanExpressionRenderer(node as LessThanExpression<*>)
+        AmazonLessThanExpressionRenderer(node as LessThanExpression<*>, AmazonTermResolver)
 }

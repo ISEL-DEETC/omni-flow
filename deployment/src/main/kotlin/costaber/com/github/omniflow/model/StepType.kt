@@ -5,4 +5,5 @@ enum class StepType {
     ASSIGN,
     CONDITIONAL,
     ITERATION,
+    PARALLEL
 }

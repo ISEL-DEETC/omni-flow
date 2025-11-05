@@ -1,11 +1,22 @@
 package costaber.com.github.omniflow.builder
 
-import costaber.com.github.omniflow.model.CallContext
-import costaber.com.github.omniflow.model.HttpMethod
-import costaber.com.github.omniflow.model.StepType
-import costaber.com.github.omniflow.model.Term
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonMappingException
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.type.TypeFactory
+import costaber.com.github.omniflow.jackson.OmniflowObjectMapper
+import costaber.com.github.omniflow.model.*
+
 
 class CallContextBuilder : ContextBuilder {
+
+    private val objectMapper: ObjectMapper
+    private val typeFactory: TypeFactory = TypeFactory.defaultInstance()
+    private val mapType = typeFactory.constructMapType(Map::class.java, String::class.java, Any::class.java)
+
+    constructor(objectMapper: ObjectMapper = OmniflowObjectMapper.default) : super() {
+        this.objectMapper = objectMapper
+    }
 
     // mandatory
     private lateinit var method: HttpMethod
@@ -14,9 +25,11 @@ class CallContextBuilder : ContextBuilder {
     private lateinit var result: String
 
     // optional
+    private var resultType: ResultType = ResultType.BODY
     private val header: MutableMap<String, Term<*>> = mutableMapOf()
     private val query: MutableMap<String, Term<*>> = mutableMapOf()
-    private var body: Any? = null
+    private val body: MutableMap<String, Any> = mutableMapOf()
+    private var bodyRaw: String? = null
     private var authenticationBuilder: AuthenticationBuilder? = null
     private var timeout: Long? = null
 
@@ -26,17 +39,84 @@ class CallContextBuilder : ContextBuilder {
 
     fun method(value: HttpMethod) = apply { this.method = value }
 
-    fun header(vararg value: Pair<String, Term<*>>) = apply { value.forEach { header[it.first] = it.second } }
+    fun header(vararg value: Pair<String, Any>) = apply {
+        value.forEach {
+            header[it.first] = when (it.second) {
+                is Term<*> -> it.second as Term<*>
+                else -> Value(it.second)
+            }
+        }
+    }
 
-    fun query(vararg value: Pair<String, Term<*>>) = apply { value.forEach { query[it.first] = it.second } }
+    fun header(value: Map<String, Any>) = apply {
+        value.forEach {
+            header[it.key] = when (it.value) {
+                is Term<*> -> it.value as Term<*>
+                else -> Value(it.value)
+            }
+        }
+    }
 
-    fun body(value: Any) = apply { this.body = value }
+    fun query(vararg value: Pair<String, Any>) = apply {
+        value.forEach {
+            query[it.first] = when (it.second) {
+                is Term<*> -> it.second as Term<*>
+                else -> Value(it.second)
+            }
+        }
+    }
+
+    fun query(value: Map<String, Any>) = apply {
+        value.forEach {
+            query[it.key] = when (it.value) {
+                is Term<*> -> it.value as Term<*>
+                else -> Value(it.value)
+            }
+        }
+    }
+
+
+    fun body(value: String) = apply { this.bodyRaw = value }
+    fun body(vararg value: Pair<String, Any>) = apply {
+        value.forEach { body[it.first] = it.second }
+    }
+
+    fun body(value: Map<String, Any>) = apply {
+        value.forEach { body[it.key] = it.value }
+    }
+
+    fun body(any: Any) = apply {
+        val maybeJsonString: String? = try {
+            objectMapper.writeValueAsString(any)
+        } catch (_: JsonProcessingException) {
+            null
+        }
+
+        val maybeJson: Map<String, Any>? =
+            maybeJsonString?.let {
+                try {
+                    objectMapper.readValue(maybeJsonString, mapType)
+                } catch (_: JsonProcessingException) {
+                    null
+                } catch (_: JsonMappingException) {
+                    null
+                }
+            }
+
+        if (maybeJson != null) {
+            body(maybeJson)
+        } else {
+            bodyRaw = maybeJsonString ?: any.toString()
+        }
+    }
 
     fun authentication(value: AuthenticationBuilder) = apply { this.authenticationBuilder = value }
 
     fun timeout(value: Long) = apply { this.timeout = value }
 
     fun result(value: String) = apply { this.result = value }
+
+    fun resultType(resultType: ResultType) = apply { this.resultType = resultType }
 
     override fun stepType() = StepType.CALL
 
@@ -47,8 +127,10 @@ class CallContextBuilder : ContextBuilder {
         header = header,
         query = query,
         body = body,
+        bodyRaw = bodyRaw ?: "",
         authentication = authenticationBuilder?.build(),
         timeoutInSeconds = timeout,
-        result = result
+        result = result,
+        resultType = resultType
     )
 }
